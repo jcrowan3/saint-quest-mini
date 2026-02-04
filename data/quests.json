@@ -1,0 +1,87 @@
+{
+  "francis": [
+    {
+      "title": "The Wolf of Gubbio",
+      "story": "A fierce wolf terrorizes a town. Francis chooses to meet it with mercy.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How do you respond to fear with mercy?",
+        "options": [
+          "Offer peace and listen to the wolf's pain",
+          "Drive the wolf away with force",
+          "Ignore it and move on",
+          "Blame the townspeople"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Mercy": 2, "Courage": 1}
+    },
+    {
+      "title": "Sermon to the Birds",
+      "story": "Francis teaches that all creation is loved by God.",
+      "challenge": {
+        "type": "trivia",
+        "question": "Which virtue best fits caring for all of creation?",
+        "choices": ["Mercy", "Pride", "Greed", "Envy"],
+        "answer_index": 0
+      },
+      "reward": {"Mercy": 1, "Courage": 1}
+    },
+    {
+      "title": "Rebuild My Church",
+      "story": "Francis hears Christ call him to rebuild the Church.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "What is the best first step?",
+        "options": [
+          "Start with small acts of love and service",
+          "Wait for others to do it",
+          "Seek fame for the effort",
+          "Ignore the call"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Courage": 2, "Mercy": 1}
+    }
+  ],
+  "carlo": [
+    {
+      "title": "The Digital Evangelist",
+      "story": "Carlo uses technology to share Eucharistic miracles.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What does the Eucharist become at Mass?",
+        "choices": ["Body and Blood of Christ", "Bread and Wine", "Symbol only", "Nothing"],
+        "answer_index": 0
+      },
+      "reward": {"Faith": 2, "Wisdom": 1}
+    },
+    {
+      "title": "Coding for the Kingdom",
+      "story": "Carlo builds a website to teach others about the faith.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How can you use your talents for God?",
+        "options": [
+          "Teach others what you've learned",
+          "Keep it to yourself",
+          "Use it only for popularity",
+          "Give up on it"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Wisdom": 2, "Faith": 1}
+    },
+    {
+      "title": "Daily Mass",
+      "story": "Carlo loves daily Mass and adoration.",
+      "challenge": {
+        "type": "trivia",
+        "question": "Which virtue is strengthened by regular prayer?",
+        "choices": ["Faith", "Jealousy", "Greed", "Anger"],
+        "answer_index": 0
+      },
+      "reward": {"Faith": 2, "Wisdom": 1}
+    }
+  ]
+}

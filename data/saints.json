@@ -1,0 +1,14 @@
+[
+  {
+    "id": "francis",
+    "name": "St. Francis of Assisi",
+    "avatar": "🐺",
+    "virtues": ["Mercy", "Courage"]
+  },
+  {
+    "id": "carlo",
+    "name": "St. Carlo Acutis",
+    "avatar": "💻",
+    "virtues": ["Wisdom", "Faith"]
+  }
+]

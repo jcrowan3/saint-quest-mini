@@ -1,0 +1,66 @@
+/* Global Font */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lato:wght@400;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Lato', sans-serif;
+    color: #2c3e50;
+}
+
+/* Headers */
+h1, h2, h3 {
+    font-family: 'Cinzel', serif;
+    color: #8e44ad;
+}
+
+/* THEMES (Subtle Backgrounds) */
+/* Targeted by injecting a style block in app.py */
+[data-testid="stAppViewContainer"] {
+    background-color: #ffffff;
+    transition: background-color 0.5s ease;
+}
+
+/* Story Card */
+.story-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+    border-left: 6px solid #f1c40f;
+}
+
+/* Virtue Badges */
+.virtue-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85em;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.v-faith { background-color: #3498db; }
+.v-mercy { background-color: #e74c3c; }
+.v-courage { background-color: #e67e22; }
+.v-wisdom { background-color: #9b59b6; }
+
+/* Button Override */
+div.stButton > button {
+    width: 100%;
+    border-radius: 8px;
+    font-weight: bold;
+    border: 2px solid #8e44ad;
+    color: #8e44ad;
+    background-color: white;
+    transition: all 0.2s;
+}
+div.stButton > button:hover {
+    background-color: #8e44ad;
+    color: white;
+    border-color: #8e44ad;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(142, 68, 173, 0.2);
+}
