@@ -201,6 +201,88 @@
       color: rgba(255, 255, 255, 0.6);
     }
 
+    /* Difficulty selector */
+    .difficulty-selector {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .difficulty-selector h3 {
+      margin-bottom: 12px;
+    }
+    .diff-btn {
+      padding: 10px 20px;
+      margin: 5px;
+      border: 2px solid var(--accent-gold);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--accent-gold);
+      font-family: 'Cinzel', serif;
+      font-size: 0.95em;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .diff-btn:hover, .diff-btn.active {
+      background: var(--accent-gold);
+      color: var(--text-dark);
+    }
+    .timer-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      margin: 10px 0;
+      overflow: hidden;
+      display: none;
+    }
+    .timer-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444);
+      border-radius: 2px;
+      transition: width 0.1s linear;
+      width: 100%;
+    }
+    .hint-text {
+      color: #fbbf24;
+      font-style: italic;
+      margin-top: 8px;
+      font-size: 0.9em;
+      display: none;
+    }
+
+    /* Particles */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      font-size: 16px;
+      z-index: 999;
+      animation: particleFade 1s ease-out forwards;
+    }
+    @keyframes particleFade {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-80px) scale(0.5); }
+    }
+
+    /* Screen shake */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+    .shake {
+      animation: shake 0.4s ease-in-out;
+    }
+
+    /* Radar chart */
+    .radar-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .radar-container canvas {
+      max-width: 300px;
+      max-height: 300px;
+    }
+
     .balloons {
       position: fixed;
       top: 0;
@@ -297,6 +379,12 @@
     <!-- Select Screen -->
     <div id="select-screen" class="screen active">
       <h2>Choose Your Hero</h2>
+      <div class="difficulty-selector">
+        <h3>⚔️ Difficulty</h3>
+        <button class="diff-btn active" onclick="setDifficulty('easy',this)">Easy</button>
+        <button class="diff-btn" onclick="setDifficulty('normal',this)">Normal</button>
+        <button class="diff-btn" onclick="setDifficulty('hard',this)">Hard</button>
+      </div>
       <div class="columns" id="saint-grid"></div>
     </div>
 
@@ -314,9 +402,11 @@
         <p id="quest-story" style="font-size: 1.2em; line-height: 1.6;"></p>
       </div>
 
+      <div class="timer-bar" id="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
       <div class="question-container" id="question-container">
         <!-- Questions rendered here -->
       </div>
+      <div class="hint-text" id="hint-text"></div>
 
       <div class="columns">
         <div class="column">
@@ -341,7 +431,8 @@
         <p><i>"Start by doing what's necessary; then do what's possible; and suddenly you are doing the impossible."</i></p>
       </div>
 
-      <h3>Final Virtue Profile</h3><br>
+      <h3>Final Virtue Profile</h3>
+      <div class="radar-container"><canvas id="radar-canvas" width="300" height="300"></canvas></div>
       <div id="final-profile"></div>
 
       <button class="btn" onclick="resetGame()">Start New Journey</button>
@@ -431,6 +522,88 @@
     let currentCheckpoint = 0;
     let virtues = {"Faith": 0, "Mercy": 0, "Courage": 0, "Wisdom": 0};
     let gameScreen = "select";
+    let difficulty = "easy";
+    let timerInterval = null;
+    let timeLeft = 15;
+
+    function setDifficulty(d, btn) {
+      difficulty = d;
+      document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      playSound('click');
+    }
+
+    function startTimer() {
+      if (difficulty !== 'hard') return;
+      const timerBar = document.getElementById('timer-bar');
+      const timerFill = document.getElementById('timer-fill');
+      timerBar.style.display = 'block';
+      timeLeft = 15;
+      timerFill.style.width = '100%';
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeLeft -= 0.1;
+        timerFill.style.width = Math.max(0, (timeLeft / 15) * 100) + '%';
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          autoSubmitWrong();
+        }
+      }, 100);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+      document.getElementById('timer-bar').style.display = 'none';
+    }
+
+    function autoSubmitWrong() {
+      if (isAnswerSubmitted) return;
+      isAnswerSubmitted = true;
+      stopTimer();
+      playSound('wrong');
+      shakeScreen();
+      const resultEl = document.createElement('div');
+      resultEl.className = 'result incorrect';
+      resultEl.textContent = "⏰ Time's up!";
+      questionContainer.appendChild(resultEl);
+      setTimeout(() => {
+        currentCheckpoint++;
+        if (currentCheckpoint >= quests[currentSaint].length) { endGame(); } else { loadQuest(); }
+        isAnswerSubmitted = false;
+      }, 2000);
+    }
+
+    function showHint(q) {
+      if (difficulty !== 'easy') return;
+      const hintEl = document.getElementById('hint-text');
+      const ch = q.challenge;
+      if (ch.type === 'trivia') {
+        const correct = ch.choices[ch.answer_index];
+        hintEl.textContent = '💡 Hint: The answer starts with "' + correct.charAt(0) + '"';
+      } else {
+        hintEl.textContent = '💡 Hint: Think about what this saint would actually do.';
+      }
+      hintEl.style.display = 'block';
+    }
+
+    function spawnParticles(emoji) {
+      for (let i = 0; i < 12; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.textContent = emoji;
+        p.style.left = (Math.random() * 60 + 20) + 'vw';
+        p.style.top = (Math.random() * 40 + 30) + 'vh';
+        p.style.fontSize = (Math.random() * 16 + 12) + 'px';
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 1000);
+      }
+    }
+
+    function shakeScreen() {
+      const container = document.querySelector('.container');
+      container.classList.add('shake');
+      setTimeout(() => container.classList.remove('shake'), 400);
+    }
 
     // Sound effects
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -457,6 +630,19 @@
       
       oscillator.start();
       oscillator.stop(audioContext.currentTime + 0.2);
+
+      if (type === 'fanfare') {
+        // Play a triumphant chord
+        [523, 659, 784].forEach((freq, i) => {
+          const osc = audioContext.createOscillator();
+          const gn = audioContext.createGain();
+          osc.connect(gn); gn.connect(audioContext.destination);
+          osc.type = 'sine'; osc.frequency.value = freq;
+          gn.gain.value = 0.25;
+          osc.start(audioContext.currentTime + i * 0.15);
+          osc.stop(audioContext.currentTime + i * 0.15 + 0.4);
+        });
+      }
     }
 
     // DOM Elements
@@ -537,6 +723,11 @@
           <button class="btn" onclick="submitAnswer(-1, false)">Make Choice</button>
         `;
       }
+
+      // Difficulty features
+      document.getElementById('hint-text').style.display = 'none';
+      showHint(q);
+      startTimer();
     }
 
     let isAnswerSubmitted = false;
@@ -557,24 +748,29 @@
 
       const isCorrect = selectedIndex === answer;
 
+      stopTimer();
       if (isCorrect) {
         playSound('correct');
-        // Show result
+        spawnParticles('✨');
         const resultEl = document.createElement('div');
         resultEl.className = 'result correct';
         resultEl.textContent = 'Correct! +Virtue';
         questionContainer.appendChild(resultEl);
-
-        // Update virtues
         for (const [key, value] of Object.entries(q.reward)) {
           virtues[key] += value;
         }
       } else {
         playSound('wrong');
-        // Show result
+        shakeScreen();
         const resultEl = document.createElement('div');
         resultEl.className = 'result incorrect';
-        resultEl.textContent = 'Not quite — try next challenge.';
+        const ch = q.challenge;
+        const correctAnswer = ch.type === 'trivia' ? ch.choices[ch.answer_index] : ch.options[ch.answer_index];
+        if (difficulty === 'easy') {
+          resultEl.textContent = 'Not quite — the answer was: ' + correctAnswer;
+        } else {
+          resultEl.textContent = 'Not quite — try next challenge.';
+        }
         questionContainer.appendChild(resultEl);
       }
 
@@ -593,10 +789,100 @@
       }, 2000);
     }
 
+    function drawRadarChart() {
+      const canvas = document.getElementById('radar-canvas');
+      const ctx = canvas.getContext('2d');
+      const cx = 150, cy = 150, r = 110;
+      const labels = ['Faith', 'Mercy', 'Courage', 'Wisdom'];
+      const maxVal = Math.max(...Object.values(virtues), 10);
+      const values = labels.map(l => (virtues[l] || 0) / maxVal);
+      const n = labels.length;
+
+      ctx.clearRect(0, 0, 300, 300);
+
+      // Draw grid rings
+      for (let ring = 0.25; ring <= 1; ring += 0.25) {
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++) {
+          const angle = (Math.PI * 2 * (i % n)) / n - Math.PI / 2;
+          const x = cx + r * ring * Math.cos(angle);
+          const y = cy + r * ring * Math.sin(angle);
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+        ctx.stroke();
+      }
+
+      // Draw axes
+      for (let i = 0; i < n; i++) {
+        const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + r * Math.cos(angle), cy + r * Math.sin(angle));
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+        ctx.stroke();
+      }
+
+      // Draw "perfect" outline
+      ctx.beginPath();
+      for (let i = 0; i <= n; i++) {
+        const angle = (Math.PI * 2 * (i % n)) / n - Math.PI / 2;
+        const x = cx + r * Math.cos(angle);
+        const y = cy + r * Math.sin(angle);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = 'rgba(212,175,55,0.3)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 5]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Draw player values
+      ctx.beginPath();
+      for (let i = 0; i <= n; i++) {
+        const angle = (Math.PI * 2 * (i % n)) / n - Math.PI / 2;
+        const v = values[i % n];
+        const x = cx + r * v * Math.cos(angle);
+        const y = cy + r * v * Math.sin(angle);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.fillStyle = 'rgba(99,102,241,0.3)';
+      ctx.fill();
+      ctx.strokeStyle = '#6366f1';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Draw dots and labels
+      const colors = { Faith: '#2196F3', Mercy: '#4CAF50', Courage: '#F44336', Wisdom: '#9C27B0' };
+      for (let i = 0; i < n; i++) {
+        const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+        const v = values[i];
+        const x = cx + r * v * Math.cos(angle);
+        const y = cy + r * v * Math.sin(angle);
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = colors[labels[i]];
+        ctx.fill();
+
+        // Labels
+        const lx = cx + (r + 20) * Math.cos(angle);
+        const ly = cy + (r + 20) * Math.sin(angle);
+        ctx.fillStyle = colors[labels[i]];
+        ctx.font = 'bold 13px Lato, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(labels[i] + ' ' + (virtues[labels[i]] || 0), lx, ly);
+      }
+    }
+
     function endGame() {
       gameScreen = "done";
+      stopTimer();
       updateScreen();
       saintName.textContent = saints.find(s => s.id === currentSaint).name;
+
+      // Draw radar chart
+      drawRadarChart();
 
       // Display final virtues
       let profileHTML = '';
@@ -611,7 +897,9 @@
       // Save high score
       saveHighScore();
 
-      // Show balloons
+      // Celebration!
+      playSound('fanfare');
+      spawnParticles('🏆');
       showBalloons();
     }
 
