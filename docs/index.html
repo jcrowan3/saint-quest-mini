@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Saint Quest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-dark: #1a0a2e;
+      --secondary-dark: #2d1b4d;
+      --accent-gold: #d4af37;
+      --accent-blue: #4a90e2;
+      --accent-purple: #9c27b0;
+      --text-light: #f0f0f0;
+      --text-dark: #121212;
+      --card-bg: rgba(255, 255, 255, 0.1);
+      --border-radius: 12px;
+      --transition: all 0.4s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+      color: var(--text-light);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    h1, h2, h3 {
+      font-family: 'Cinzel', serif;
+      color: var(--accent-gold);
+      text-align: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .screen {
+      display: none;
+      animation: slideIn 0.5s ease-out;
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .story-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: var(--border-radius);
+      margin-bottom: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
+    }
+
+    .story-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-5px);
+    }
+
+    .virtue-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      margin: 5px;
+      border-radius: 50px;
+      font-size: 0.9em;
+      font-weight: bold;
+      transition: var(--transition);
+    }
+
+    .v-faith { background-color: #2196F3; color: white; }
+    .v-mercy { background-color: #4CAF50; color: white; }
+    .v-courage { background-color: #F44336; color: white; }
+    .v-wisdom { background-color: #9C27B0; color: white; }
+
+    .progress-container {
+      margin: 20px 0;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      background: var(--accent-gold);
+      border-radius: 5px;
+      transition: width 0.5s ease;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      margin: 10px 5px;
+      border: none;
+      border-radius: var(--border-radius);
+      background: var(--accent-gold);
+      color: var(--text-dark);
+      font-family: 'Cinzel', serif;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background: #f5d64a;
+      transform: scale(1.05);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid var(--accent-gold);
+      color: var(--accent-gold);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(212, 175, 55, 0.2);
+    }
+
+    .columns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .column {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .saint-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .saint-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-5px);
+    }
+
+    .saint-card h3 {
+      margin: 10px 0;
+    }
+
+    .avatar {
+      font-size: 3em;
+      margin: 10px 0;
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 0.9em;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .balloons {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0;
+    }
+
+    .balloon {
+      position: absolute;
+      font-size: 24px;
+      animation: float 10s linear infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+      }
+    }
+
+    .question-container {
+      margin: 20px 0;
+    }
+
+    .radio-group {
+      margin: 15px 0;
+    }
+
+    .radio-option {
+      display: block;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .radio-option:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .radio-option input {
+      margin-right: 10px;
+    }
+
+    .result {
+      padding: 15px;
+      border-radius: var(--border-radius);
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .correct {
+      background: rgba(76, 175, 80, 0.2);
+      border: 1px solid #4CAF50;
+    }
+
+    .incorrect {
+      background: rgba(244, 67, 54, 0.2);
+      border: 1px solid #F44336;
+    }
+
+    @media (max-width: 768px) {
+      .columns {
+        flex-direction: column;
+      }
+
+      .avatar {
+        font-size: 2em;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
+      h2 {
+        font-size: 1.5em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚔️ Saint Quest 🛡️</h1>
+
+    <!-- Select Screen -->
+    <div id="select-screen" class="screen active">
+      <h2>Choose Your Hero</h2>
+      <div class="columns">
+        <!-- Saint 1 -->
+        <div class="column">
+          <div class="saint-card" onclick="selectSaint('francis')">
+            <div class="avatar">🐺</div>
+            <h3>St. Francis of Assisi</h3>
+            <p><i>Virtues: Mercy, Courage</i></p>
+          </div>
+        </div>
+        <!-- Saint 2 -->
+        <div class="column">
+          <div class="saint-card" onclick="selectSaint('carlo')">
+            <div class="avatar">💻</div>
+            <h3>St. Carlo Acutis</h3>
+            <p><i>Virtues: Wisdom, Faith</i></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Play Screen -->
+    <div id="play-screen" class="screen">
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress" id="progress-bar"></div>
+        </div>
+        <p id="progress-text" style="text-align: center;"></p>
+      </div>
+
+      <div class="story-card">
+        <h2 id="quest-title">Loading...</h2>
+        <p id="quest-story" style="font-size: 1.2em; line-height: 1.6;"></p>
+      </div>
+
+      <div class="question-container" id="question-container">
+        <!-- Questions rendered here -->
+      </div>
+
+      <div class="columns">
+        <div class="column">
+          <div class="story-card">
+            <h3>Profile</h3>
+            <div id="profile-content">
+              <!-- Profile rendered here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button id="continue-btn" class="btn btn-secondary" style="display: none;" onclick="nextQuest()">Continue</button>
+    </div>
+
+    <!-- Done Screen -->
+    <div id="done-screen" class="screen">
+      <div class="story-card" style="text-align: center; border-color: gold; background-color: #fffef0;">
+        <h1>Sainthood Unlocked!</h1>
+        <div style="font-size: 80px;">😇</div>
+        <p style="font-size: 1.3em;">You have completed the journey of <span id="saint-name"></span>.</p>
+        <p><i>"Start by doing what's necessary; then do what's possible; and suddenly you are doing the impossible."</i></p>
+      </div>
+
+      <h3>Final Virtue Profile</h3><br>
+      <div id="final-profile"></div>
+
+      <button class="btn" onclick="resetGame()">Start New Journey</button>
+    </div>
+  </div>
+
+  <div class="balloons" id="balloons"></div>
+
+  <div class="footer">
+    &copy; Saint Quest Game | Faithful to Catholic Virtues
+  </div>
+
+  <script>
+    // Game Data (embedded)
+    const saints = [
+      {
+        "id": "francis",
+        "name": "St. Francis of Assisi",
+        "avatar": "🐺",
+        "virtues": ["Mercy", "Courage"]
+      },
+      {
+        "id": "carlo",
+        "name": "St. Carlo Acutis",
+        "avatar": "💻",
+        "virtues": ["Wisdom", "Faith"]
+      }
+    ];
+
+    const quests = {
+      "francis": [
+        {
+          "title": "The Wolf of Gubbio",
+          "story": "A fierce wolf terrorizes a town. Francis chooses to meet it with mercy.",
+          "challenge": {
+            "type": "dilemma",
+            "prompt": "How do you respond to fear with mercy?",
+            "options": [
+              "Offer peace and listen to the wolf's pain",
+              "Drive the wolf away with force",
+              "Ignore it and move on",
+              "Blame the townspeople"
+            ],
+            "answer_index": 0
+          },
+          "reward": {"Mercy": 2, "Courage": 1}
+        },
+        {
+          "title": "Sermon to the Birds",
+          "story": "Francis teaches that all creation is loved by God.",
+          "challenge": {
+            "type": "trivia",
+            "question": "Which virtue best fits caring for all of creation?",
+            "choices": ["Mercy", "Pride", "Greed", "Envy"],
+            "answer_index": 0
+          },
+          "reward": {"Mercy": 1, "Courage": 1}
+        },
+        {
+          "title": "Rebuild My Church",
+          "story": "Francis hears Christ call him to rebuild the Church.",
+          "challenge": {
+            "type": "dilemma",
+            "prompt": "What is the best first step?",
+            "options": [
+              "Start with small acts of love and service",
+              "Wait for others to do it",
+              "Seek fame for the effort",
+              "Ignore the call"
+            ],
+            "answer_index": 0
+          },
+          "reward": {"Courage": 2, "Mercy": 1}
+        }
+      ],
+      "carlo": [
+        {
+          "title": "The Digital Evangelist",
+          "story": "Carlo uses technology to share Eucharistic miracles.",
+          "challenge": {
+            "type": "trivia",
+            "question": "What does the Eucharist become at Mass?",
+            "choices": ["Body and Blood of Christ", "Bread and Wine", "Symbol only", "Nothing"],
+            "answer_index": 0
+          },
+          "reward": {"Faith": 2, "Wisdom": 1}
+        },
+        {
+          "title": "Coding for the Kingdom",
+          "story": "Carlo builds a website to teach others about the faith.",
+          "challenge": {
+            "type": "dilemma",
+            "prompt": "How can you use your talents for God?",
+            "options": [
+              "Teach others what you've learned",
+              "Keep it to yourself",
+              "Use it only for popularity",
+              "Give up on it"
+            ],
+            "answer_index": 0
+          },
+          "reward": {"Wisdom": 2, "Faith": 1}
+        },
+        {
+          "title": "Daily Mass",
+          "story": "Carlo loves daily Mass and adoration.",
+          "challenge": {
+            "type": "trivia",
+            "question": "Which virtue is strengthened by regular prayer?",
+            "choices": ["Faith", "Jealousy", "Greed", "Anger"],
+            "answer_index": 0
+          },
+          "reward": {"Faith": 2, "Wisdom": 1}
+        }
+      ]
+    };
+
+    // Game State
+    let currentSaint = null;
+    let currentCheckpoint = 0;
+    let virtues = {"Faith": 0, "Mercy": 0, "Courage": 0, "Wisdom": 0};
+    let gameScreen = "select";
+
+    // Sound effects
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(type) {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      if (type === 'click') {
+        oscillator.type = 'sine';
+        oscillator.frequency.value = 440;
+        gainNode.gain.value = 0.3;
+      } else if (type === 'correct') {
+        oscillator.type = 'sine';
+        oscillator.frequency.value = 880;
+        gainNode.gain.value = 0.4;
+      } else if (type === 'wrong') {
+        oscillator.type = 'sine';
+        oscillator.frequency.value = 220;
+        gainNode.gain.value = 0.3;
+      }
+      
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.2);
+    }
+
+    // DOM Elements
+    const selectScreen = document.getElementById('select-screen');
+    const playScreen = document.getElementById('play-screen');
+    const doneScreen = document.getElementById('done-screen');
+    const questTitle = document.getElementById('quest-title');
+    const questStory = document.getElementById('quest-story');
+    const questionContainer = document.getElementById('question-container');
+    const profileContent = document.getElementById('profile-content');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const continueBtn = document.getElementById('continue-btn');
+    const finalProfile = document.getElementById('final-profile');
+    const saintName = document.getElementById('saint-name');
+    const balloonsEl = document.getElementById('balloons');
+
+    function selectSaint(saintId) {
+      playSound('click');
+      currentSaint = saintId;
+      currentCheckpoint = 0;
+      virtues = {"Faith": 0, "Mercy": 0, "Courage": 0, "Wisdom": 0};
+      gameScreen = "play";
+      updateScreen();
+      updateProfile();
+      loadQuest();
+    }
+
+    function resetGame() {
+      playSound('click');
+      currentSaint = null;
+      currentCheckpoint = 0;
+      virtues = {"Faith": 0, "Mercy": 0, "Courage": 0, "Wisdom": 0};
+      gameScreen = "select";
+      updateScreen();
+      localStorage.removeItem('saintQuestScores');
+    }
+
+    function loadQuest() {
+      const questList = quests[currentSaint];
+      if (!questList || currentCheckpoint >= questList.length) {
+        endGame();
+        return;
+      }
+
+      const q = questList[currentCheckpoint];
+
+      questTitle.textContent = q.title;
+      questStory.textContent = q.story;
+
+      // Generate question elements
+      questionContainer.innerHTML = '';
+
+      if (q.challenge.type === 'trivia') {
+        questionContainer.innerHTML = `
+          <h3>📜 Knowledge Check</h3>
+          <p>${q.challenge.question}</p>
+          <div class="radio-group">
+            ${q.challenge.choices.map((choice, index) => `
+              <label class="radio-option">
+                <input type="radio" name="answer" value="${index}" onclick="submitAnswer(${index}, true)"> ${choice}
+              </label>
+            `).join('')}
+          </div>
+          <button class="btn" onclick="submitAnswer(-1, true)">Submit Answer</button>
+        `;
+      } else if (q.challenge.type === 'dilemma') {
+        questionContainer.innerHTML = `
+          <h3>⚖️ What will you do?</h3>
+          <p>${q.challenge.prompt}</p>
+          <div class="radio-group">
+            ${q.challenge.options.map((option, index) => `
+              <label class="radio-option">
+                <input type="radio" name="answer" value="${index}" onclick="submitAnswer(${index}, false)"> ${option}
+              </label>
+            `).join('')}
+          </div>
+          <button class="btn" onclick="submitAnswer(-1, false)">Make Choice</button>
+        `;
+      }
+    }
+
+    let isAnswerSubmitted = false;
+
+    function submitAnswer(selectedIndex, isTrivia) {
+      if (isAnswerSubmitted) return;
+      isAnswerSubmitted = true;
+
+      const questList = quests[currentSaint];
+      const q = questList[currentCheckpoint];
+      const answer = q.challenge.answer_index;
+
+      if (selectedIndex === -1) {
+        alert('Please select an option.');
+        isAnswerSubmitted = false;
+        return;
+      }
+
+      const isCorrect = selectedIndex === answer;
+
+      if (isCorrect) {
+        playSound('correct');
+        // Show result
+        const resultEl = document.createElement('div');
+        resultEl.className = 'result correct';
+        resultEl.textContent = 'Correct! +Virtue';
+        questionContainer.appendChild(resultEl);
+
+        // Update virtues
+        for (const [key, value] of Object.entries(q.reward)) {
+          virtues[key] += value;
+        }
+      } else {
+        playSound('wrong');
+        // Show result
+        const resultEl = document.createElement('div');
+        resultEl.className = 'result incorrect';
+        resultEl.textContent = 'Not quite — try next challenge.';
+        questionContainer.appendChild(resultEl);
+      }
+
+      // Update profile immediately
+      updateProfile();
+
+      // Continue after delay
+      setTimeout(() => {
+        currentCheckpoint++;
+        if (currentCheckpoint >= questList.length) {
+          endGame();
+        } else {
+          loadQuest();
+        }
+        isAnswerSubmitted = false;
+      }, 2000);
+    }
+
+    function endGame() {
+      gameScreen = "done";
+      updateScreen();
+      saintName.textContent = saints.find(s => s.id === currentSaint).name;
+
+      // Display final virtues
+      let profileHTML = '';
+      for (const [key, value] of Object.entries(virtues)) {
+        if (value > 0) {
+          const className = `v-${key.toLowerCase()}`;
+          profileHTML += `<span class="virtue-badge ${className}">${key}: ${value}</span> `;
+        }
+      }
+      finalProfile.innerHTML = profileHTML;
+
+      // Save high score
+      saveHighScore();
+
+      // Show balloons
+      showBalloons();
+    }
+
+    function updateProfile() {
+      let profileHTML = `<div style="text-align: center;"><div style="font-size: 50px;">${saints.find(s => s.id === currentSaint).avatar}</div>
+        <b>${saints.find(s => s.id === currentSaint).name}</b><hr style="margin: 15px 0;">`;
+
+      for (const [key, value] of Object.entries(virtues)) {
+        if (value > 0) {
+          const className = `v-${key.toLowerCase()}`;
+          profileHTML += `<span class="virtue-badge ${className}">${key}: ${value}</span>`;
+        }
+      }
+
+      profileHTML += `</div>`;
+      profileContent.innerHTML = profileHTML;
+    }
+
+    function updateScreen() {
+      // Hide all screens
+      selectScreen.classList.remove('active');
+      playScreen.classList.remove('active');
+      doneScreen.classList.remove('active');
+
+      if (gameScreen === "select") {
+        selectScreen.classList.add('active');
+      } else if (gameScreen === "play") {
+        playScreen.classList.add('active');
+        const questList = quests[currentSaint];
+        const progress = (currentCheckpoint / questList.length) * 100;
+        progressBar.style.width = progress + '%';
+        progressText.textContent = `Chapter ${currentCheckpoint + 1} of ${questList.length}`;
+      } else if (gameScreen === "done") {
+        doneScreen.classList.add('active');
+      }
+    }
+
+    function showBalloons() {
+      balloonsEl.style.opacity = '1';
+
+      for (let i = 0; i < 30; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        balloon.textContent = '🎈';
+        balloon.style.left = Math.random() * 100 + 'vw';
+        balloon.style.animationDuration = (Math.random() * 10 + 5) + 's';
+        balloon.style.animationDelay = Math.random() * 5 + 's';
+        balloonsEl.appendChild(balloon);
+      }
+    }
+
+    function saveHighScore() {
+      const scores = JSON.parse(localStorage.getItem('saintQuestScores') || '{}');
+
+      const score = Object.values(virtues).reduce((acc, val) => acc + val, 0);
+      scores[currentSaint] = scores[currentSaint] || 0;
+
+      if (score > scores[currentSaint]) {
+        scores[currentSaint] = score;
+        localStorage.setItem('saintQuestScores', JSON.stringify(scores));
+      }
+    }
+
+    // Initial screen update
+    updateScreen();
+
+    // Load high scores from localStorage
+    const savedScores = JSON.parse(localStorage.getItem('saintQuestScores') || '{}');
+  </script>
+</body>
+</html>
