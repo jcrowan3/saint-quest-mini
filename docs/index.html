@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:;">
   <title>Saint Quest</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" crossorigin>
   <style>
     :root {
       --primary-dark: #1a0a2e;
@@ -353,6 +354,129 @@
       border: 1px solid #F44336;
     }
 
+    /* Streak display */
+    .streak-display {
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      color: var(--accent-gold);
+      font-size: 1.2em;
+      margin: 10px 0;
+      min-height: 1.5em;
+      transition: all 0.3s ease;
+    }
+    .streak-fire {
+      animation: streakPulse 0.5s ease-in-out;
+    }
+    @keyframes streakPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    /* Achievement styles */
+    .achievement-toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #2d1b4d, #4a2d7a);
+      border: 2px solid var(--accent-gold);
+      border-radius: 12px;
+      padding: 15px 25px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      z-index: 2000;
+      animation: toastSlideIn 0.5s ease-out, toastFadeOut 0.5s 2.5s ease-in forwards;
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+      color: var(--text-light);
+    }
+    @keyframes toastSlideIn {
+      from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+      to { transform: translateX(-50%) translateY(0); opacity: 1; }
+    }
+    @keyframes toastFadeOut {
+      to { opacity: 0; transform: translateX(-50%) translateY(-30px); }
+    }
+    .achievements-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .achievement-badge {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      min-width: 80px;
+      font-size: 0.8em;
+      transition: var(--transition);
+    }
+    .achievement-badge.unlocked {
+      border-color: var(--accent-gold);
+      background: rgba(212, 175, 55, 0.1);
+    }
+    .achievement-badge.locked {
+      opacity: 0.4;
+      filter: grayscale(100%);
+    }
+
+    /* High score badge on saint cards */
+    .high-score-badge {
+      color: var(--accent-gold);
+      font-size: 0.85em;
+      margin-top: 8px;
+      font-weight: bold;
+    }
+    .saint-card { position: relative; }
+
+    /* Intro screen animation */
+    #intro-screen .story-card {
+      animation: introFadeIn 1s ease-out;
+    }
+    #intro-avatar {
+      animation: introAvatarBounce 1.5s ease-in-out;
+    }
+    @keyframes introAvatarBounce {
+      0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+      50% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    @keyframes introFadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Daily challenge */
+    .daily-section {
+      text-align: center;
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px dashed var(--accent-gold);
+      border-radius: var(--border-radius);
+      background: rgba(212, 175, 55, 0.05);
+    }
+    .daily-status {
+      font-size: 0.85em;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 8px;
+    }
+
+    /* Review section */
+    .review-card {
+      padding: 12px;
+      border-radius: 8px;
+      margin: 8px 0;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .review-card.review-correct { border-left: 4px solid #4CAF50; }
+    .review-card.review-wrong { border-left: 4px solid #F44336; }
+
     @media (max-width: 768px) {
       .columns {
         flex-direction: column;
@@ -379,6 +503,10 @@
     <!-- Select Screen -->
     <div id="select-screen" class="screen active">
       <h2>Choose Your Hero</h2>
+      <div class="daily-section">
+        <button class="btn" id="daily-challenge-btn" onclick="startDailyChallenge()">📅 Daily Challenge</button>
+        <p class="daily-status" id="daily-status"></p>
+      </div>
       <div class="difficulty-selector">
         <h3>⚔️ Difficulty</h3>
         <button class="diff-btn active" onclick="setDifficulty('easy',this)">Easy</button>
@@ -386,6 +514,18 @@
         <button class="diff-btn" onclick="setDifficulty('hard',this)">Hard</button>
       </div>
       <div class="columns" id="saint-grid"></div>
+      <div id="achievements-display" style="margin-top: 20px;"></div>
+    </div>
+
+    <!-- Intro Screen -->
+    <div id="intro-screen" class="screen">
+      <div class="story-card" style="text-align: center;">
+        <div id="intro-avatar" style="font-size: 120px; margin: 20px 0;"></div>
+        <h2 id="intro-name"></h2>
+        <p id="intro-quote" style="font-style: italic; font-size: 1.2em; line-height: 1.6; margin: 20px 0; color: var(--accent-gold);"></p>
+        <div id="intro-virtues"></div>
+        <button class="btn" onclick="beginJourney()" style="margin-top: 20px;">Begin Journey</button>
+      </div>
     </div>
 
     <!-- Play Screen -->
@@ -402,6 +542,7 @@
         <p id="quest-story" style="font-size: 1.2em; line-height: 1.6;"></p>
       </div>
 
+      <div class="streak-display" id="streak-display"></div>
       <div class="timer-bar" id="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
       <div class="question-container" id="question-container">
         <!-- Questions rendered here -->
@@ -431,9 +572,19 @@
         <p><i>"Start by doing what's necessary; then do what's possible; and suddenly you are doing the impossible."</i></p>
       </div>
 
+      <p id="score-display" style="font-size: 1.5em; color: var(--accent-gold); text-align: center; margin: 15px 0;"></p>
+      <p id="new-record" style="color: #10b981; font-weight: bold; text-align: center; display: none;">🎉 New Personal Best!</p>
+      <p id="streak-summary" style="text-align: center; margin: 10px 0;"></p>
+
       <h3>Final Virtue Profile</h3>
       <div class="radar-container"><canvas id="radar-canvas" width="300" height="300"></canvas></div>
       <div id="final-profile"></div>
+
+      <div id="done-achievements" style="margin: 20px 0;"></div>
+      <div id="daily-share" style="text-align: center; margin: 15px 0;"></div>
+
+      <h3 style="cursor: pointer; margin-top: 20px;" onclick="toggleReview()">📋 Review Answers ▼</h3>
+      <div id="review-section" style="display: none; margin-top: 10px;"></div>
 
       <button class="btn" onclick="resetGame()">Start New Journey</button>
     </div>
@@ -578,6 +729,78 @@
       if (quests[saint]) quests[saint].push(...extra);
     }
 
+    // Saint quotes for intro screen
+    const saintQuotes = {
+      francis: "Start by doing what's necessary; then do what's possible; and suddenly you are doing the impossible.",
+      carlo: "Everyone is born as an original, but many people end up dying as photocopies.",
+      joan: "I am not afraid; I was born to do this.",
+      aquinas: "The things that we love tell us what we are.",
+      teresa: "Not all of us can do great things. But we can do small things with great love.",
+      patrick: "Christ with me, Christ before me, Christ behind me, Christ in me.",
+      therese: "Miss no single opportunity of making some small sacrifice.",
+      frassati: "To live without faith, without a patrimony to defend, without a steady struggle for truth — that is not living but existing."
+    };
+
+    // Achievement definitions
+    const achievementDefs = [
+      { id: 'first_steps', name: 'First Steps', desc: 'Complete any saint\'s journey', icon: '👣',
+        check: (d) => d.justCompleted },
+      { id: 'perfect_saint', name: 'Perfect Saint', desc: 'Get every question right for one saint', icon: '😇',
+        check: (d) => d.totalCorrect === d.totalQuestions && d.totalQuestions > 0 },
+      { id: 'scholar', name: 'Scholar', desc: 'Complete 3 different saints', icon: '🎓',
+        check: (d) => Object.keys(d.completedSaints).length >= 3 },
+      { id: 'master_scholar', name: 'Master Scholar', desc: 'Complete all 8 saints', icon: '🏆',
+        check: (d) => Object.keys(d.completedSaints).length >= 8 },
+      { id: 'speed_demon', name: 'Speed Demon', desc: 'Complete a saint on Hard mode', icon: '⚡',
+        check: (d) => d.completedOnHard },
+      { id: 'virtue_master', name: 'Virtue Master', desc: 'Reach 10+ in a single virtue', icon: '💪',
+        check: (d) => Object.values(d.endVirtues).some(v => v >= 10) },
+      { id: 'streak_king', name: 'Streak King', desc: 'Get a 5+ answer streak', icon: '🔥',
+        check: (d) => d.maxStreak >= 5 },
+      { id: 'well_rounded', name: 'Well Rounded', desc: 'Have all 4 virtues above 5', icon: '🎯',
+        check: (d) => Object.values(d.endVirtues).every(v => v >= 5) }
+    ];
+
+    // Security: HTML escape helper
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.appendChild(document.createTextNode(str));
+      return div.innerHTML;
+    }
+
+    // Security: Safe localStorage read
+    function safeGetJSON(key, fallback) {
+      try {
+        return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+      } catch (e) {
+        return fallback;
+      }
+    }
+
+    // Seeded PRNG for daily challenge (mulberry32)
+    function seededRandom(seed) {
+      let t = seed + 0x6D2B79F5;
+      return function() {
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function seededShuffle(arr, rng) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function dateSeed() {
+      const d = new Date();
+      return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+    }
+
     // Game State
     let currentSaint = null;
     let currentCheckpoint = 0;
@@ -591,6 +814,15 @@
     let inBonusRound = false;
     let bonusQuestions = [];
     let bonusIndex = 0;
+
+    // New state: streaks, tracking, daily challenge
+    let currentStreak = 0;
+    let maxStreak = 0;
+    let totalCorrect = 0;
+    let totalQuestions = 0;
+    let bonusCorrect = 0;
+    let answerHistory = [];
+    let isDailyChallenge = false;
 
     function shuffleArray(arr) {
       const a = [...arr];
@@ -637,6 +869,25 @@
       stopTimer();
       playSound('wrong');
       shakeScreen();
+
+      // Track the timeout as a wrong answer
+      const q = currentQuests[currentCheckpoint];
+      if (q) {
+        const ch = q.challenge;
+        totalQuestions++;
+        currentStreak = 0;
+        answerHistory.push({
+          title: q.title,
+          question: ch.type === 'trivia' ? ch.question : ch.prompt,
+          choices: ch.type === 'trivia' ? ch.choices : ch.options,
+          selectedIndex: -1,
+          correctIndex: ch.answer_index,
+          wasCorrect: false,
+          isBonus: inBonusRound
+        });
+        updateStreakDisplay();
+      }
+
       const resultEl = document.createElement('div');
       resultEl.className = 'result incorrect';
       resultEl.textContent = "⏰ Time's up!";
@@ -680,15 +931,27 @@
       setTimeout(() => container.classList.remove('shake'), 400);
     }
 
-    // Sound effects
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    // Sound effects — lazy AudioContext (Security Fix: avoid eager creation)
+    let audioContext = null;
+    function getAudioContext() {
+      if (!audioContext) {
+        try {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) { return null; }
+      }
+      if (audioContext.state === 'suspended') audioContext.resume();
+      return audioContext;
+    }
 
     function playSound(type) {
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      const ctx = getAudioContext();
+      if (!ctx) return;
+
+      const oscillator = ctx.createOscillator();
+      const gainNode = ctx.createGain();
       oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      
+      gainNode.connect(ctx.destination);
+
       if (type === 'click') {
         oscillator.type = 'sine';
         oscillator.frequency.value = 440;
@@ -702,20 +965,19 @@
         oscillator.frequency.value = 220;
         gainNode.gain.value = 0.3;
       }
-      
+
       oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.2);
+      oscillator.stop(ctx.currentTime + 0.2);
 
       if (type === 'fanfare') {
-        // Play a triumphant chord
         [523, 659, 784].forEach((freq, i) => {
-          const osc = audioContext.createOscillator();
-          const gn = audioContext.createGain();
-          osc.connect(gn); gn.connect(audioContext.destination);
+          const osc = ctx.createOscillator();
+          const gn = ctx.createGain();
+          osc.connect(gn); gn.connect(ctx.destination);
           osc.type = 'sine'; osc.frequency.value = freq;
           gn.gain.value = 0.25;
-          osc.start(audioContext.currentTime + i * 0.15);
-          osc.stop(audioContext.currentTime + i * 0.15 + 0.4);
+          osc.start(ctx.currentTime + i * 0.15);
+          osc.stop(ctx.currentTime + i * 0.15 + 0.4);
         });
       }
     }
@@ -736,13 +998,41 @@
     const balloonsEl = document.getElementById('balloons');
 
     function selectSaint(saintId) {
+      if (!quests[saintId]) return; // Security: validate saintId
       playSound('click');
       currentSaint = saintId;
       currentCheckpoint = 0;
       inBonusRound = false;
       bonusIndex = 0;
+      isDailyChallenge = false;
       virtues = {"Faith": 0, "Mercy": 0, "Courage": 0, "Wisdom": 0};
       currentQuests = shuffleArray(quests[saintId]);
+      currentStreak = 0;
+      maxStreak = 0;
+      totalCorrect = 0;
+      totalQuestions = 0;
+      bonusCorrect = 0;
+      answerHistory = [];
+
+      // Show intro screen
+      const saint = saints.find(s => s.id === saintId);
+      document.getElementById('intro-avatar').textContent = saint.avatar;
+      document.getElementById('intro-name').textContent = saint.name;
+      document.getElementById('intro-quote').textContent = '"' + (saintQuotes[saintId] || '') + '"';
+      const introVirtues = document.getElementById('intro-virtues');
+      introVirtues.innerHTML = '';
+      saint.virtues.forEach(v => {
+        const span = document.createElement('span');
+        span.className = 'virtue-badge v-' + v.toLowerCase();
+        span.textContent = v;
+        introVirtues.appendChild(span);
+      });
+      gameScreen = "intro";
+      updateScreen();
+    }
+
+    function beginJourney() {
+      playSound('click');
       gameScreen = "play";
       updateScreen();
       updateProfile();
@@ -754,10 +1044,19 @@
       currentSaint = null;
       currentCheckpoint = 0;
       inBonusRound = false;
+      isDailyChallenge = false;
       virtues = {"Faith": 0, "Mercy": 0, "Courage": 0, "Wisdom": 0};
+      currentStreak = 0;
+      maxStreak = 0;
+      totalCorrect = 0;
+      totalQuestions = 0;
+      bonusCorrect = 0;
+      answerHistory = [];
       gameScreen = "select";
+      rebuildSaintGrid();
+      buildAchievementsDisplay();
+      updateDailyStatus();
       updateScreen();
-      localStorage.removeItem('saintQuestScores');
     }
 
     function loadQuest() {
@@ -778,11 +1077,11 @@
       if (q.challenge.type === 'trivia') {
         questionContainer.innerHTML = `
           <h3>📜 Knowledge Check</h3>
-          <p>${q.challenge.question}</p>
+          <p>${escapeHTML(q.challenge.question)}</p>
           <div class="radio-group">
             ${q.challenge.choices.map((choice, index) => `
               <label class="radio-option">
-                <input type="radio" name="answer" value="${index}" onclick="submitAnswer(${index}, true)"> ${choice}
+                <input type="radio" name="answer" value="${index}" onclick="submitAnswer(${index}, true)"> ${escapeHTML(choice)}
               </label>
             `).join('')}
           </div>
@@ -790,11 +1089,11 @@
       } else if (q.challenge.type === 'dilemma') {
         questionContainer.innerHTML = `
           <h3>⚖️ What will you do?</h3>
-          <p>${q.challenge.prompt}</p>
+          <p>${escapeHTML(q.challenge.prompt)}</p>
           <div class="radio-group">
             ${q.challenge.options.map((option, index) => `
               <label class="radio-option">
-                <input type="radio" name="answer" value="${index}" onclick="submitAnswer(${index}, false)"> ${option}
+                <input type="radio" name="answer" value="${index}" onclick="submitAnswer(${index}, false)"> ${escapeHTML(option)}
               </label>
             `).join('')}
           </div>
@@ -818,31 +1117,62 @@
       const answer = q.challenge.answer_index;
 
       if (selectedIndex === -1) {
-        alert('Please select an option.');
         isAnswerSubmitted = false;
         return;
       }
 
       const isCorrect = selectedIndex === answer;
+      const ch = q.challenge;
+      const choices = ch.type === 'trivia' ? ch.choices : ch.options;
+
+      // Track answer history
+      totalQuestions++;
+      answerHistory.push({
+        title: q.title,
+        question: ch.type === 'trivia' ? ch.question : ch.prompt,
+        choices: choices,
+        selectedIndex: selectedIndex,
+        correctIndex: answer,
+        wasCorrect: isCorrect,
+        isBonus: false
+      });
 
       stopTimer();
       if (isCorrect) {
+        currentStreak++;
+        totalCorrect++;
+        if (currentStreak > maxStreak) maxStreak = currentStreak;
+
         playSound('correct');
         spawnParticles('✨');
         const resultEl = document.createElement('div');
         resultEl.className = 'result correct';
-        resultEl.textContent = 'Correct! +Virtue';
-        questionContainer.appendChild(resultEl);
+
+        // Award base virtues
         for (const [key, value] of Object.entries(q.reward)) {
           virtues[key] += value;
         }
+
+        // Streak bonus
+        if (currentStreak >= 5) {
+          for (const key of Object.keys(virtues)) { virtues[key] += 1; }
+          resultEl.textContent = 'Correct! +Virtue | 🔥 ' + currentStreak + ' streak! +1 ALL virtues!';
+        } else if (currentStreak >= 3) {
+          const virtueKeys = Object.keys(virtues);
+          const bonusKey = virtueKeys[Math.floor(Math.random() * virtueKeys.length)];
+          virtues[bonusKey] += 1;
+          resultEl.textContent = 'Correct! +Virtue | 🔥 ' + currentStreak + ' streak! +1 ' + bonusKey + '!';
+        } else {
+          resultEl.textContent = 'Correct! +Virtue';
+        }
+        questionContainer.appendChild(resultEl);
       } else {
+        currentStreak = 0;
         playSound('wrong');
         shakeScreen();
         const resultEl = document.createElement('div');
         resultEl.className = 'result incorrect';
-        const ch = q.challenge;
-        const correctAnswer = ch.type === 'trivia' ? ch.choices[ch.answer_index] : ch.options[ch.answer_index];
+        const correctAnswer = choices[answer];
         if (difficulty === 'easy') {
           resultEl.textContent = 'Not quite — the answer was: ' + correctAnswer;
         } else {
@@ -851,10 +1181,9 @@
         questionContainer.appendChild(resultEl);
       }
 
-      // Update profile immediately
+      updateStreakDisplay();
       updateProfile();
 
-      // Continue after delay
       setTimeout(() => {
         currentCheckpoint++;
         if (currentCheckpoint >= questList.length) {
@@ -864,6 +1193,25 @@
         }
         isAnswerSubmitted = false;
       }, 2000);
+    }
+
+    function updateStreakDisplay() {
+      const el = document.getElementById('streak-display');
+      if (currentStreak >= 5) {
+        const flames = '🔥'.repeat(Math.min(currentStreak - 2, 5));
+        el.textContent = flames + ' ' + currentStreak + ' Streak! ' + flames;
+        el.classList.add('streak-fire');
+        setTimeout(() => el.classList.remove('streak-fire'), 500);
+        spawnParticles('⭐');
+      } else if (currentStreak >= 3) {
+        el.textContent = '🔥 ' + currentStreak + ' Streak!';
+        el.classList.add('streak-fire');
+        setTimeout(() => el.classList.remove('streak-fire'), 500);
+      } else if (currentStreak > 0) {
+        el.textContent = '✅ ' + currentStreak + ' in a row';
+      } else {
+        el.textContent = '';
+      }
     }
 
     function drawRadarChart() {
@@ -977,11 +1325,11 @@
       questStory.textContent = q.story;
       questionContainer.innerHTML = `
         <h3>📜 Bonus Question ${bonusIndex + 1} of 3</h3>
-        <p>${q.challenge.question}</p>
+        <p>${escapeHTML(q.challenge.question)}</p>
         <div class="radio-group">
           ${q.challenge.choices.map((choice, index) => `
             <label class="radio-option">
-              <input type="radio" name="answer" value="${index}" onclick="submitBonusAnswer(${index})"> ${choice}
+              <input type="radio" name="answer" value="${index}" onclick="submitBonusAnswer(${index})"> ${escapeHTML(choice)}
             </label>
           `).join('')}
         </div>
@@ -1003,15 +1351,38 @@
       stopTimer();
       const q = bonusQuestions[bonusIndex];
       const isCorrect = selectedIndex === q.challenge.answer_index;
+
+      totalQuestions++;
+      answerHistory.push({
+        title: q.title,
+        question: q.challenge.question,
+        choices: q.challenge.choices,
+        selectedIndex: selectedIndex,
+        correctIndex: q.challenge.answer_index,
+        wasCorrect: isCorrect,
+        isBonus: true
+      });
+
       if (isCorrect) {
+        currentStreak++;
+        totalCorrect++;
+        bonusCorrect++;
+        if (currentStreak > maxStreak) maxStreak = currentStreak;
+
         playSound('correct');
         spawnParticles('⭐');
         const resultEl = document.createElement('div');
         resultEl.className = 'result correct';
-        resultEl.textContent = 'Bonus point! +1 to all virtues';
-        questionContainer.appendChild(resultEl);
         for (const key of Object.keys(virtues)) { virtues[key] += 1; }
+
+        if (currentStreak >= 3) {
+          resultEl.textContent = 'Bonus point! +1 to all virtues | 🔥 ' + currentStreak + ' streak!';
+        } else {
+          resultEl.textContent = 'Bonus point! +1 to all virtues';
+        }
+        questionContainer.appendChild(resultEl);
       } else {
+        currentStreak = 0;
         playSound('wrong');
         shakeScreen();
         const resultEl = document.createElement('div');
@@ -1020,6 +1391,7 @@
         resultEl.textContent = difficulty === 'easy' ? 'Not quite — the answer was: ' + correct : 'Not quite!';
         questionContainer.appendChild(resultEl);
       }
+      updateStreakDisplay();
       updateProfile();
       setTimeout(() => {
         bonusIndex++;
@@ -1034,21 +1406,46 @@
       updateScreen();
       saintName.textContent = saints.find(s => s.id === currentSaint).name;
 
+      // Score display
+      const totalScore = Object.values(virtues).reduce((a, b) => a + b, 0);
+      document.getElementById('score-display').textContent = 'Total Score: ' + totalScore + ' virtue points';
+      document.getElementById('streak-summary').textContent =
+        totalCorrect + '/' + totalQuestions + ' correct | Best streak: ' + maxStreak;
+
+      // Check for new personal best
+      const prevScores = safeGetJSON('saintQuestScores', {});
+      const prevBest = prevScores[currentSaint] || 0;
+      document.getElementById('new-record').style.display = totalScore > prevBest ? 'block' : 'none';
+
       // Draw radar chart
       drawRadarChart();
 
-      // Display final virtues
-      let profileHTML = '';
+      // Display final virtues using DOM API
+      finalProfile.innerHTML = '';
       for (const [key, value] of Object.entries(virtues)) {
         if (value > 0) {
-          const className = `v-${key.toLowerCase()}`;
-          profileHTML += `<span class="virtue-badge ${className}">${key}: ${value}</span> `;
+          const span = document.createElement('span');
+          span.className = 'virtue-badge v-' + key.toLowerCase();
+          span.textContent = key + ': ' + value;
+          finalProfile.appendChild(span);
+          finalProfile.appendChild(document.createTextNode(' '));
         }
       }
-      finalProfile.innerHTML = profileHTML;
 
       // Save high score
       saveHighScore();
+
+      // Check and display achievements
+      checkAndUnlockAchievements();
+
+      // Build answer review
+      buildReviewSection();
+
+      // Daily challenge share
+      if (isDailyChallenge) {
+        saveDailyResult(totalScore);
+        buildDailyShare(totalScore);
+      }
 
       // Celebration!
       playSound('fanfare');
@@ -1057,28 +1454,48 @@
     }
 
     function updateProfile() {
-      let profileHTML = `<div style="text-align: center;"><div style="font-size: 50px;">${saints.find(s => s.id === currentSaint).avatar}</div>
-        <b>${saints.find(s => s.id === currentSaint).name}</b><hr style="margin: 15px 0;">`;
+      profileContent.innerHTML = '';
+      const saint = saints.find(s => s.id === currentSaint);
+      const wrapper = document.createElement('div');
+      wrapper.style.textAlign = 'center';
+
+      const avatarEl = document.createElement('div');
+      avatarEl.style.fontSize = '50px';
+      avatarEl.textContent = saint.avatar;
+      wrapper.appendChild(avatarEl);
+
+      const nameEl = document.createElement('b');
+      nameEl.textContent = saint.name;
+      wrapper.appendChild(nameEl);
+
+      const hr = document.createElement('hr');
+      hr.style.margin = '15px 0';
+      wrapper.appendChild(hr);
 
       for (const [key, value] of Object.entries(virtues)) {
         if (value > 0) {
-          const className = `v-${key.toLowerCase()}`;
-          profileHTML += `<span class="virtue-badge ${className}">${key}: ${value}</span>`;
+          const span = document.createElement('span');
+          span.className = 'virtue-badge v-' + key.toLowerCase();
+          span.textContent = key + ': ' + value;
+          wrapper.appendChild(span);
         }
       }
 
-      profileHTML += `</div>`;
-      profileContent.innerHTML = profileHTML;
+      profileContent.appendChild(wrapper);
     }
 
     function updateScreen() {
+      const introScreen = document.getElementById('intro-screen');
       // Hide all screens
       selectScreen.classList.remove('active');
       playScreen.classList.remove('active');
       doneScreen.classList.remove('active');
+      introScreen.classList.remove('active');
 
       if (gameScreen === "select") {
         selectScreen.classList.add('active');
+      } else if (gameScreen === "intro") {
+        introScreen.classList.add('active');
       } else if (gameScreen === "play") {
         playScreen.classList.add('active');
         const questList = currentQuests;
@@ -1105,8 +1522,7 @@
     }
 
     function saveHighScore() {
-      const scores = JSON.parse(localStorage.getItem('saintQuestScores') || '{}');
-
+      const scores = safeGetJSON('saintQuestScores', {});
       const score = Object.values(virtues).reduce((acc, val) => acc + val, 0);
       scores[currentSaint] = scores[currentSaint] || 0;
 
@@ -1116,25 +1532,351 @@
       }
     }
 
-    // Build saint selection grid dynamically
-    const saintGrid = document.getElementById('saint-grid');
-    saints.forEach(s => {
-      const card = document.createElement('div');
-      card.className = 'saint-card';
-      card.onclick = () => selectSaint(s.id);
-      card.innerHTML = `
-        <div class="avatar">${s.avatar}</div>
-        <h3>${s.name}</h3>
-        <p><i>Virtues: ${s.virtues.join(', ')}</i></p>
-      `;
-      saintGrid.appendChild(card);
-    });
+    // === New Feature Functions ===
 
-    // Initial screen update
+    // Build/rebuild saint selection grid with high scores
+    function rebuildSaintGrid() {
+      const saintGrid = document.getElementById('saint-grid');
+      saintGrid.innerHTML = '';
+      const scores = safeGetJSON('saintQuestScores', {});
+
+      saints.forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'saint-card';
+        card.onclick = () => selectSaint(s.id);
+
+        const avatar = document.createElement('div');
+        avatar.className = 'avatar';
+        avatar.textContent = s.avatar;
+        card.appendChild(avatar);
+
+        const h3 = document.createElement('h3');
+        h3.textContent = s.name;
+        card.appendChild(h3);
+
+        const p = document.createElement('p');
+        const i = document.createElement('i');
+        i.textContent = 'Virtues: ' + s.virtues.join(', ');
+        p.appendChild(i);
+        card.appendChild(p);
+
+        // High score display
+        if (scores[s.id]) {
+          const scoreBadge = document.createElement('div');
+          scoreBadge.className = 'high-score-badge';
+          scoreBadge.textContent = '🏆 Best: ' + scores[s.id];
+          card.appendChild(scoreBadge);
+        }
+
+        saintGrid.appendChild(card);
+      });
+
+      // Total score display
+      const totalAll = Object.values(scores).reduce((a, b) => a + b, 0);
+      const existing = document.getElementById('total-score-display');
+      if (existing) existing.remove();
+      if (totalAll > 0) {
+        const totalEl = document.createElement('div');
+        totalEl.id = 'total-score-display';
+        totalEl.style.cssText = 'text-align: center; color: var(--accent-gold); font-size: 1.1em; margin-top: 15px; font-weight: bold;';
+        totalEl.textContent = '⭐ Total Virtue Points: ' + totalAll;
+        saintGrid.parentElement.insertBefore(totalEl, saintGrid.nextSibling);
+      }
+    }
+
+    // Achievement display on select screen
+    function buildAchievementsDisplay() {
+      const container = document.getElementById('achievements-display');
+      container.innerHTML = '';
+      const achievements = safeGetJSON('saintQuestAchievements', {});
+      const unlocked = achievements.unlockedIds || [];
+
+      const header = document.createElement('h3');
+      header.textContent = '🏅 Achievements (' + unlocked.length + '/' + achievementDefs.length + ')';
+      header.style.marginBottom = '15px';
+      container.appendChild(header);
+
+      const grid = document.createElement('div');
+      grid.className = 'achievements-grid';
+
+      achievementDefs.forEach(def => {
+        const badge = document.createElement('div');
+        badge.className = 'achievement-badge ' + (unlocked.includes(def.id) ? 'unlocked' : 'locked');
+        badge.title = unlocked.includes(def.id) ? def.desc : '???';
+
+        const icon = document.createElement('div');
+        icon.style.fontSize = '2em';
+        icon.textContent = def.icon;
+        badge.appendChild(icon);
+
+        const name = document.createElement('div');
+        name.style.fontWeight = 'bold';
+        name.textContent = def.name;
+        badge.appendChild(name);
+
+        const desc = document.createElement('div');
+        desc.style.cssText = 'font-size: 0.75em; opacity: 0.7;';
+        desc.textContent = unlocked.includes(def.id) ? def.desc : '???';
+        badge.appendChild(desc);
+
+        grid.appendChild(badge);
+      });
+
+      container.appendChild(grid);
+    }
+
+    // Check achievements at end of game
+    function checkAndUnlockAchievements() {
+      const achievements = safeGetJSON('saintQuestAchievements', {});
+      const stats = safeGetJSON('saintQuestStats', {});
+
+      if (!achievements.unlockedIds) achievements.unlockedIds = [];
+      if (!stats.completedSaints) stats.completedSaints = {};
+
+      stats.completedSaints[currentSaint] = true;
+
+      const checkData = {
+        justCompleted: true,
+        totalCorrect,
+        totalQuestions,
+        completedSaints: stats.completedSaints,
+        completedOnHard: difficulty === 'hard',
+        endVirtues: { ...virtues },
+        maxStreak,
+        bonusCorrect
+      };
+
+      const newlyUnlocked = [];
+      achievementDefs.forEach(def => {
+        if (!achievements.unlockedIds.includes(def.id) && def.check(checkData)) {
+          achievements.unlockedIds.push(def.id);
+          newlyUnlocked.push(def);
+        }
+      });
+
+      localStorage.setItem('saintQuestAchievements', JSON.stringify(achievements));
+      localStorage.setItem('saintQuestStats', JSON.stringify(stats));
+
+      // Show unlocked achievements on done screen
+      const doneAch = document.getElementById('done-achievements');
+      doneAch.innerHTML = '';
+      if (newlyUnlocked.length > 0) {
+        const header = document.createElement('h3');
+        header.textContent = '🎉 Achievements Unlocked!';
+        header.style.marginBottom = '10px';
+        doneAch.appendChild(header);
+      }
+      const achGrid = document.createElement('div');
+      achGrid.className = 'achievements-grid';
+      achievements.unlockedIds.forEach(id => {
+        const def = achievementDefs.find(d => d.id === id);
+        if (!def) return;
+        const badge = document.createElement('div');
+        badge.className = 'achievement-badge unlocked';
+        const isNew = newlyUnlocked.some(n => n.id === id);
+        if (isNew) badge.style.boxShadow = '0 0 15px rgba(212, 175, 55, 0.5)';
+
+        const icon = document.createElement('div');
+        icon.style.fontSize = '1.5em';
+        icon.textContent = def.icon;
+        badge.appendChild(icon);
+
+        const name = document.createElement('div');
+        name.style.fontWeight = 'bold';
+        name.textContent = def.name;
+        badge.appendChild(name);
+
+        achGrid.appendChild(badge);
+      });
+      doneAch.appendChild(achGrid);
+
+      // Toast for newly unlocked
+      newlyUnlocked.forEach((ach, i) => {
+        setTimeout(() => {
+          const toast = document.createElement('div');
+          toast.className = 'achievement-toast';
+          const iconEl = document.createElement('span');
+          iconEl.style.fontSize = '2em';
+          iconEl.textContent = ach.icon;
+          toast.appendChild(iconEl);
+          const textEl = document.createElement('div');
+          const line1 = document.createElement('div');
+          line1.textContent = 'Achievement Unlocked!';
+          line1.style.fontSize = '0.85em';
+          textEl.appendChild(line1);
+          const line2 = document.createElement('strong');
+          line2.textContent = ach.name;
+          textEl.appendChild(line2);
+          toast.appendChild(textEl);
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 3500);
+        }, i * 1500);
+      });
+    }
+
+    // Build answer review section
+    function buildReviewSection() {
+      const container = document.getElementById('review-section');
+      container.innerHTML = '';
+
+      const summary = document.createElement('p');
+      summary.style.cssText = 'text-align: center; margin-bottom: 15px;';
+      summary.textContent = 'You got ' + totalCorrect + ' out of ' + totalQuestions + ' correct';
+      container.appendChild(summary);
+
+      answerHistory.forEach((entry, idx) => {
+        const card = document.createElement('div');
+        card.className = 'review-card ' + (entry.wasCorrect ? 'review-correct' : 'review-wrong');
+
+        const title = document.createElement('strong');
+        title.textContent = (idx + 1) + '. ' + entry.title + (entry.isBonus ? ' (Bonus)' : '');
+        card.appendChild(title);
+
+        const question = document.createElement('p');
+        question.textContent = entry.question;
+        question.style.cssText = 'margin: 8px 0; font-size: 0.95em;';
+        card.appendChild(question);
+
+        if (entry.wasCorrect) {
+          const msg = document.createElement('p');
+          msg.style.color = '#4CAF50';
+          msg.textContent = '✅ ' + entry.choices[entry.correctIndex];
+          card.appendChild(msg);
+        } else {
+          const yours = document.createElement('p');
+          yours.style.color = '#F44336';
+          yours.textContent = '❌ Your answer: ' + (entry.selectedIndex >= 0 ? entry.choices[entry.selectedIndex] : 'Time expired');
+          card.appendChild(yours);
+
+          const correct = document.createElement('p');
+          correct.style.color = '#4CAF50';
+          correct.textContent = '✅ Correct: ' + entry.choices[entry.correctIndex];
+          card.appendChild(correct);
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function toggleReview() {
+      const section = document.getElementById('review-section');
+      section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Daily Challenge
+    function startDailyChallenge() {
+      const today = dateSeed();
+      const dailyData = safeGetJSON('saintQuestDaily', {});
+
+      if (dailyData.lastDate === today) {
+        const el = document.getElementById('daily-status');
+        el.textContent = '✅ Already completed today! Score: ' + dailyData.lastScore + '. Come back tomorrow!';
+        return;
+      }
+
+      const rng = seededRandom(today);
+      const saintIndex = Math.floor(rng() * saints.length);
+      const dailySaint = saints[saintIndex].id;
+      const allQuests = quests[dailySaint];
+      const shuffled = seededShuffle(allQuests, rng);
+      const dailyQuests = shuffled.slice(0, 5);
+
+      isDailyChallenge = true;
+      currentSaint = dailySaint;
+      currentCheckpoint = 0;
+      inBonusRound = false;
+      bonusIndex = 0;
+      virtues = {"Faith": 0, "Mercy": 0, "Courage": 0, "Wisdom": 0};
+      currentQuests = dailyQuests;
+      currentStreak = 0;
+      maxStreak = 0;
+      totalCorrect = 0;
+      totalQuestions = 0;
+      bonusCorrect = 0;
+      answerHistory = [];
+      difficulty = 'normal';
+
+      // Show intro
+      const saint = saints.find(s => s.id === dailySaint);
+      document.getElementById('intro-avatar').textContent = saint.avatar;
+      document.getElementById('intro-name').textContent = '📅 Daily Challenge: ' + saint.name;
+      document.getElementById('intro-quote').textContent = '"' + (saintQuotes[dailySaint] || '') + '"';
+      const introVirtues = document.getElementById('intro-virtues');
+      introVirtues.innerHTML = '';
+      saint.virtues.forEach(v => {
+        const span = document.createElement('span');
+        span.className = 'virtue-badge v-' + v.toLowerCase();
+        span.textContent = v;
+        introVirtues.appendChild(span);
+      });
+      gameScreen = "intro";
+      updateScreen();
+    }
+
+    // Override bonus round for daily: skip it (only 5 questions)
+    const originalStartBonusRound = startBonusRound;
+    startBonusRound = function() {
+      if (isDailyChallenge) {
+        endGame();
+        return;
+      }
+      originalStartBonusRound();
+    };
+
+    function saveDailyResult(score) {
+      const today = dateSeed();
+      localStorage.setItem('saintQuestDaily', JSON.stringify({
+        lastDate: today,
+        lastScore: score
+      }));
+    }
+
+    function buildDailyShare(score) {
+      const shareDiv = document.getElementById('daily-share');
+      shareDiv.innerHTML = '';
+
+      const d = new Date();
+      const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const saintObj = saints.find(s => s.id === currentSaint);
+      const shareText = '⚔️ Saint Quest Daily - ' + dateStr + '\n' +
+        saintObj.name + '\n' +
+        'Score: ' + score + ' | ' + totalCorrect + '/' + totalQuestions + ' correct\n' +
+        'Streak: ' + maxStreak + '\n' +
+        Object.entries(virtues).map(([k, v]) => k + ': ' + v).join(' | ');
+
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-secondary';
+      btn.textContent = '📋 Copy Daily Result';
+      btn.onclick = () => {
+        navigator.clipboard.writeText(shareText).then(() => {
+          btn.textContent = '✅ Copied!';
+          setTimeout(() => { btn.textContent = '📋 Copy Daily Result'; }, 2000);
+        }).catch(() => {
+          btn.textContent = 'Copy not supported';
+        });
+      };
+      shareDiv.appendChild(btn);
+    }
+
+    function updateDailyStatus() {
+      const el = document.getElementById('daily-status');
+      const btn = document.getElementById('daily-challenge-btn');
+      const dailyData = safeGetJSON('saintQuestDaily', {});
+
+      if (dailyData.lastDate === dateSeed()) {
+        el.textContent = '✅ Completed today! Score: ' + dailyData.lastScore;
+        btn.style.opacity = '0.6';
+      } else {
+        el.textContent = 'A new challenge awaits!';
+        btn.style.opacity = '1';
+      }
+    }
+
+    // Initial setup
+    rebuildSaintGrid();
+    buildAchievementsDisplay();
+    updateDailyStatus();
     updateScreen();
-
-    // Load high scores from localStorage
-    const savedScores = JSON.parse(localStorage.getItem('saintQuestScores') || '{}');
   </script>
 </body>
 </html>
