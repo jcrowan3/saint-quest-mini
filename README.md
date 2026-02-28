@@ -33,3 +33,6 @@ The original MVP prototype (`app.py`) used Streamlit with 2 saints and basic gam
 pip install -r requirements.txt
 streamlit run app.py
 ```
+
+## Deploy
+Use the same Cloud Run + Docker approachy.
