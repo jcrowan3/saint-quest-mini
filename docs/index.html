@@ -560,12 +560,12 @@
         </div>
       </div>
 
-      <button id="continue-btn" class="btn btn-secondary" style="display: none;" onclick="nextQuest()">Continue</button>
+      <button id="continue-btn" class="btn btn-secondary" style="display: none;" onclick="advanceQuest()">Continue</button>
     </div>
 
     <!-- Done Screen -->
     <div id="done-screen" class="screen">
-      <div class="story-card" style="text-align: center; border-color: gold; background-color: #fffef0;">
+      <div class="story-card" style="text-align: center; border-color: var(--accent-gold); background: rgba(212, 175, 55, 0.1);">
         <h1>Sainthood Unlocked!</h1>
         <div style="font-size: 80px;">😇</div>
         <p style="font-size: 1.3em;">You have completed the journey of <span id="saint-name"></span>.</p>
@@ -892,11 +892,11 @@
       resultEl.className = 'result incorrect';
       resultEl.textContent = "⏰ Time's up!";
       questionContainer.appendChild(resultEl);
-      setTimeout(() => {
+      showContinue(() => {
         currentCheckpoint++;
         if (currentCheckpoint >= currentQuests.length) { if (!inBonusRound) startBonusRound(); else endGame(); } else { loadQuest(); }
         isAnswerSubmitted = false;
-      }, 2000);
+      });
     }
 
     function showHint(q) {
@@ -1052,6 +1052,11 @@
       totalQuestions = 0;
       bonusCorrect = 0;
       answerHistory = [];
+      pendingAdvance = null;
+      continueBtn.style.display = 'none';
+      // Clean up balloon elements from previous game
+      balloonsEl.innerHTML = '';
+      balloonsEl.style.opacity = '0';
       gameScreen = "select";
       rebuildSaintGrid();
       buildAchievementsDisplay();
@@ -1060,6 +1065,7 @@
     }
 
     function loadQuest() {
+      continueBtn.style.display = 'none';
       const questList = currentQuests;
       if (!questList || currentCheckpoint >= questList.length) {
         if (!inBonusRound) startBonusRound(); else endGame();
@@ -1107,6 +1113,20 @@
     }
 
     let isAnswerSubmitted = false;
+    let pendingAdvance = null;
+
+    function advanceQuest() {
+      continueBtn.style.display = 'none';
+      if (pendingAdvance) {
+        pendingAdvance();
+        pendingAdvance = null;
+      }
+    }
+
+    function showContinue(advanceFn) {
+      pendingAdvance = advanceFn;
+      continueBtn.style.display = 'inline-block';
+    }
 
     function submitAnswer(selectedIndex, isTrivia) {
       if (isAnswerSubmitted) return;
@@ -1184,7 +1204,7 @@
       updateStreakDisplay();
       updateProfile();
 
-      setTimeout(() => {
+      showContinue(() => {
         currentCheckpoint++;
         if (currentCheckpoint >= questList.length) {
           if (!inBonusRound) startBonusRound(); else endGame();
@@ -1192,7 +1212,7 @@
           loadQuest();
         }
         isAnswerSubmitted = false;
-      }, 2000);
+      });
     }
 
     function updateStreakDisplay() {
@@ -1301,6 +1321,8 @@
     }
 
     function startBonusRound() {
+      // Daily challenges skip the bonus round
+      if (isDailyChallenge) { endGame(); return; }
       inBonusRound = true;
       bonusIndex = 0;
       // Gather trivia from OTHER saints
@@ -1315,6 +1337,7 @@
     }
 
     function loadBonusQuest() {
+      continueBtn.style.display = 'none';
       if (bonusIndex >= bonusQuestions.length) {
         inBonusRound = false;
         endGame();
@@ -1342,7 +1365,8 @@
         hintEl.style.display = 'block';
       }
       startTimer();
-      progressText.textContent = `Bonus ${bonusIndex + 1} of 3`;
+      progressBar.style.width = ((bonusIndex / bonusQuestions.length) * 100) + '%';
+      progressText.textContent = `Bonus ${bonusIndex + 1} of ${bonusQuestions.length}`;
     }
 
     function submitBonusAnswer(selectedIndex) {
@@ -1393,11 +1417,11 @@
       }
       updateStreakDisplay();
       updateProfile();
-      setTimeout(() => {
+      showContinue(() => {
         bonusIndex++;
         isAnswerSubmitted = false;
         loadBonusQuest();
-      }, 2000);
+      });
     }
 
     function endGame() {
@@ -1795,6 +1819,10 @@
       bonusCorrect = 0;
       answerHistory = [];
       difficulty = 'normal';
+      // Sync difficulty buttons to reflect forced 'normal'
+      document.querySelectorAll('.diff-btn').forEach(b => {
+        b.classList.toggle('active', b.textContent.trim() === 'Normal');
+      });
 
       // Show intro
       const saint = saints.find(s => s.id === dailySaint);
@@ -1812,16 +1840,6 @@
       gameScreen = "intro";
       updateScreen();
     }
-
-    // Override bonus round for daily: skip it (only 5 questions)
-    const originalStartBonusRound = startBonusRound;
-    startBonusRound = function() {
-      if (isDailyChallenge) {
-        endGame();
-        return;
-      }
-      originalStartBonusRound();
-    };
 
     function saveDailyResult(score) {
       const today = dateSeed();
