@@ -494,6 +494,28 @@
         font-size: 1.5em;
       }
     }
+  
+    /* Matching Challenge */
+    .match-grid { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 15px 0; }
+    .match-column { flex: 1; min-width: 120px; display: flex; flex-direction: column; gap: 10px; }
+    .match-item { padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; text-align: center; min-height: 44px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; border: 2px solid transparent; }
+    .match-item:hover { background: rgba(212, 175, 55, 0.2); }
+    .match-item.selected { border-color: var(--accent-gold); background: rgba(212, 175, 55, 0.15); }
+    .match-item.matched { background: rgba(46, 139, 87, 0.4); border-color: #2e8b57; pointer-events: none; }
+    .match-item.wrong-flash { background: rgba(220, 20, 60, 0.4); border-color: #dc143c; }
+
+    /* Timeline Challenge */
+    .timeline-events { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
+    .timeline-slot { padding: 12px; background: rgba(255,255,255,0.05); border: 2px dashed rgba(212,175,55,0.3); border-radius: 8px; min-height: 44px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s; }
+    .timeline-slot.filled { border-style: solid; border-color: var(--accent-gold); background: rgba(212,175,55,0.1); }
+    .timeline-slot .slot-num { font-weight: bold; color: var(--accent-gold); margin-right: 10px; min-width: 24px; }
+    .timeline-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; justify-content: center; }
+    .timeline-event-btn { padding: 10px 14px; background: rgba(255,255,255,0.1); border: 2px solid transparent; border-radius: 8px; cursor: pointer; color: var(--text-light); font-family: inherit; font-size: 0.9em; transition: all 0.2s; }
+    .timeline-event-btn:hover { background: rgba(212,175,55,0.2); border-color: var(--accent-gold); }
+    .timeline-event-btn.placed { opacity: 0.3; pointer-events: none; }
+    .timeline-result-correct { border-color: #2e8b57 !important; background: rgba(46,139,87,0.2) !important; }
+    .timeline-result-wrong { border-color: #dc143c !important; background: rgba(220,20,60,0.2) !important; }
+
   </style>
 </head>
 <body>
@@ -704,6 +726,40 @@
       "reward": {
         "Mercy": 1,
         "Courage": 2
+      }
+    },
+    {
+      "title": "Saints and Their Signs",
+      "story": "Throughout history, each saint has been associated with particular symbols, animals, or miracles that reflect their life and mission. Can you match these saints to their most famous associations?",
+      "challenge": {
+        "type": "matching",
+        "prompt": "Match each saint to their famous association.",
+        "pairs": [
+          {
+            "left": "St. Francis",
+            "right": "Preaching to birds"
+          },
+          {
+            "left": "St. Patrick",
+            "right": "Driving out serpents"
+          },
+          {
+            "left": "St. Joan of Arc",
+            "right": "Sword of Fierbois"
+          },
+          {
+            "left": "Carlo Acutis",
+            "right": "Eucharistic miracles website"
+          },
+          {
+            "left": "Thomas Aquinas",
+            "right": "Summa Theologica"
+          }
+        ]
+      },
+      "reward": {
+        "Mercy": 1,
+        "Wisdom": 1
       }
     }
   ],
@@ -918,6 +974,40 @@
         "Faith": 2,
         "Courage": 1
       }
+    },
+    {
+      "title": "The Arc of Joan's Life",
+      "story": "Joan of Arc's extraordinary life unfolded in a remarkably short span. From peasant girl to military commander to martyr — can you place the key events of her life in order?",
+      "challenge": {
+        "type": "timeline",
+        "prompt": "Arrange Joan's life events from earliest to latest.",
+        "events": [
+          {
+            "text": "Hears voices in Domrémy",
+            "year": 1425
+          },
+          {
+            "text": "Meets the Dauphin at Chinon",
+            "year": 1429
+          },
+          {
+            "text": "Lifts the Siege of Orléans",
+            "year": 1429
+          },
+          {
+            "text": "Coronation of Charles VII at Reims",
+            "year": 1429
+          },
+          {
+            "text": "Burned at the stake in Rouen",
+            "year": 1431
+          }
+        ]
+      },
+      "reward": {
+        "Courage": 2,
+        "Faith": 1
+      }
     }
   ],
   "aquinas": [
@@ -1032,6 +1122,40 @@
       },
       "reward": {
         "Courage": 2,
+        "Faith": 1
+      }
+    },
+    {
+      "title": "The Mind of the Ages",
+      "story": "Thomas Aquinas's intellectual journey shaped Western thought for centuries. From reluctant student to the greatest theologian in history — place these milestones in order.",
+      "challenge": {
+        "type": "timeline",
+        "prompt": "Arrange these events from Aquinas's life in order.",
+        "events": [
+          {
+            "text": "Called 'the Dumb Ox' at university",
+            "year": 1245
+          },
+          {
+            "text": "Family kidnaps him to prevent him joining Dominicans",
+            "year": 1244
+          },
+          {
+            "text": "Begins writing the Summa Theologica",
+            "year": 1265
+          },
+          {
+            "text": "Composes Pange Lingua hymn",
+            "year": 1264
+          },
+          {
+            "text": "Mystical experience — stops writing forever",
+            "year": 1273
+          }
+        ]
+      },
+      "reward": {
+        "Wisdom": 2,
         "Faith": 1
       }
     }
@@ -1149,6 +1273,40 @@
       "reward": {
         "Faith": 2,
         "Mercy": 1
+      }
+    },
+    {
+      "title": "Works of Mercy",
+      "story": "Many saints devoted their lives to serving others in unique ways. Each found their own path to bring God's love into the world. Can you match these saints to their primary works of mercy?",
+      "challenge": {
+        "type": "matching",
+        "prompt": "Match each saint to their primary work.",
+        "pairs": [
+          {
+            "left": "Mother Teresa",
+            "right": "Home for the dying"
+          },
+          {
+            "left": "Pier Giorgio Frassati",
+            "right": "Giving away his bus fare"
+          },
+          {
+            "left": "St. Thérèse",
+            "right": "The Little Way"
+          },
+          {
+            "left": "St. Francis",
+            "right": "Radical poverty"
+          },
+          {
+            "left": "Carlo Acutis",
+            "right": "Digital evangelization"
+          }
+        ]
+      },
+      "reward": {
+        "Mercy": 2,
+        "Faith": 1
       }
     }
   ],
@@ -1726,6 +1884,261 @@
       }
     }
 
+
+    // === Matching Challenge Logic ===
+    let matchSelectedLeft = null;
+    let matchPairs = [];
+    let matchCorrect = 0;
+    let matchTotal = 0;
+    let matchShuffledRight = [];
+
+    function renderMatchingChallenge(ch) {
+      matchPairs = ch.pairs;
+      matchCorrect = 0;
+      matchTotal = ch.pairs.length;
+      matchSelectedLeft = null;
+      matchShuffledRight = [...ch.pairs.map(p => p.right)];
+      for (let i = matchShuffledRight.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [matchShuffledRight[i], matchShuffledRight[j]] = [matchShuffledRight[j], matchShuffledRight[i]];
+      }
+
+      questionContainer.innerHTML = '<h3>🔗 Match the Pairs</h3>' +
+        '<p>' + escapeHTML(ch.prompt || 'Match each item on the left with its correct pair on the right.') + '</p>' +
+        '<div class="match-grid">' +
+          '<div class="match-column" id="match-left">' +
+            ch.pairs.map((p, i) => '<div class="match-item" data-side="left" data-idx="' + i + '" onclick="matchClick(this)">' + escapeHTML(p.left) + '</div>').join('') +
+          '</div>' +
+          '<div class="match-column" id="match-right">' +
+            matchShuffledRight.map((r, i) => '<div class="match-item" data-side="right" data-idx="' + i + '" onclick="matchClick(this)">' + escapeHTML(r) + '</div>').join('') +
+          '</div>' +
+        '</div>' +
+        '<div id="match-status" style="text-align:center;margin-top:10px;"></div>';
+    }
+
+    function matchClick(el) {
+      if (el.classList.contains('matched')) return;
+      const side = el.dataset.side;
+      const idx = parseInt(el.dataset.idx);
+
+      if (side === 'left') {
+        document.querySelectorAll('#match-left .match-item').forEach(e => e.classList.remove('selected'));
+        el.classList.add('selected');
+        matchSelectedLeft = idx;
+      } else if (side === 'right' && matchSelectedLeft !== null) {
+        const leftIdx = matchSelectedLeft;
+        const rightText = matchShuffledRight[idx];
+        const correctRight = matchPairs[leftIdx].right;
+
+        const leftEl = document.querySelector('#match-left .match-item[data-idx="' + leftIdx + '"]');
+
+        if (rightText === correctRight) {
+          leftEl.classList.remove('selected');
+          leftEl.classList.add('matched');
+          el.classList.add('matched');
+          matchCorrect++;
+          playSound('correct');
+
+          if (matchCorrect === matchTotal) {
+            setTimeout(() => finishMatchingChallenge(true), 500);
+          }
+        } else {
+          el.classList.add('wrong-flash');
+          playSound('wrong');
+          shakeScreen();
+          setTimeout(() => el.classList.remove('wrong-flash'), 500);
+        }
+        matchSelectedLeft = null;
+        document.querySelectorAll('#match-left .match-item').forEach(e => e.classList.remove('selected'));
+      }
+    }
+
+    function finishMatchingChallenge(allCorrect) {
+      const q = currentQuests[currentCheckpoint];
+      totalQuestions++;
+      if (allCorrect) {
+        totalCorrect++;
+        currentStreak++;
+        if (currentStreak > maxStreak) maxStreak = currentStreak;
+        for (const [key, value] of Object.entries(q.reward)) { virtues[key] += value; }
+        spawnParticles('✨');
+        const resultEl = document.createElement('div');
+        resultEl.className = 'result correct';
+        resultEl.textContent = 'All matched correctly! +Virtue';
+        questionContainer.appendChild(resultEl);
+      }
+      answerHistory.push({ title: q.title, question: 'Matching Challenge', choices: [], selectedIndex: 0, correctIndex: 0, wasCorrect: allCorrect, isBonus: false });
+      updateStreakDisplay();
+      updateProfile();
+      setTimeout(() => {
+        currentCheckpoint++;
+        if (currentCheckpoint >= currentQuests.length) { if (!inBonusRound) startBonusRound(); else endGame(); } else { loadQuest(); }
+        isAnswerSubmitted = false;
+      }, 2000);
+    }
+
+    // === Timeline Challenge Logic ===
+    let timelineEvents = [];
+    let timelinePlacements = [];
+    let timelineNextSlot = 0;
+
+    function renderTimelineChallenge(ch) {
+      timelineEvents = [...ch.events];
+      timelinePlacements = [];
+      timelineNextSlot = 0;
+      const shuffled = [...ch.events];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+
+      questionContainer.innerHTML = '<h3>📅 Timeline Challenge</h3>' +
+        '<p>' + escapeHTML(ch.prompt || 'Place these events in chronological order, earliest first.') + '</p>' +
+        '<div class="timeline-events">' +
+          ch.events.map((_, i) => '<div class="timeline-slot" id="tslot-' + i + '"><span class="slot-num">' + (i + 1) + '.</span><span class="slot-text">—</span></div>').join('') +
+        '</div>' +
+        '<div class="timeline-pool" id="timeline-pool">' +
+          shuffled.map((e, i) => '<button class="timeline-event-btn" data-year="' + e.year + '" data-text="' + escapeHTML(e.text) + '" onclick="placeTimelineEvent(this)">' + escapeHTML(e.text) + ' (' + e.year + ')</button>').join('') +
+        '</div>';
+    }
+
+    function placeTimelineEvent(btn) {
+      if (timelineNextSlot >= timelineEvents.length) return;
+      const slot = document.getElementById('tslot-' + timelineNextSlot);
+      slot.querySelector('.slot-text').textContent = btn.dataset.text + ' (' + btn.dataset.year + ')';
+      slot.classList.add('filled');
+      slot.dataset.year = btn.dataset.year;
+      btn.classList.add('placed');
+      timelinePlacements.push(parseInt(btn.dataset.year));
+      timelineNextSlot++;
+
+      if (timelineNextSlot >= timelineEvents.length) {
+        setTimeout(() => checkTimelineResult(), 300);
+      }
+    }
+
+    function checkTimelineResult() {
+      const sorted = [...timelineEvents].sort((a, b) => a.year - b.year);
+      let correct = 0;
+      for (let i = 0; i < sorted.length; i++) {
+        const slot = document.getElementById('tslot-' + i);
+        if (timelinePlacements[i] === sorted[i].year) {
+          slot.classList.add('timeline-result-correct');
+          correct++;
+        } else {
+          slot.classList.add('timeline-result-wrong');
+        }
+      }
+
+      const allCorrect = correct === sorted.length;
+      const q = currentQuests[currentCheckpoint];
+      totalQuestions++;
+      if (allCorrect) {
+        totalCorrect++;
+        currentStreak++;
+        if (currentStreak > maxStreak) maxStreak = currentStreak;
+        for (const [key, value] of Object.entries(q.reward)) { virtues[key] += value; }
+        playSound('correct');
+        spawnParticles('✨');
+        const resultEl = document.createElement('div');
+        resultEl.className = 'result correct';
+        resultEl.textContent = 'Perfect timeline! +Virtue';
+        questionContainer.appendChild(resultEl);
+      } else {
+        currentStreak = 0;
+        playSound('wrong');
+        shakeScreen();
+        const resultEl = document.createElement('div');
+        resultEl.className = 'result incorrect';
+        resultEl.textContent = correct + '/' + sorted.length + ' in correct position.';
+        questionContainer.appendChild(resultEl);
+      }
+
+      answerHistory.push({ title: q.title, question: 'Timeline Challenge', choices: [], selectedIndex: correct, correctIndex: sorted.length, wasCorrect: allCorrect, isBonus: false });
+      updateStreakDisplay();
+      updateProfile();
+      setTimeout(() => {
+        currentCheckpoint++;
+        if (currentCheckpoint >= currentQuests.length) { if (!inBonusRound) startBonusRound(); else endGame(); } else { loadQuest(); }
+        isAnswerSubmitted = false;
+      }, 2500);
+    }
+
+    // === Save/Resume Progress ===
+    function saveProgress() {
+      if (!currentSaint) return;
+      try {
+        localStorage.setItem('saintquest_resume', JSON.stringify({
+          saint: currentSaint,
+          checkpoint: currentCheckpoint,
+          virtues: virtues,
+          difficulty: difficulty,
+          streak: currentStreak,
+          maxStreak: maxStreak,
+          totalCorrect: totalCorrect,
+          totalQuestions: totalQuestions,
+          ts: Date.now()
+        }));
+      } catch(e) {}
+    }
+
+    function loadSavedProgress() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('saintquest_resume'));
+        if (saved && saved.saint && Date.now() - saved.ts < 86400000) return saved;
+      } catch(e) {}
+      return null;
+    }
+
+    function clearSavedProgress() {
+      localStorage.removeItem('saintquest_resume');
+    }
+
+    function showResumePrompt() {
+      const saved = loadSavedProgress();
+      if (!saved) return;
+      const saint = saints.find(s => s.id === saved.saint);
+      if (!saint) return;
+      const resumeDiv = document.createElement('div');
+      resumeDiv.id = 'resume-prompt';
+      resumeDiv.style.cssText = 'text-align:center;background:rgba(212,175,55,0.15);border:1px solid var(--accent-gold);border-radius:12px;padding:15px;margin-bottom:15px;';
+      resumeDiv.innerHTML = '<p>📖 Continue your journey with <b>' + escapeHTML(saint.name) + '</b>?</p>' +
+        '<p style="font-size:0.9em;opacity:0.7;">Chapter ' + (saved.checkpoint + 1) + ' | ' + Object.values(saved.virtues).reduce((a,b)=>a+b,0) + ' virtue points</p>' +
+        '<button class="btn" onclick="resumeGame()" style="margin-right:10px;">Continue</button>' +
+        '<button class="btn btn-secondary" onclick="dismissResume()">New Game</button>';
+      const grid = document.getElementById('saint-grid');
+      grid.parentElement.insertBefore(resumeDiv, grid);
+    }
+
+    function resumeGame() {
+      const saved = loadSavedProgress();
+      if (!saved) return;
+      currentSaint = saved.saint;
+      currentCheckpoint = saved.checkpoint;
+      virtues = saved.virtues;
+      difficulty = saved.difficulty || 'easy';
+      currentStreak = saved.streak || 0;
+      maxStreak = saved.maxStreak || 0;
+      totalCorrect = saved.totalCorrect || 0;
+      totalQuestions = saved.totalQuestions || 0;
+      currentQuests = quests[currentSaint]; // reload quests
+      inBonusRound = false;
+      isDailyChallenge = false;
+      answerHistory = [];
+      gameScreen = "play";
+      updateScreen();
+      updateProfile();
+      loadQuest();
+      const el = document.getElementById('resume-prompt');
+      if (el) el.remove();
+    }
+
+    function dismissResume() {
+      clearSavedProgress();
+      const el = document.getElementById('resume-prompt');
+      if (el) el.remove();
+    }
+
     // DOM Elements
     const selectScreen = document.getElementById('select-screen');
     const playScreen = document.getElementById('play-screen');
@@ -1813,10 +2226,23 @@
       const q = questList[currentCheckpoint];
 
       questTitle.textContent = q.title;
+      saveProgress();
       questStory.textContent = q.story;
 
       // Generate question elements
       questionContainer.innerHTML = '';
+
+
+      // New challenge types
+      if (q.challenge.type === 'matching') {
+        renderMatchingChallenge(q.challenge);
+        document.getElementById('hint-text').style.display = 'none';
+        return; // matching has its own submission flow
+      } else if (q.challenge.type === 'timeline') {
+        renderTimelineChallenge(q.challenge);
+        document.getElementById('hint-text').style.display = 'none';
+        return; // timeline has its own submission flow
+      }
 
       if (q.challenge.type === 'trivia') {
         questionContainer.innerHTML = `
@@ -2145,6 +2571,7 @@
     }
 
     function endGame() {
+      clearSavedProgress();
       gameScreen = "done";
       stopTimer();
       updateScreen();
@@ -2617,6 +3044,7 @@
     }
 
     // Initial setup
+    showResumePrompt();
     rebuildSaintGrid();
     buildAchievementsDisplay();
     updateDailyStatus();
