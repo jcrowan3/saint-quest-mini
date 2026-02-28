@@ -9,4 +9,4 @@ streamlit run app.py
 ```
 
 ## Deploy
-Use the same Cloud Run + Docker approach as Feast Day.
+Use the same Cloud Run + Docker approachy.
