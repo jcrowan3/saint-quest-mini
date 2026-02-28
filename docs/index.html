@@ -610,120 +610,860 @@
     ];
 
     const quests = {
-      "francis": [
-        { "title": "The Wolf of Gubbio", "story": "The town of Gubbio lives in terror. A massive wolf prowls the countryside, attacking livestock and even threatening people who venture beyond the walls. The townspeople beg Francis for help, expecting him to call for hunters — but Francis has a different plan.", "challenge": { "type": "dilemma", "prompt": "The wolf snarls at you from the edge of the forest. What do you do?", "options": ["Walk toward it unarmed, speaking words of peace", "Organize the townspeople to drive it away", "Set traps around the village perimeter", "Pray from a safe distance and hope it leaves"], "answer_index": 0 }, "reward": {"Mercy": 2, "Courage": 1} },
-        { "title": "Sermon to the Birds", "story": "Walking through the Spoleto Valley, Francis notices a vast flock of birds gathered in the trees and fields. His companions want to press on, but Francis feels called to stop. He begins to preach to the birds about gratitude for God's gifts — and remarkably, they fall silent and listen.", "challenge": { "type": "trivia", "question": "What is St. Francis of Assisi the patron saint of?", "choices": ["Animals and ecology", "Lost causes", "Travelers", "Musicians"], "answer_index": 0 }, "reward": {"Mercy": 1, "Courage": 1} },
-        { "title": "Rebuild My Church", "story": "Praying before a crucifix in the crumbling chapel of San Damiano, Francis hears a voice: 'Francis, go and repair my church, which as you see is falling into ruin.' He takes it literally at first, hauling stones to rebuild the chapel — but gradually understands the deeper call to renew the entire Church.", "challenge": { "type": "dilemma", "prompt": "You feel called to rebuild something broken. What is the best first step?", "options": ["Start with small acts of love and service", "Wait for someone more qualified to lead", "Seek recognition for your willingness", "Debate the best approach endlessly"], "answer_index": 0 }, "reward": {"Courage": 2, "Mercy": 1} },
-        { "title": "The Stigmata", "story": "On Mount La Verna in 1224, during an intense period of prayer and fasting, Francis has a vision of a seraph — a six-winged angel bearing the image of Christ crucified. When the vision fades, Francis discovers he bears the wounds of Christ on his hands, feet, and side — the first recorded stigmata.", "challenge": { "type": "trivia", "question": "In what year did Francis of Assisi receive the stigmata on Mount La Verna?", "choices": ["1224", "1210", "1226", "1209"], "answer_index": 0 }, "reward": {"Faith": 2, "Courage": 1} },
-        { "title": "Lady Poverty", "story": "Born to a wealthy cloth merchant, the young Francis loved fine clothes and parties. After a profound conversion, he stripped off his expensive garments in the town square, renouncing his inheritance before the bishop and his own father. He chose radical poverty as his bride — 'Lady Poverty' — owning nothing so he could receive everything from God.", "challenge": { "type": "trivia", "question": "What was Francis's father's profession before Francis renounced his wealth?", "choices": ["Cloth merchant", "Blacksmith", "Farmer", "Nobleman"], "answer_index": 0 }, "reward": {"Mercy": 1, "Courage": 2} }
-      ],
-      "carlo": [
-        { "title": "The Digital Evangelist", "story": "At just 11 years old, Carlo Acutis began creating a comprehensive catalog of documented Eucharistic miracles around the world, building a website to share them. While other kids his age were playing video games, Carlo was teaching himself web design and programming to spread the faith — making him a pioneer of digital evangelization.", "challenge": { "type": "trivia", "question": "What did Carlo Acutis famously catalog on his website?", "choices": ["Eucharistic miracles", "Lives of the saints", "Marian apparitions", "Biblical archaeology"], "answer_index": 0 }, "reward": {"Faith": 2, "Wisdom": 1} },
-        { "title": "Coding for the Kingdom", "story": "Carlo believed technology was a gift from God that should be used to bring people closer to Him. He built websites, edited videos, and created digital content about the faith — all while maintaining a deep prayer life. He once said, 'The internet is a gift from God, and we must use it well.'", "challenge": { "type": "dilemma", "prompt": "You have a talent for technology. How do you use it for God?", "options": ["Teach others what you've learned and share the faith", "Keep your skills to yourself", "Use it only to gain followers", "Abandon technology entirely"], "answer_index": 0 }, "reward": {"Wisdom": 2, "Faith": 1} },
-        { "title": "Daily Mass", "story": "From the time of his First Communion at age 7, Carlo never missed daily Mass. He called the Eucharist 'my highway to heaven.' Even as a teenager surrounded by secular culture in Milan, he prioritized his time before the Blessed Sacrament above everything else.", "challenge": { "type": "trivia", "question": "Carlo called the Eucharist his '_____ to heaven.'", "choices": ["Highway", "Ladder", "Bridge", "Doorway"], "answer_index": 0 }, "reward": {"Faith": 2, "Wisdom": 1} },
-        { "title": "A Heart for the Poor", "story": "Despite coming from a wealthy Italian family, Carlo lived simply and gave generously. He saved his allowance to buy sleeping bags for homeless people in Milan, and he volunteered at a soup kitchen run by the Capuchin friars. His mother later said she never knew how much he gave away until after his death.", "challenge": { "type": "dilemma", "prompt": "You receive a generous allowance. What do you do with it?", "options": ["Save some and give the rest to those in need", "Spend it all on yourself — you earned it", "Save every penny for the future", "Give it all away and borrow from friends"], "answer_index": 0 }, "reward": {"Mercy": 2, "Faith": 1} },
-        { "title": "Called Home Young", "story": "In October 2006, 15-year-old Carlo was diagnosed with aggressive leukemia. Facing his death with extraordinary faith, he offered his sufferings for the Pope and the Church. He told his mother, 'I offer all the suffering I will have to endure for the Lord, for the Pope, and for the Church.' He died on October 12, 2006, and was beatified in 2020.", "challenge": { "type": "trivia", "question": "At what age did Carlo Acutis die of leukemia?", "choices": ["15", "12", "17", "20"], "answer_index": 0 }, "reward": {"Faith": 2, "Courage": 1} }
-      ],
-      "joan": [
-        { "title": "Voices from Heaven", "story": "In the small village of Domrémy, 13-year-old Jeanne hears voices in her father's garden. Saints Michael, Catherine, and Margaret speak to her with an impossible command: save France from English occupation. She is an illiterate peasant girl — yet the voices are unmistakable and persistent.", "challenge": { "type": "dilemma", "prompt": "You hear a divine call to do something far beyond your abilities. What do you do?", "options": ["Trust the call and take the first step despite your fear", "Wait for a sign that you're truly worthy", "Tell no one and hope the voices stop", "Ask someone more qualified to go instead"], "answer_index": 0 }, "reward": {"Faith": 2, "Courage": 1} },
-        { "title": "The Siege of Orléans", "story": "Joan convinces the Dauphin to give her armor and an army. At 17, she rides into the besieged city of Orléans, rallying demoralized French troops. In just nine days, she breaks the English siege — a turning point in the Hundred Years' War that stunned all of Europe.", "challenge": { "type": "trivia", "question": "How long did it take Joan of Arc to lift the Siege of Orléans?", "choices": ["Nine days", "Three months", "One year", "Three days"], "answer_index": 0 }, "reward": {"Courage": 2, "Faith": 1} },
-        { "title": "The Coronation at Reims", "story": "After liberating Orléans, Joan escorts the Dauphin Charles through enemy territory to the cathedral at Reims, where French kings are traditionally crowned. On July 17, 1429, Charles VII is crowned King of France — fulfilling Joan's divine mission and legitimizing his claim to the throne.", "challenge": { "type": "trivia", "question": "In which cathedral was Charles VII crowned, fulfilling Joan's mission?", "choices": ["Reims Cathedral", "Notre-Dame de Paris", "Chartres Cathedral", "Sainte-Chapelle"], "answer_index": 0 }, "reward": {"Faith": 1, "Courage": 2} },
-        { "title": "The Trial", "story": "Captured by Burgundian forces and sold to the English, Joan faces a rigged ecclesiastical trial in Rouen. Her judges, loyal to England, twist her words and accuse her of heresy and witchcraft. Despite months of interrogation, the uneducated teenager's answers are so brilliant that they confound the learned theologians.", "challenge": { "type": "dilemma", "prompt": "You face an unjust trial where the verdict is predetermined. How do you respond?", "options": ["Speak the truth boldly, trusting God with the outcome", "Recant everything to save your life", "Refuse to speak at all", "Try to negotiate a secret deal"], "answer_index": 0 }, "reward": {"Courage": 2, "Faith": 1} },
-        { "title": "The Flames of Rouen", "story": "On May 30, 1431, nineteen-year-old Joan is burned at the stake in the marketplace of Rouen. She asks for a cross to be held before her eyes and calls out the name of Jesus with her final breaths. Twenty-five years later, a retrial declares her innocent. She is canonized in 1920.", "challenge": { "type": "trivia", "question": "What was Joan of Arc's age when she was martyred at Rouen?", "choices": ["19", "17", "21", "25"], "answer_index": 0 }, "reward": {"Courage": 2, "Faith": 2} }
-      ],
-      "aquinas": [
-        { "title": "The Dumb Ox", "story": "Young Thomas is so large, quiet, and slow-moving that his classmates at the University of Paris mock him as 'the Dumb Ox.' His teacher, the great Albertus Magnus, sees something the others miss. After Thomas delivers a brilliant disputation, Albert declares: 'You call him the Dumb Ox, but I tell you this ox will bellow so loud his bellowing will fill the world.'", "challenge": { "type": "trivia", "question": "Who was Thomas Aquinas's famous teacher who defended him as 'the Dumb Ox'?", "choices": ["Albertus Magnus", "Peter Lombard", "Bonaventure", "Anselm of Canterbury"], "answer_index": 0 }, "reward": {"Wisdom": 2, "Faith": 1} },
-        { "title": "The Summa Theologica", "story": "Thomas embarks on the most ambitious intellectual project in Christian history — the Summa Theologica. In this masterwork, he systematically addresses nearly every question about God, creation, morality, and salvation. It contains 3,125 articles, each structured with objections, a core argument, and replies. He never finished it.", "challenge": { "type": "trivia", "question": "How many articles does the Summa Theologica contain?", "choices": ["About 3,125", "About 500", "About 10,000", "About 1,000"], "answer_index": 0 }, "reward": {"Wisdom": 2, "Faith": 1} },
-        { "title": "The Five Ways", "story": "In the Summa, Thomas presents five rational arguments for the existence of God — from motion, causation, contingency, degrees of perfection, and design. These 'Five Ways' become the foundation of natural theology, showing that faith and reason are not enemies but partners in the search for truth.", "challenge": { "type": "trivia", "question": "Which of these is NOT one of Aquinas's Five Ways to prove God's existence?", "choices": ["The argument from Scripture", "The argument from motion", "The argument from causation", "The argument from design"], "answer_index": 0 }, "reward": {"Wisdom": 2, "Courage": 1} },
-        { "title": "Pange Lingua", "story": "Pope Urban IV asks Thomas to compose hymns for the new feast of Corpus Christi. Thomas writes 'Pange Lingua' and 'Tantum Ergo' — Eucharistic hymns of such beauty and theological precision that they are still sung in every Catholic church nearly 800 years later.", "challenge": { "type": "dilemma", "prompt": "You're asked to create something to honor the Eucharist. What approach do you take?", "options": ["Pour your deepest understanding of the mystery into art", "Copy what others have done before", "Decline — you're a thinker, not an artist", "Rush through it to move on to 'real' work"], "answer_index": 0 }, "reward": {"Faith": 2, "Wisdom": 1} },
-        { "title": "Straw and Fire", "story": "On December 6, 1273, during Mass, Thomas has a mystical experience so profound that he stops writing forever. When urged to continue the Summa, he replies: 'Everything I have written seems like straw compared to what has now been revealed to me.' The greatest intellect of his age falls silent before the mystery of God.", "challenge": { "type": "dilemma", "prompt": "After a profound spiritual experience, you realize your life's work feels incomplete. What do you do?", "options": ["Accept that some mysteries are beyond words and rest in God", "Force yourself to keep writing — the work must be finished", "Doubt the experience and return to normal", "Tell everyone about your vision to gain fame"], "answer_index": 0 }, "reward": {"Faith": 2, "Wisdom": 2} }
-      ],
-      "teresa": [
-        { "title": "The Call Within a Call", "story": "Sister Teresa is already a nun teaching at a comfortable school in Calcutta when, on a train to Darjeeling in 1946, she receives what she calls 'a call within a call' — a vision of Jesus asking her to leave the convent and serve the poorest of the poor in the slums. It means giving up everything she knows.", "challenge": { "type": "dilemma", "prompt": "You have a comfortable life serving God, but feel called to something harder. What do you do?", "options": ["Leave your comfort zone and follow the call", "Stay where you are — you're already serving God", "Ask for more time to think about it", "Suggest someone else is better suited"], "answer_index": 0 }, "reward": {"Faith": 2, "Mercy": 1} },
-        { "title": "The Missionaries of Charity", "story": "With no money, no building, and no helpers, Mother Teresa opens her first school in the slums of Motijhil, writing lessons in the dirt with a stick. Within a year, volunteers begin to join her. In 1950, the Vatican approves her new order — the Missionaries of Charity — which will grow to over 4,500 sisters serving in 133 countries.", "challenge": { "type": "trivia", "question": "In how many countries do the Missionaries of Charity now serve?", "choices": ["Over 130", "About 50", "About 25", "Over 200"], "answer_index": 0 }, "reward": {"Mercy": 2, "Faith": 1} },
-        { "title": "Nirmal Hriday — Home for the Dying", "story": "Mother Teresa opens Nirmal Hriday ('Pure Heart') in an abandoned Hindu temple — a place where the destitute can die with dignity, surrounded by love. Critics attack her for not providing advanced medical care, but she insists: 'We are not social workers. We do this for Jesus.' She sees Christ in every suffering face.", "challenge": { "type": "dilemma", "prompt": "You can't save everyone. What matters most when helping the dying?", "options": ["Ensuring they feel loved and dignified in their final hours", "Providing the best possible medical equipment", "Documenting their stories for the world to see", "Focusing only on those you can actually cure"], "answer_index": 0 }, "reward": {"Mercy": 2, "Courage": 1} },
-        { "title": "The Dark Night", "story": "After Mother Teresa's death in 1997, her private letters reveal a stunning secret: for nearly 50 years, she experienced almost complete spiritual darkness — no sense of God's presence, no consolation in prayer. Yet she never wavered in her service. 'If I ever become a Saint,' she wrote, 'I will surely be one of darkness.'", "challenge": { "type": "trivia", "question": "For approximately how many years did Mother Teresa experience spiritual darkness?", "choices": ["Nearly 50 years", "About 10 years", "About 5 years", "Her entire life"], "answer_index": 0 }, "reward": {"Faith": 2, "Courage": 2} },
-        { "title": "The Nobel Prize", "story": "In 1979, Mother Teresa receives the Nobel Peace Prize. She asks that the formal banquet be canceled and the money — $192,000 — be given to the poor of Calcutta. In her acceptance speech, she calls abortion 'the greatest destroyer of peace' — a statement that shocks the secular audience but reflects her unwavering conviction.", "challenge": { "type": "trivia", "question": "What did Mother Teresa request be done with the Nobel Prize banquet funds?", "choices": ["Given to the poor of Calcutta", "Used to build a new hospital", "Donated to the Vatican", "Invested for future missions"], "answer_index": 0 }, "reward": {"Mercy": 2, "Faith": 1} }
-      ],
-      "patrick": [
-        { "title": "Kidnapped to Ireland", "story": "At 16, the Roman-British boy Patricius is kidnapped by Irish raiders and sold into slavery. For six years he tends sheep on a cold Irish hillside, alone and far from home. In his isolation, he turns to prayer — praying a hundred times a day and a hundred times each night — and discovers a faith he never had as a free boy.", "challenge": { "type": "trivia", "question": "How many years was St. Patrick held as a slave in Ireland?", "choices": ["Six years", "Two years", "Ten years", "Twelve years"], "answer_index": 0 }, "reward": {"Courage": 2, "Faith": 1} },
-        { "title": "The Great Escape", "story": "After six years of slavery, Patrick hears a voice in a dream telling him his ship is ready. He walks nearly 200 miles to the coast, convinces a crew of strangers to take him aboard, and eventually makes it back to Britain. Most people would never look back — but Patrick can't forget the Irish people.", "challenge": { "type": "dilemma", "prompt": "You've escaped captivity and returned home safely. But you dream of the people who enslaved you calling for help. What do you do?", "options": ["Return to bring them the faith that saved you", "Stay safe at home — you've suffered enough", "Send someone else in your place", "Try to forget the dreams"], "answer_index": 0 }, "reward": {"Courage": 2, "Mercy": 1} },
-        { "title": "The Shamrock", "story": "Now a bishop, Patrick returns to Ireland to evangelize the pagan Celts. When the High King's druids challenge him to explain the Christian Trinity — how God can be three persons yet one God — Patrick bends down and picks a shamrock from the grass. 'Three leaves, one plant,' he says. The image becomes the most famous symbol of Ireland.", "challenge": { "type": "trivia", "question": "What doctrine did St. Patrick explain using the shamrock?", "choices": ["The Holy Trinity", "The Incarnation", "The Resurrection", "The Immaculate Conception"], "answer_index": 0 }, "reward": {"Wisdom": 1, "Faith": 2} },
-        { "title": "Driving Out the Serpents", "story": "Legend holds that Patrick drove all the snakes from Ireland by standing on a hilltop and commanding them into the sea. While Ireland indeed has no native snakes, scholars believe the story symbolizes Patrick driving out pagan worship — the 'serpents' of druidic religion that held the Irish people in spiritual bondage.", "challenge": { "type": "trivia", "question": "What do most scholars believe the 'snakes' St. Patrick drove from Ireland symbolize?", "choices": ["Pagan/druidic worship", "Actual reptiles", "Viking invaders", "Roman soldiers"], "answer_index": 0 }, "reward": {"Courage": 1, "Wisdom": 2} },
-        { "title": "The Breastplate", "story": "Patrick composes the Lorica — 'St. Patrick's Breastplate' — a powerful prayer of protection invoking the Trinity, the forces of creation, and the armor of God. 'Christ with me, Christ before me, Christ behind me, Christ in me, Christ beneath me, Christ above me.' It has been prayed by Christians for over 1,500 years.", "challenge": { "type": "dilemma", "prompt": "You face spiritual danger. How do you protect yourself?", "options": ["Pray for Christ's protection in every direction", "Rely on your own strength and intelligence", "Avoid the situation entirely", "Ask others to pray while you stand aside"], "answer_index": 0 }, "reward": {"Faith": 2, "Courage": 1} }
-      ],
-      "therese": [
-        { "title": "The Little Flower", "story": "Thérèse Martin grows up in Lisieux, France, the youngest of five sisters — four of whom become nuns. She is intensely sensitive, prone to tears, and seemingly unremarkable. Yet beneath her fragile exterior burns an enormous desire: to become a great saint. She will find a way no one expects.", "challenge": { "type": "dilemma", "prompt": "You feel a burning desire to do something great for God, but you seem ordinary. What do you do?", "options": ["Commit to doing small things with extraordinary love", "Wait until you develop extraordinary abilities", "Compare yourself to greater saints and feel inadequate", "Pursue dramatic, visible acts of holiness"], "answer_index": 0 }, "reward": {"Faith": 2, "Mercy": 1} },
-        { "title": "Pleading with the Pope", "story": "At just 14, Thérèse is desperate to enter the Carmelite convent but is told she's too young. On a family pilgrimage to Rome, she breaks protocol during a papal audience and falls at the feet of Pope Leo XIII, begging permission to enter Carmel at 15. The guards drag her away, but the Pope is impressed by her boldness.", "challenge": { "type": "trivia", "question": "At what age did Thérèse enter the Carmelite convent?", "choices": ["15", "18", "12", "21"], "answer_index": 0 }, "reward": {"Courage": 2, "Faith": 1} },
-        { "title": "The Little Way", "story": "Inside the convent, Thérèse discovers her path to holiness: 'The Little Way.' She will not perform great penances or dramatic miracles. Instead, she will do every small task — washing dishes, enduring a sister's annoying habits, smiling through pain — with perfect love. 'Miss no single opportunity of making some small sacrifice,' she writes.", "challenge": { "type": "trivia", "question": "What is St. Thérèse's spiritual path called?", "choices": ["The Little Way", "The Dark Night", "The Spiritual Exercises", "The Interior Castle"], "answer_index": 0 }, "reward": {"Faith": 1, "Mercy": 2} },
-        { "title": "Story of a Soul", "story": "Under obedience to her superior, Thérèse writes her autobiography — 'Story of a Soul.' She describes her childhood, her vocation, and her Little Way with disarming honesty and poetic beauty. Published after her death, it becomes one of the most widely read spiritual books in history, inspiring millions.", "challenge": { "type": "trivia", "question": "What is the title of St. Thérèse's autobiography?", "choices": ["Story of a Soul", "The Interior Castle", "Dark Night of the Soul", "Confessions"], "answer_index": 0 }, "reward": {"Wisdom": 1, "Faith": 2} },
-        { "title": "A Shower of Roses", "story": "Dying of tuberculosis at 24, Thérèse promises: 'After my death, I will let fall a shower of roses. I will spend my heaven doing good upon earth.' Within years of her death, reports of miracles and answered prayers flood in from around the world. She is declared a Doctor of the Church — one of only four women to receive the title.", "challenge": { "type": "trivia", "question": "St. Thérèse is one of how many women declared a Doctor of the Church?", "choices": ["Four", "Two", "Seven", "One"], "answer_index": 0 }, "reward": {"Faith": 2, "Mercy": 2} }
-      ],
-      "frassati": [
-        { "title": "To the Heights!", "story": "Pier Giorgio Frassati is the son of the founder of the influential Italian newspaper La Stampa. Rich, handsome, and athletic, he could live a life of pure comfort. Instead, his motto is 'Verso l'alto!' — 'To the heights!' — referring not just to his beloved mountains but to the spiritual summit he pursues with reckless joy.", "challenge": { "type": "dilemma", "prompt": "You're born into wealth and privilege. What drives your life?", "options": ["Pursuing both physical and spiritual heights with joy", "Enjoying comfort — you've earned it by birth", "Rejecting your family entirely to prove your virtue", "Using your status to gain political power"], "answer_index": 0 }, "reward": {"Courage": 2, "Faith": 1} },
-        { "title": "The Secret Charity", "story": "Pier Giorgio gives away nearly everything — his money, his clothes, even his bus fare (walking home in the rain so a poor family can eat). He keeps his charity so secret that his wealthy family has no idea. They think he's irresponsible with money. Only after his death do hundreds of poor families come forward to mourn the young man who helped them.", "challenge": { "type": "trivia", "question": "How did Pier Giorgio's family learn about his extensive charity work?", "choices": ["Poor families came forward after his death", "He told them on his deathbed", "A priest revealed it", "They found his journal"], "answer_index": 0 }, "reward": {"Mercy": 2, "Courage": 1} },
-        { "title": "The Mountain Climber", "story": "Pier Giorgio is a passionate mountaineer, organizing trips with his friends to the Italian Alps. For him, climbing is both physical exhilaration and spiritual practice — each summit brings him closer to God. His hiking group calls themselves 'I Tipi Loschi' — 'The Shady Characters' — and they combine adventure with deep friendship and faith.", "challenge": { "type": "dilemma", "prompt": "How do you combine friendship, adventure, and faith?", "options": ["Build a community around shared joy and spiritual growth", "Keep faith and fun strictly separate", "Only befriend people who share your beliefs", "Sacrifice all recreation for prayer and service"], "answer_index": 0 }, "reward": {"Courage": 1, "Faith": 1, "Mercy": 1} },
-        { "title": "Standing Against Fascism", "story": "In 1920s Italy, Mussolini's Fascists are rising to power. Despite his father's connections to the political establishment, Pier Giorgio actively opposes Fascism, joining Catholic Action and speaking out for workers' rights. He is beaten by Blackshirts at a protest but refuses to back down — combining his faith with fearless political courage.", "challenge": { "type": "trivia", "question": "What political movement did Pier Giorgio Frassati actively oppose?", "choices": ["Italian Fascism", "Communism", "Anarchism", "Monarchism"], "answer_index": 0 }, "reward": {"Courage": 2, "Wisdom": 1} },
-        { "title": "A Death That Shook Turin", "story": "At just 24, Pier Giorgio contracts polio — likely from the sick he served in Turin's poorest neighborhoods. He dies on July 4, 1925. His aristocratic family expects a small funeral. Instead, thousands of poor people flood the streets of Turin, weeping for the young man who gave them everything. His family is stunned — they had no idea.", "challenge": { "type": "trivia", "question": "What disease took Pier Giorgio Frassati's life at age 24?", "choices": ["Polio", "Tuberculosis", "Influenza", "Typhoid"], "answer_index": 0 }, "reward": {"Mercy": 2, "Faith": 1} },
-        { "title": "The Rosary in His Hands", "story": "When Pier Giorgio lay dying, his family found a Rosary clutched in his paralyzed hands — he could barely move but refused to let go of it. At his funeral, a small note was discovered in his pocket with instructions to deliver medicine to a sick man he had been visiting. Even on his deathbed, he was thinking of others.", "challenge": { "type": "dilemma", "prompt": "You are gravely ill but know someone who needs help. What do you do?", "options": ["Make sure someone carries out the errand of mercy on your behalf", "Focus entirely on your own recovery", "Feel guilty but accept you can't help right now", "Wait until you recover to help them"], "answer_index": 0 }, "reward": {"Mercy": 2, "Courage": 1} },
-        { "title": "Beatification", "story": "On May 20, 1990, Pope John Paul II beatified Pier Giorgio Frassati in St. Peter's Square, calling him 'the man of the eight Beatitudes.' When his body was exhumed for the process, it was found remarkably intact — 65 years after his death. Thousands of young people gathered, claiming Pier Giorgio as one of their own.", "challenge": { "type": "trivia", "question": "Which Pope beatified Pier Giorgio Frassati in 1990?", "choices": ["John Paul II", "Benedict XVI", "Paul VI", "Francis"], "answer_index": 0 }, "reward": {"Faith": 2, "Courage": 1} },
-        { "title": "Not Charity Alone", "story": "Pier Giorgio once wrote: 'Charity is not enough; we need social reform.' He didn't just hand out food — he fought for systemic change, joining the People's Party and advocating for workers' rights. He saw faith and justice as inseparable, believing Christians had a duty to transform society, not just ease its symptoms.", "challenge": { "type": "trivia", "question": "What organization for serving the poor did Pier Giorgio actively work with?", "choices": ["St. Vincent de Paul Society", "Knights of Columbus", "Opus Dei", "Jesuit Volunteer Corps"], "answer_index": 0 }, "reward": {"Wisdom": 2, "Mercy": 1} },
-        { "title": "The Engagement That Never Was", "story": "Pier Giorgio fell deeply in love with Laura Hidalgo, but his parents disapproved of the match — she wasn't from the right social class. Rather than defy his family or cause a scandal, Pier Giorgio silently gave up his hopes of marriage, channeling his heartbreak into even deeper service to the poor. He never told Laura why he pulled away.", "challenge": { "type": "dilemma", "prompt": "Your family opposes your deepest desire for love. How do you respond?", "options": ["Sacrifice your desire in obedience while pouring love into service", "Rebel and marry against their wishes", "Become bitter and withdraw from family", "Confront them publicly to shame them into agreeing"], "answer_index": 0 }, "reward": {"Courage": 1, "Faith": 2} }
-      ]
-    };
-
-    // NEW QUESTS — appended to each saint (5 more each)
-    const extraQuests = {
-      "francis": [
-        { "title": "Canticle of the Sun", "story": "Near the end of his life, nearly blind and in constant pain, Francis composes the 'Canticle of Brother Sun' — among the earliest masterpieces of Italian literature. He praises God through Brother Sun, Sister Moon, Brother Wind, and even 'Sister Bodily Death.' It is a song of pure joy from a man who has nothing left but God.", "challenge": { "type": "trivia", "question": "The Canticle of the Sun is considered one of the first great works of literature in which language?", "choices": ["Italian", "Latin", "French", "Spanish"], "answer_index": 0 }, "reward": {"Faith": 2, "Wisdom": 1} },
-        { "title": "Meeting the Sultan", "story": "During the Fifth Crusade in 1219, while Christian and Muslim armies slaughter each other, Francis crosses enemy lines unarmed to meet Sultan Al-Kamil of Egypt. The Sultan is so impressed by Francis's courage and sincerity that he grants him safe passage and listens to his message of peace — an extraordinary moment of interfaith dialogue 800 years ago.", "challenge": { "type": "trivia", "question": "Which Sultan did Francis meet during the Fifth Crusade?", "choices": ["Al-Kamil", "Saladin", "Baybars", "Suleiman"], "answer_index": 0 }, "reward": {"Courage": 2, "Mercy": 1} },
-        { "title": "The First Christmas Crèche", "story": "In 1223, in the town of Greccio, Francis creates the first live nativity scene — a manger with real hay, a live ox and donkey, and villagers playing Mary and Joseph. He wants people to see and feel the poverty and humility of Christ's birth, not just hear about it. The tradition of the Christmas crèche spreads across the world.", "challenge": { "type": "trivia", "question": "In which Italian town did Francis create the first Christmas nativity scene in 1223?", "choices": ["Greccio", "Assisi", "Rome", "Bethlehem"], "answer_index": 0 }, "reward": {"Faith": 1, "Mercy": 2} },
-        { "title": "Founding the Order", "story": "What begins as Francis and a handful of friends living in radical poverty grows into one of the largest religious orders in history. In 1209, Francis walks to Rome and asks Pope Innocent III to approve his new way of life. The Pope, initially skeptical, has a dream of Francis holding up the crumbling Lateran Basilica — and grants approval.", "challenge": { "type": "trivia", "question": "Which Pope approved the Franciscan Order after dreaming of Francis holding up the church?", "choices": ["Innocent III", "Gregory IX", "Boniface VIII", "Clement V"], "answer_index": 0 }, "reward": {"Courage": 1, "Faith": 2} },
-        { "title": "Sister Death", "story": "On October 3, 1226, Francis lies dying on the bare ground at the Portiuncula chapel. He asks his brothers to lay him naked on the earth — he came into the world with nothing and wants to leave the same way. He welcomes death as 'Sister Death,' singing the final verse of his Canticle. He is 44 years old.", "challenge": { "type": "dilemma", "prompt": "Facing death, how do you prepare to meet God?", "options": ["Welcome it with gratitude and surrender everything", "Fight it with every ounce of strength", "Ignore it and pretend everything is normal", "Bargain for more time to accomplish your goals"], "answer_index": 0 }, "reward": {"Faith": 2, "Courage": 1} }
-      ],
-      "carlo": [
-        { "title": "Be Original, Not a Photocopy", "story": "Carlo's most famous quote captures his entire philosophy: 'Everyone is born as an original, but many people end up dying as photocopies.' He urged his peers to stop imitating celebrities and influencers and instead become the unique saints God created them to be. The quote has gone viral among Catholic youth worldwide.", "challenge": { "type": "trivia", "question": "Complete Carlo's quote: 'Everyone is born as an original, but many people end up dying as...'", "choices": ["Photocopies", "Shadows", "Strangers", "Followers"], "answer_index": 0 }, "reward": {"Wisdom": 2, "Faith": 1} },
-        { "title": "The Miracle of Lanciano", "story": "Among the Eucharistic miracles Carlo documented, Lanciano holds a special place — in the 8th century, a doubting priest saw the bread transform into actual flesh and the wine into real blood during Mass. Scientific analysis in 1971 confirmed the flesh is human heart tissue and the blood is type AB. Carlo meticulously researched and presented this evidence.", "challenge": { "type": "trivia", "question": "Scientific analysis of the Lanciano Eucharistic miracle found the flesh to be which type of human tissue?", "choices": ["Heart tissue", "Brain tissue", "Skin tissue", "Lung tissue"], "answer_index": 0 }, "reward": {"Faith": 2, "Wisdom": 1} },
-        { "title": "Beatification in Assisi", "story": "On October 10, 2020, Carlo Acutis was beatified in the Basilica of St. Francis in Assisi — fittingly, the city of another saint who embraced radical simplicity. His body, dressed in his favorite jeans and Nike sneakers, was displayed for veneration. He became the first millennial to be beatified, inspiring a new generation.", "challenge": { "type": "trivia", "question": "In which city was Carlo Acutis beatified in 2020?", "choices": ["Assisi", "Rome", "Milan", "Turin"], "answer_index": 0 }, "reward": {"Faith": 2, "Courage": 1} },
-        { "title": "The Gamer Saint", "story": "Carlo loved playing video games — but he set strict limits for himself, allowing no more than one hour per week. He believed in using technology wisely, not being enslaved by it. 'The internet is a gift from God,' he said, 'but we must be careful not to let it become an addiction.'", "challenge": { "type": "dilemma", "prompt": "You love gaming but worry about screen time. What's the wisest approach?", "options": ["Set firm limits and stick to them, using tech intentionally", "Give up all games and technology completely", "Play as much as you want — it's just entertainment", "Only play when others aren't watching"], "answer_index": 0 }, "reward": {"Wisdom": 2, "Courage": 1} },
-        { "title": "His Love of Animals", "story": "Carlo had a deep love for animals, especially his dogs and cats. He would stop to pet every stray he encountered and advocated for their care. Like his patron St. Francis, he saw all creatures as gifts from God deserving of kindness. His family's pets were inconsolable after his death.", "challenge": { "type": "dilemma", "prompt": "You encounter a stray animal that needs help but you're running late. What do you do?", "options": ["Stop and help — every creature deserves compassion", "Keep walking — you have responsibilities", "Take a photo and post about it later", "Call someone else to handle it"], "answer_index": 0 }, "reward": {"Mercy": 2, "Faith": 1} }
-      ],
-      "joan": [
-        { "title": "The Sword of Fierbois", "story": "Joan tells the Dauphin's men to go to the church of Sainte-Catherine-de-Fierbois and dig behind the altar — there they will find a sword marked with five crosses. Astonishingly, they find exactly what she described, buried and rusted. No one can explain how an illiterate peasant girl knew it was there. The sword becomes her weapon of choice.", "challenge": { "type": "trivia", "question": "Where did Joan say a buried sword marked with five crosses would be found?", "choices": ["Behind the altar at Sainte-Catherine-de-Fierbois", "In the royal armory at Chinon", "Beneath the walls of Orléans", "In a cave near Domrémy"], "answer_index": 0 }, "reward": {"Faith": 2, "Courage": 1} },
-        { "title": "The Banner Over the Sword", "story": "Joan carried a white banner painted with images of God, angels, and the fleur-de-lis into battle. She later testified that she preferred her banner to her sword and never personally killed anyone in combat. She led from the front, rallying troops by her presence and courage rather than by violence.", "challenge": { "type": "dilemma", "prompt": "You must lead others into a dangerous situation. What do you carry?", "options": ["A symbol of hope and faith to inspire courage", "The strongest weapon available", "Nothing — lead by words alone", "A shield to protect only yourself"], "answer_index": 0 }, "reward": {"Courage": 2, "Faith": 1} },
-        { "title": "The Secret Sign", "story": "When Joan first meets the Dauphin at Chinon, he disguises himself among his courtiers to test her. She walks straight to him without hesitation. Then she tells him something in private — a secret prayer he had made to God that no one else could have known. Charles is convinced she is sent by God.", "challenge": { "type": "trivia", "question": "How did Joan identify the disguised Dauphin at the court of Chinon?", "choices": ["She walked straight to him despite his disguise", "A courtier pointed him out", "She had seen his portrait", "He revealed himself when she entered"], "answer_index": 0 }, "reward": {"Faith": 2, "Wisdom": 1} },
-        { "title": "Village Girl of Domrémy", "story": "Before the voices, Jeanne d'Arc was an ordinary peasant girl in Domrémy who could not read or write. She helped her parents tend the farm, spun wool, and went to church. Her neighbors remembered her as exceptionally pious and kind — a normal girl in every way except for the extraordinary destiny awaiting her.", "challenge": { "type": "trivia", "question": "What was Joan of Arc's home village?", "choices": ["Domrémy", "Rouen", "Orléans", "Reims"], "answer_index": 0 }, "reward": {"Mercy": 1, "Faith": 1} },
-        { "title": "The Rehabilitation Trial", "story": "In 1456, twenty-five years after Joan's execution, Pope Callixtus III orders a retrial. Witnesses who knew Joan — childhood friends, soldiers who fought beside her, clergy who questioned her — testify to her holiness and the injustice of her condemnation. The original verdict is overturned. Joan is declared innocent and a martyr.", "challenge": { "type": "trivia", "question": "How many years after Joan's death was her condemnation officially overturned?", "choices": ["25 years", "10 years", "50 years", "100 years"], "answer_index": 0 }, "reward": {"Courage": 1, "Faith": 2} }
-      ],
-      "aquinas": [
-        { "title": "The Family Kidnapping", "story": "When 19-year-old Thomas announces he wants to join the Dominican friars — a mendicant order that begs for its food — his noble family is horrified. His brothers kidnap him and lock him in the family castle for over a year, even sending a temptress to his room to break his resolve. Thomas drives her away with a burning log and spends his captivity studying Scripture.", "challenge": { "type": "trivia", "question": "How long did Thomas Aquinas's family hold him captive to prevent him from joining the Dominicans?", "choices": ["Over a year", "One week", "Three months", "Five years"], "answer_index": 0 }, "reward": {"Courage": 2, "Faith": 1} },
-        { "title": "Summa Contra Gentiles", "story": "Before the Summa Theologica, Thomas writes the Summa contra Gentiles — a work of apologetics designed to help missionaries explain Christianity to Muslims and pagans using reason alone, without relying on Scripture. It demonstrates his conviction that truth is truth regardless of its source, and that faith and philosophy lead to the same God.", "challenge": { "type": "dilemma", "prompt": "You need to explain your beliefs to someone who doesn't share your scriptures. What approach works best?", "options": ["Use reason and shared human experience as common ground", "Quote scripture repeatedly until they accept it", "Avoid the conversation entirely", "Insist they accept your authority first"], "answer_index": 0 }, "reward": {"Wisdom": 2, "Mercy": 1} },
-        { "title": "The Feast Day", "story": "Thomas Aquinas's feast day is January 28, the date his relics were transferred to Toulouse. He is the patron saint of students, universities, and Catholic schools — fitting for a man who spent his entire life in study, teaching, and writing. Students around the world pray to him before exams.", "challenge": { "type": "trivia", "question": "What is the feast day of St. Thomas Aquinas?", "choices": ["January 28", "March 7", "December 8", "June 29"], "answer_index": 0 }, "reward": {"Faith": 1, "Wisdom": 2} },
-        { "title": "The Angelic Doctor", "story": "Thomas is called the 'Angelic Doctor' — partly for the purity of his life (the story of resisting the temptress) and partly for the seemingly superhuman breadth of his intellect. He could dictate to four secretaries simultaneously on four different topics. His complete works fill over 60 volumes and have shaped Catholic thought for 750 years.", "challenge": { "type": "trivia", "question": "What title is St. Thomas Aquinas known by in Catholic tradition?", "choices": ["The Angelic Doctor", "The Seraphic Doctor", "The Universal Doctor", "The Subtle Doctor"], "answer_index": 0 }, "reward": {"Wisdom": 2, "Faith": 1} },
-        { "title": "Siger of Brabant", "story": "Thomas's greatest intellectual battle is against Siger of Brabant, who teaches that philosophy and theology can reach contradictory truths — the 'double truth' theory. Thomas systematically demolishes this position, insisting there is only one truth, and faith and reason must ultimately agree. His victory shapes Western intellectual history.", "challenge": { "type": "dilemma", "prompt": "Someone claims faith and reason lead to contradictory truths. How do you respond?", "options": ["Demonstrate that truth is one — faith and reason are complementary paths", "Agree that faith and reason occupy separate domains", "Dismiss reason as inferior to faith", "Abandon faith in favor of pure reason"], "answer_index": 0 }, "reward": {"Wisdom": 2, "Courage": 1} }
-      ],
-      "teresa": [
-        { "title": "Agnes of Skopje", "story": "Mother Teresa was born Anjezë Gonxhe Bojaxhiu on August 26, 1910, in Skopje, in what is now North Macedonia. She was Albanian, not Indian — a fact that surprises many. At 18, she left home forever to join the Sisters of Loreto in Ireland, then traveled to India. She never saw her mother or sister again.", "challenge": { "type": "trivia", "question": "In which city was Mother Teresa born?", "choices": ["Skopje", "Calcutta", "Tirana", "Rome"], "answer_index": 0 }, "reward": {"Courage": 1, "Faith": 2} },
-        { "title": "The Sari as Habit", "story": "When Mother Teresa founded the Missionaries of Charity, she chose a simple white cotton sari with blue borders as the order's habit — the dress of the poorest Indian women. It was a radical departure from traditional religious habits and a powerful symbol: the sisters would dress as the poor they served, not above them.", "challenge": { "type": "dilemma", "prompt": "You're founding a new religious order to serve the poorest. What should the members wear?", "options": ["The clothing of the poor they serve, as a sign of solidarity", "Traditional ornate religious vestments", "Normal civilian clothing to blend in", "Matching uniforms to show organization"], "answer_index": 0 }, "reward": {"Mercy": 2, "Wisdom": 1} },
-        { "title": "A Princess and a Saint", "story": "Mother Teresa and Princess Diana formed an unlikely friendship, meeting several times in the early 1990s. Diana visited Mother Teresa's hospice in Calcutta and was deeply moved. When both died within days of each other in September 1997, the world mourned two women who, in very different ways, brought compassion to global consciousness.", "challenge": { "type": "trivia", "question": "Mother Teresa and Princess Diana died within how many days of each other in 1997?", "choices": ["About five days", "About thirty days", "The same day", "About six months"], "answer_index": 0 }, "reward": {"Mercy": 1, "Faith": 1} },
-        { "title": "Canonization", "story": "On September 4, 2016, Pope Francis canonized Mother Teresa before 120,000 people in St. Peter's Square. The miracle attributed to her intercession involved a Brazilian man with multiple brain tumors who was inexplicably cured. She became St. Teresa of Calcutta — though to most of the world, she had been a saint all along.", "challenge": { "type": "trivia", "question": "Which Pope canonized Mother Teresa in 2016?", "choices": ["Pope Francis", "Pope Benedict XVI", "Pope John Paul II", "Pope John XXIII"], "answer_index": 0 }, "reward": {"Faith": 2, "Mercy": 1} },
-        { "title": "Do Small Things with Great Love", "story": "Mother Teresa's most enduring teaching is breathtakingly simple: 'Not all of us can do great things. But we can do small things with great love.' She insisted that holiness wasn't about grand gestures but about the love poured into every act — holding a dying person's hand, offering a glass of water, smiling at a stranger.", "challenge": { "type": "dilemma", "prompt": "You want to change the world but feel powerless. What is the most powerful thing you can do?", "options": ["Do small things with great love, starting right where you are", "Wait until you have more resources and influence", "Focus on one big dramatic project", "Give up — the problems are too large"], "answer_index": 0 }, "reward": {"Mercy": 2, "Wisdom": 1} }
-      ],
-      "patrick": [
-        { "title": "The Confession", "story": "Patrick writes his 'Confession' (Confessio) — one of only two surviving documents in his own hand. In it, he describes himself as a 'sinner, most unlearned,' sharing his story of slavery, escape, and return with raw honesty. It is the first autobiography in Irish history and one of the most important documents of the early medieval Church.", "challenge": { "type": "trivia", "question": "Patrick's 'Confessio' is considered the first what in Irish history?", "choices": ["Autobiography", "Legal document", "Prayer book", "Poetry collection"], "answer_index": 0 }, "reward": {"Wisdom": 1, "Faith": 2} },
-        { "title": "The Paschal Fire at Tara", "story": "On the night of Easter, Patrick lights a great bonfire on the Hill of Slane — directly defying the High King's law that no fire may be lit before the royal fire at Tara. The druids warn the King: 'If that fire is not put out tonight, it will burn forever in this land.' They were right. Patrick's fire — Christianity — was never extinguished in Ireland.", "challenge": { "type": "trivia", "question": "On which hill did Patrick light the Paschal fire, defying the High King?", "choices": ["Hill of Slane", "Hill of Tara", "Croagh Patrick", "Rock of Cashel"], "answer_index": 0 }, "reward": {"Courage": 2, "Faith": 1} },
-        { "title": "Croagh Patrick", "story": "Tradition holds that Patrick fasted for 40 days atop Croagh Patrick, a mountain in County Mayo, praying for the people of Ireland. Today, over 100,000 pilgrims climb the mountain each year — many barefoot — on 'Reek Sunday' in July. It remains one of the most important pilgrimage sites in Western Europe.", "challenge": { "type": "trivia", "question": "How many days did Patrick reportedly fast atop Croagh Patrick?", "choices": ["40 days", "7 days", "12 days", "100 days"], "answer_index": 0 }, "reward": {"Faith": 2, "Courage": 1} },
-        { "title": "March 17", "story": "St. Patrick's feast day — March 17 — is celebrated in more countries than any other national saint's day. What began as a solemn religious observance in Ireland has become a global celebration of Irish culture. In Chicago, they dye the river green. In Ireland, the day was a quiet, holy day until the late 20th century.", "challenge": { "type": "trivia", "question": "What was St. Patrick's Day traditionally like in Ireland before the late 20th century?", "choices": ["A quiet, solemn religious observance", "A massive street party", "A national holiday with parades", "A day off work with no celebration"], "answer_index": 0 }, "reward": {"Faith": 1, "Wisdom": 2} },
-        { "title": "History vs Legend", "story": "Much of what people 'know' about Patrick is legend, not history. He almost certainly didn't drive out snakes (Ireland never had any post-Ice Age). He probably didn't use the shamrock (first recorded centuries later). What IS historical: a British slave who escaped, became a bishop, returned to convert Ireland, and wrote two surviving documents of extraordinary power.", "challenge": { "type": "dilemma", "prompt": "You discover that beloved stories about a saint aren't historically accurate. What matters more?", "options": ["The real person and their actual faith are more inspiring than legends", "The legends are important and should never be questioned", "Discard the saint entirely if any story is inaccurate", "Only accept what can be scientifically proven"], "answer_index": 0 }, "reward": {"Wisdom": 2, "Faith": 1} }
-      ],
-      "therese": [
-        { "title": "The Christmas Grace", "story": "At 13, Thérèse is still prone to childish tears and emotional outbursts. On Christmas Eve 1886, she overhears her father complaining about her crying. In that moment, something shifts — she receives what she calls her 'Christmas grace,' an instant transformation. She stops crying, grows emotionally strong, and dates her true conversion from this night.", "challenge": { "type": "trivia", "question": "At what age did Thérèse receive her 'Christmas grace' conversion?", "choices": ["13", "10", "15", "7"], "answer_index": 0 }, "reward": {"Faith": 2, "Courage": 1} },
-        { "title": "Sister Céline", "story": "Thérèse's older sister Céline was her closest companion and confidante. After their father's death, Céline also entered the Carmel of Lisieux, joining three of her sisters already there. Céline brought a camera — and took the only photographs of Thérèse that exist. Without Céline, we would have no image of one of the most beloved saints in history.", "challenge": { "type": "trivia", "question": "What important item did Thérèse's sister Céline bring to the Carmelite convent?", "choices": ["A camera", "A Bible", "A painting", "A reliquary"], "answer_index": 0 }, "reward": {"Mercy": 1, "Wisdom": 2} },
-        { "title": "Spiritual Mother of Priests", "story": "Thérèse was given two missionary priests as 'spiritual brothers' — she prayed and sacrificed for them daily. One was assigned to Africa, the other to China. She poured her heart into supporting their missions through prayer, believing that her hidden sacrifices in the convent were as important as their visible work in the field.", "challenge": { "type": "dilemma", "prompt": "You can't go on a mission yourself, but you can support someone who does. How do you help most?", "options": ["Commit to daily prayer and sacrifice specifically for their mission", "Send money and move on with your life", "Feel guilty that you can't go yourself", "Tell them you'll pray but forget about it"], "answer_index": 0 }, "reward": {"Faith": 2, "Mercy": 1} },
-        { "title": "Patroness of Missions", "story": "Despite never leaving her tiny Carmelite convent in Lisieux, Thérèse was declared Patroness of the Missions alongside St. Francis Xavier — who traveled the world. The Church recognizes that her hidden prayers and sacrifices were just as powerful as Xavier's globe-spanning adventures. It is a stunning vindication of her Little Way.", "challenge": { "type": "trivia", "question": "Thérèse shares the title 'Patron of Missions' with which globe-trotting saint?", "choices": ["St. Francis Xavier", "St. Paul the Apostle", "St. Patrick", "St. Ignatius of Loyola"], "answer_index": 0 }, "reward": {"Faith": 2, "Wisdom": 1} },
-        { "title": "October 1", "story": "Thérèse's feast day is October 1 — and it is one of the most celebrated feast days in the Catholic calendar. She died on September 30, 1897, at age 24, whispering 'My God, I love You.' Within decades she was canonized, declared a Doctor of the Church, and recognized as one of the greatest mystics in Christian history.", "challenge": { "type": "trivia", "question": "At what age did St. Thérèse of Lisieux die?", "choices": ["24", "30", "19", "33"], "answer_index": 0 }, "reward": {"Faith": 2, "Mercy": 1} }
-      ]
-    };
+  "francis": [
+    {
+      "title": "The Wolf of Gubbio",
+      "story": "The town of Gubbio lives in terror. A massive wolf prowls the countryside, attacking livestock and even threatening people who venture beyond the walls. The townspeople beg Francis for help, expecting him to call for hunters — but Francis has a different plan.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "The wolf snarls at you from the edge of the forest. What do you do?",
+        "options": [
+          "Walk toward it unarmed, speaking words of peace",
+          "Organize the townspeople to drive it away",
+          "Set traps around the village perimeter",
+          "Pray from a safe distance and hope it leaves"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Mercy": 2,
+        "Courage": 1
+      }
+    },
+    {
+      "title": "Sermon to the Birds",
+      "story": "Walking through the Spoleto Valley, Francis notices a vast flock of birds gathered in the trees and fields. His companions want to press on, but Francis feels called to stop. He begins to preach to the birds about gratitude for God's gifts — and remarkably, they fall silent and listen.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What is St. Francis of Assisi the patron saint of?",
+        "choices": [
+          "Animals and ecology",
+          "Lost causes",
+          "Travelers",
+          "Musicians"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Mercy": 1,
+        "Courage": 1
+      }
+    },
+    {
+      "title": "Rebuild My Church",
+      "story": "Praying before a crucifix in the crumbling chapel of San Damiano, Francis hears a voice: 'Francis, go and repair my church, which as you see is falling into ruin.' He takes it literally at first, hauling stones to rebuild the chapel — but gradually understands the deeper call to renew the entire Church.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You feel called to rebuild something broken. What is the best first step?",
+        "options": [
+          "Start with small acts of love and service",
+          "Wait for someone more qualified to lead",
+          "Seek recognition for your willingness",
+          "Debate the best approach endlessly"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 2,
+        "Mercy": 1
+      }
+    },
+    {
+      "title": "The Stigmata",
+      "story": "On Mount La Verna in 1224, during an intense period of prayer and fasting, Francis has a vision of a seraph — a six-winged angel bearing the image of Christ crucified. When the vision fades, Francis discovers he bears the wounds of Christ on his hands, feet, and side — the first recorded stigmata.",
+      "challenge": {
+        "type": "trivia",
+        "question": "In what year did Francis of Assisi receive the stigmata on Mount La Verna?",
+        "choices": [
+          "1224",
+          "1210",
+          "1226",
+          "1209"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Courage": 1
+      }
+    },
+    {
+      "title": "Lady Poverty",
+      "story": "Born to a wealthy cloth merchant, the young Francis loved fine clothes and parties. After a profound conversion, he stripped off his expensive garments in the town square, renouncing his inheritance before the bishop and his own father. He chose radical poverty as his bride — 'Lady Poverty' — owning nothing so he could receive everything from God.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What was Francis's father's profession before Francis renounced his wealth?",
+        "choices": [
+          "Cloth merchant",
+          "Blacksmith",
+          "Farmer",
+          "Nobleman"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Mercy": 1,
+        "Courage": 2
+      }
+    }
+  ],
+  "carlo": [
+    {
+      "title": "The Digital Evangelist",
+      "story": "At just 11 years old, Carlo Acutis began creating a comprehensive catalog of documented Eucharistic miracles around the world, building a website to share them. While other kids his age were playing video games, Carlo was teaching himself web design and programming to spread the faith — making him a pioneer of digital evangelization.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What did Carlo Acutis famously catalog on his website?",
+        "choices": [
+          "Eucharistic miracles",
+          "Lives of the saints",
+          "Marian apparitions",
+          "Biblical archaeology"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Wisdom": 1
+      }
+    },
+    {
+      "title": "Coding for the Kingdom",
+      "story": "Carlo believed technology was a gift from God that should be used to bring people closer to Him. He built websites, edited videos, and created digital content about the faith — all while maintaining a deep prayer life. He once said, 'The internet is a gift from God, and we must use it well.'",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You have a talent for technology. How do you use it for God?",
+        "options": [
+          "Teach others what you've learned and share the faith",
+          "Keep your skills to yourself",
+          "Use it only to gain followers",
+          "Abandon technology entirely"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Wisdom": 2,
+        "Faith": 1
+      }
+    },
+    {
+      "title": "Daily Mass",
+      "story": "From the time of his First Communion at age 7, Carlo never missed daily Mass. He called the Eucharist 'my highway to heaven.' Even as a teenager surrounded by secular culture in Milan, he prioritized his time before the Blessed Sacrament above everything else.",
+      "challenge": {
+        "type": "trivia",
+        "question": "Carlo called the Eucharist his '_____ to heaven.'",
+        "choices": [
+          "Highway",
+          "Ladder",
+          "Bridge",
+          "Doorway"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Wisdom": 1
+      }
+    },
+    {
+      "title": "A Heart for the Poor",
+      "story": "Despite coming from a wealthy Italian family, Carlo lived simply and gave generously. He saved his allowance to buy sleeping bags for homeless people in Milan, and he volunteered at a soup kitchen run by the Capuchin friars. His mother later said she never knew how much he gave away until after his death.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You receive a generous allowance. What do you do with it?",
+        "options": [
+          "Save some and give the rest to those in need",
+          "Spend it all on yourself — you earned it",
+          "Save every penny for the future",
+          "Give it all away and borrow from friends"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Mercy": 2,
+        "Faith": 1
+      }
+    },
+    {
+      "title": "Called Home Young",
+      "story": "In October 2006, 15-year-old Carlo was diagnosed with aggressive leukemia. Facing his death with extraordinary faith, he offered his sufferings for the Pope and the Church. He told his mother, 'I offer all the suffering I will have to endure for the Lord, for the Pope, and for the Church.' He died on October 12, 2006, and was beatified in 2020.",
+      "challenge": {
+        "type": "trivia",
+        "question": "At what age did Carlo Acutis die of leukemia?",
+        "choices": [
+          "15",
+          "12",
+          "17",
+          "20"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Courage": 1
+      }
+    }
+  ],
+  "joan": [
+    {
+      "title": "Voices from Heaven",
+      "story": "In the small village of Domrémy, 13-year-old Jeanne hears voices in her father's garden. Saints Michael, Catherine, and Margaret speak to her with an impossible command: save France from English occupation. She is an illiterate peasant girl — yet the voices are unmistakable and persistent.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You hear a divine call to do something far beyond your abilities. What do you do?",
+        "options": [
+          "Trust the call and take the first step despite your fear",
+          "Wait for a sign that you're truly worthy",
+          "Tell no one and hope the voices stop",
+          "Ask someone more qualified to go instead"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Courage": 1
+      }
+    },
+    {
+      "title": "The Siege of Orléans",
+      "story": "Joan convinces the Dauphin to give her armor and an army. At 17, she rides into the besieged city of Orléans, rallying demoralized French troops. In just nine days, she breaks the English siege — a turning point in the Hundred Years' War that stunned all of Europe.",
+      "challenge": {
+        "type": "trivia",
+        "question": "How long did it take Joan of Arc to lift the Siege of Orléans?",
+        "choices": [
+          "Nine days",
+          "Three months",
+          "One year",
+          "Three days"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 2,
+        "Faith": 1
+      }
+    },
+    {
+      "title": "The Coronation at Reims",
+      "story": "After liberating Orléans, Joan escorts the Dauphin Charles through enemy territory to the cathedral at Reims, where French kings are traditionally crowned. On July 17, 1429, Charles VII is crowned King of France — fulfilling Joan's divine mission and legitimizing his claim to the throne.",
+      "challenge": {
+        "type": "trivia",
+        "question": "In which cathedral was Charles VII crowned, fulfilling Joan's mission?",
+        "choices": [
+          "Reims Cathedral",
+          "Notre-Dame de Paris",
+          "Chartres Cathedral",
+          "Sainte-Chapelle"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 1,
+        "Courage": 2
+      }
+    },
+    {
+      "title": "The Trial",
+      "story": "Captured by Burgundian forces and sold to the English, Joan faces a rigged ecclesiastical trial in Rouen. Her judges, loyal to England, twist her words and accuse her of heresy and witchcraft. Despite months of interrogation, the uneducated teenager's answers are so brilliant that they confound the learned theologians.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You face an unjust trial where the verdict is predetermined. How do you respond?",
+        "options": [
+          "Speak the truth boldly, trusting God with the outcome",
+          "Recant everything to save your life",
+          "Refuse to speak at all",
+          "Try to negotiate a secret deal"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 2,
+        "Faith": 1
+      }
+    },
+    {
+      "title": "The Flames of Rouen",
+      "story": "On May 30, 1431, nineteen-year-old Joan is burned at the stake in the marketplace of Rouen. She asks for a cross to be held before her eyes and calls out the name of Jesus with her final breaths. Twenty-five years later, a retrial declares her innocent. She is canonized in 1920.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What was Joan of Arc's age when she was martyred at Rouen?",
+        "choices": [
+          "19",
+          "17",
+          "21",
+          "25"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 2,
+        "Faith": 2
+      }
+    },
+    {
+      "title": "The Sword of Fierbois",
+      "story": "Joan tells the Dauphin's men to go to the church of Sainte-Catherine-de-Fierbois and dig behind the altar — there they will find a sword marked with five crosses. Astonishingly, they find exactly what she described, buried and rusted. No one can explain how an illiterate peasant girl knew it was there. The sword becomes her weapon of choice.",
+      "challenge": {
+        "type": "trivia",
+        "question": "Where did Joan say a buried sword marked with five crosses would be found?",
+        "choices": [
+          "Behind the altar at Sainte-Catherine-de-Fierbois",
+          "In the royal armory at Chinon",
+          "Beneath the walls of Orléans",
+          "In a cave near Domrémy"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Courage": 1
+      }
+    }
+  ],
+  "aquinas": [
+    {
+      "title": "The Dumb Ox",
+      "story": "Young Thomas is so large, quiet, and slow-moving that his classmates at the University of Paris mock him as 'the Dumb Ox.' His teacher, the great Albertus Magnus, sees something the others miss. After Thomas delivers a brilliant disputation, Albert declares: 'You call him the Dumb Ox, but I tell you this ox will bellow so loud his bellowing will fill the world.'",
+      "challenge": {
+        "type": "trivia",
+        "question": "Who was Thomas Aquinas's famous teacher who defended him as 'the Dumb Ox'?",
+        "choices": [
+          "Albertus Magnus",
+          "Peter Lombard",
+          "Bonaventure",
+          "Anselm of Canterbury"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Wisdom": 2,
+        "Faith": 1
+      }
+    },
+    {
+      "title": "The Summa Theologica",
+      "story": "Thomas embarks on the most ambitious intellectual project in Christian history — the Summa Theologica. In this masterwork, he systematically addresses nearly every question about God, creation, morality, and salvation. It contains 3,125 articles, each structured with objections, a core argument, and replies. He never finished it.",
+      "challenge": {
+        "type": "trivia",
+        "question": "How many articles does the Summa Theologica contain?",
+        "choices": [
+          "About 3,125",
+          "About 500",
+          "About 10,000",
+          "About 1,000"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Wisdom": 2,
+        "Faith": 1
+      }
+    },
+    {
+      "title": "The Five Ways",
+      "story": "In the Summa, Thomas presents five rational arguments for the existence of God — from motion, causation, contingency, degrees of perfection, and design. These 'Five Ways' become the foundation of natural theology, showing that faith and reason are not enemies but partners in the search for truth.",
+      "challenge": {
+        "type": "trivia",
+        "question": "Which of these is NOT one of Aquinas's Five Ways to prove God's existence?",
+        "choices": [
+          "The argument from Scripture",
+          "The argument from motion",
+          "The argument from causation",
+          "The argument from design"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Wisdom": 2,
+        "Courage": 1
+      }
+    },
+    {
+      "title": "Pange Lingua",
+      "story": "Pope Urban IV asks Thomas to compose hymns for the new feast of Corpus Christi. Thomas writes 'Pange Lingua' and 'Tantum Ergo' — Eucharistic hymns of such beauty and theological precision that they are still sung in every Catholic church nearly 800 years later.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You're asked to create something to honor the Eucharist. What approach do you take?",
+        "options": [
+          "Pour your deepest understanding of the mystery into art",
+          "Copy what others have done before",
+          "Decline — you're a thinker, not an artist",
+          "Rush through it to move on to 'real' work"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Wisdom": 1
+      }
+    },
+    {
+      "title": "Straw and Fire",
+      "story": "On December 6, 1273, during Mass, Thomas has a mystical experience so profound that he stops writing forever. When urged to continue the Summa, he replies: 'Everything I have written seems like straw compared to what has now been revealed to me.' The greatest intellect of his age falls silent before the mystery of God.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "After a profound spiritual experience, you realize your life's work feels incomplete. What do you do?",
+        "options": [
+          "Accept that some mysteries are beyond words and rest in God",
+          "Force yourself to keep writing — the work must be finished",
+          "Doubt the experience and return to normal",
+          "Tell everyone about your vision to gain fame"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Wisdom": 2
+      }
+    },
+    {
+      "title": "The Family Kidnapping",
+      "story": "When 19-year-old Thomas announces he wants to join the Dominican friars — a mendicant order that begs for its food — his noble family is horrified. His brothers kidnap him and lock him in the family castle for over a year, even sending a temptress to his room to break his resolve. Thomas drives her away with a burning log and spends his captivity studying Scripture.",
+      "challenge": {
+        "type": "trivia",
+        "question": "How long did Thomas Aquinas's family hold him captive to prevent him from joining the Dominicans?",
+        "choices": [
+          "Over a year",
+          "One week",
+          "Three months",
+          "Five years"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 2,
+        "Faith": 1
+      }
+    }
+  ],
+  "teresa": [
+    {
+      "title": "Agnes of Skopje",
+      "story": "Mother Teresa was born Anjezë Gonxhe Bojaxhiu on August 26, 1910, in Skopje, in what is now North Macedonia. She was Albanian, not Indian — a fact that surprises many. At 18, she left home forever to join the Sisters of Loreto in Ireland, then traveled to India. She never saw her mother or sister again.",
+      "challenge": {
+        "type": "trivia",
+        "question": "In which city was Mother Teresa born?",
+        "choices": [
+          "Skopje",
+          "Calcutta",
+          "Tirana",
+          "Rome"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 1,
+        "Faith": 2
+      }
+    },
+    {
+      "title": "The Sari as Habit",
+      "story": "When Mother Teresa founded the Missionaries of Charity, she chose a simple white cotton sari with blue borders as the order's habit — the dress of the poorest Indian women. It was a radical departure from traditional religious habits and a powerful symbol: the sisters would dress as the poor they served, not above them.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You're founding a new religious order to serve the poorest. What should the members wear?",
+        "options": [
+          "The clothing of the poor they serve, as a sign of solidarity",
+          "Traditional ornate religious vestments",
+          "Normal civilian clothing to blend in",
+          "Matching uniforms to show organization"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Mercy": 2,
+        "Wisdom": 1
+      }
+    },
+    {
+      "title": "A Princess and a Saint",
+      "story": "Mother Teresa and Princess Diana formed an unlikely friendship, meeting several times in the early 1990s. Diana visited Mother Teresa's hospice in Calcutta and was deeply moved. When both died within days of each other in September 1997, the world mourned two women who, in very different ways, brought compassion to global consciousness.",
+      "challenge": {
+        "type": "trivia",
+        "question": "Mother Teresa and Princess Diana died within how many days of each other in 1997?",
+        "choices": [
+          "About five days",
+          "About thirty days",
+          "The same day",
+          "About six months"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Mercy": 1,
+        "Faith": 1
+      }
+    },
+    {
+      "title": "Canonization",
+      "story": "On September 4, 2016, Pope Francis canonized Mother Teresa before 120,000 people in St. Peter's Square. The miracle attributed to her intercession involved a Brazilian man with multiple brain tumors who was inexplicably cured. She became St. Teresa of Calcutta — though to most of the world, she had been a saint all along.",
+      "challenge": {
+        "type": "trivia",
+        "question": "Which Pope canonized Mother Teresa in 2016?",
+        "choices": [
+          "Pope Francis",
+          "Pope Benedict XVI",
+          "Pope John Paul II",
+          "Pope John XXIII"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Mercy": 1
+      }
+    },
+    {
+      "title": "Do Small Things with Great Love",
+      "story": "Mother Teresa's most enduring teaching is breathtakingly simple: 'Not all of us can do great things. But we can do small things with great love.' She insisted that holiness wasn't about grand gestures but about the love poured into every act — holding a dying person's hand, offering a glass of water, smiling at a stranger.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You want to change the world but feel powerless. What is the most powerful thing you can do?",
+        "options": [
+          "Do small things with great love, starting right where you are",
+          "Wait until you have more resources and influence",
+          "Focus on one big dramatic project",
+          "Give up — the problems are too large"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Mercy": 2,
+        "Wisdom": 1
+      }
+    },
+    {
+      "title": "The Call Within a Call",
+      "story": "Sister Teresa is already a nun teaching at a comfortable school in Calcutta when, on a train to Darjeeling in 1946, she receives what she calls 'a call within a call' — a vision of Jesus asking her to leave the convent and serve the poorest of the poor in the slums. It means giving up everything she knows.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You have a comfortable life serving God, but feel called to something harder. What do you do?",
+        "options": [
+          "Leave your comfort zone and follow the call",
+          "Stay where you are — you're already serving God",
+          "Ask for more time to think about it",
+          "Suggest someone else is better suited"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Mercy": 1
+      }
+    }
+  ],
+  "patrick": [
+    {
+      "title": "Kidnapped to Ireland",
+      "story": "At 16, the Roman-British boy Patricius is kidnapped by Irish raiders and sold into slavery. For six years he tends sheep on a cold Irish hillside, alone and far from home. In his isolation, he turns to prayer — praying a hundred times a day and a hundred times each night — and discovers a faith he never had as a free boy.",
+      "challenge": {
+        "type": "trivia",
+        "question": "How many years was St. Patrick held as a slave in Ireland?",
+        "choices": [
+          "Six years",
+          "Two years",
+          "Ten years",
+          "Twelve years"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 2,
+        "Faith": 1
+      }
+    },
+    {
+      "title": "The Great Escape",
+      "story": "After six years of slavery, Patrick hears a voice in a dream telling him his ship is ready. He walks nearly 200 miles to the coast, convinces a crew of strangers to take him aboard, and eventually makes it back to Britain. Most people would never look back — but Patrick can't forget the Irish people.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You've escaped captivity and returned home safely. But you dream of the people who enslaved you calling for help. What do you do?",
+        "options": [
+          "Return to bring them the faith that saved you",
+          "Stay safe at home — you've suffered enough",
+          "Send someone else in your place",
+          "Try to forget the dreams"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 2,
+        "Mercy": 1
+      }
+    },
+    {
+      "title": "The Shamrock",
+      "story": "Now a bishop, Patrick returns to Ireland to evangelize the pagan Celts. When the High King's druids challenge him to explain the Christian Trinity — how God can be three persons yet one God — Patrick bends down and picks a shamrock from the grass. 'Three leaves, one plant,' he says. The image becomes the most famous symbol of Ireland.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What doctrine did St. Patrick explain using the shamrock?",
+        "choices": [
+          "The Holy Trinity",
+          "The Incarnation",
+          "The Resurrection",
+          "The Immaculate Conception"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Wisdom": 1,
+        "Faith": 2
+      }
+    },
+    {
+      "title": "Driving Out the Serpents",
+      "story": "Legend holds that Patrick drove all the snakes from Ireland by standing on a hilltop and commanding them into the sea. While Ireland indeed has no native snakes, scholars believe the story symbolizes Patrick driving out pagan worship — the 'serpents' of druidic religion that held the Irish people in spiritual bondage.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What do most scholars believe the 'snakes' St. Patrick drove from Ireland symbolize?",
+        "choices": [
+          "Pagan/druidic worship",
+          "Actual reptiles",
+          "Viking invaders",
+          "Roman soldiers"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 1,
+        "Wisdom": 2
+      }
+    },
+    {
+      "title": "The Breastplate",
+      "story": "Patrick composes the Lorica — 'St. Patrick's Breastplate' — a powerful prayer of protection invoking the Trinity, the forces of creation, and the armor of God. 'Christ with me, Christ before me, Christ behind me, Christ in me, Christ beneath me, Christ above me.' It has been prayed by Christians for over 1,500 years.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You face spiritual danger. How do you protect yourself?",
+        "options": [
+          "Pray for Christ's protection in every direction",
+          "Rely on your own strength and intelligence",
+          "Avoid the situation entirely",
+          "Ask others to pray while you stand aside"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Courage": 1
+      }
+    }
+  ],
+  "therese": [
+    {
+      "title": "The Little Flower",
+      "story": "Thérèse Martin grows up in Lisieux, France, the youngest of five sisters — four of whom become nuns. She is intensely sensitive, prone to tears, and seemingly unremarkable. Yet beneath her fragile exterior burns an enormous desire: to become a great saint. She will find a way no one expects.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You feel a burning desire to do something great for God, but you seem ordinary. What do you do?",
+        "options": [
+          "Commit to doing small things with extraordinary love",
+          "Wait until you develop extraordinary abilities",
+          "Compare yourself to greater saints and feel inadequate",
+          "Pursue dramatic, visible acts of holiness"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Mercy": 1
+      }
+    },
+    {
+      "title": "Pleading with the Pope",
+      "story": "At just 14, Thérèse is desperate to enter the Carmelite convent but is told she's too young. On a family pilgrimage to Rome, she breaks protocol during a papal audience and falls at the feet of Pope Leo XIII, begging permission to enter Carmel at 15. The guards drag her away, but the Pope is impressed by her boldness.",
+      "challenge": {
+        "type": "trivia",
+        "question": "At what age did Thérèse enter the Carmelite convent?",
+        "choices": [
+          "15",
+          "18",
+          "12",
+          "21"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 2,
+        "Faith": 1
+      }
+    },
+    {
+      "title": "The Little Way",
+      "story": "Inside the convent, Thérèse discovers her path to holiness: 'The Little Way.' She will not perform great penances or dramatic miracles. Instead, she will do every small task — washing dishes, enduring a sister's annoying habits, smiling through pain — with perfect love. 'Miss no single opportunity of making some small sacrifice,' she writes.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What is St. Thérèse's spiritual path called?",
+        "choices": [
+          "The Little Way",
+          "The Dark Night",
+          "The Spiritual Exercises",
+          "The Interior Castle"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 1,
+        "Mercy": 2
+      }
+    },
+    {
+      "title": "Story of a Soul",
+      "story": "Under obedience to her superior, Thérèse writes her autobiography — 'Story of a Soul.' She describes her childhood, her vocation, and her Little Way with disarming honesty and poetic beauty. Published after her death, it becomes one of the most widely read spiritual books in history, inspiring millions.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What is the title of St. Thérèse's autobiography?",
+        "choices": [
+          "Story of a Soul",
+          "The Interior Castle",
+          "Dark Night of the Soul",
+          "Confessions"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Wisdom": 1,
+        "Faith": 2
+      }
+    },
+    {
+      "title": "A Shower of Roses",
+      "story": "Dying of tuberculosis at 24, Thérèse promises: 'After my death, I will let fall a shower of roses. I will spend my heaven doing good upon earth.' Within years of her death, reports of miracles and answered prayers flood in from around the world. She is declared a Doctor of the Church — one of only four women to receive the title.",
+      "challenge": {
+        "type": "trivia",
+        "question": "St. Thérèse is one of how many women declared a Doctor of the Church?",
+        "choices": [
+          "Four",
+          "Two",
+          "Seven",
+          "One"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Faith": 2,
+        "Mercy": 2
+      }
+    }
+  ],
+  "frassati": [
+    {
+      "title": "To the Heights!",
+      "story": "Pier Giorgio Frassati is the son of the founder of the influential Italian newspaper La Stampa. Rich, handsome, and athletic, he could live a life of pure comfort. Instead, his motto is 'Verso l'alto!' — 'To the heights!' — referring not just to his beloved mountains but to the spiritual summit he pursues with reckless joy.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You're born into wealth and privilege. What drives your life?",
+        "options": [
+          "Pursuing both physical and spiritual heights with joy",
+          "Enjoying comfort — you've earned it by birth",
+          "Rejecting your family entirely to prove your virtue",
+          "Using your status to gain political power"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 2,
+        "Faith": 1
+      }
+    },
+    {
+      "title": "The Secret Charity",
+      "story": "Pier Giorgio gives away nearly everything — his money, his clothes, even his bus fare (walking home in the rain so a poor family can eat). He keeps his charity so secret that his wealthy family has no idea. They think he's irresponsible with money. Only after his death do hundreds of poor families come forward to mourn the young man who helped them.",
+      "challenge": {
+        "type": "trivia",
+        "question": "How did Pier Giorgio's family learn about his extensive charity work?",
+        "choices": [
+          "Poor families came forward after his death",
+          "He told them on his deathbed",
+          "A priest revealed it",
+          "They found his journal"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Mercy": 2,
+        "Courage": 1
+      }
+    },
+    {
+      "title": "The Mountain Climber",
+      "story": "Pier Giorgio is a passionate mountaineer, organizing trips with his friends to the Italian Alps. For him, climbing is both physical exhilaration and spiritual practice — each summit brings him closer to God. His hiking group calls themselves 'I Tipi Loschi' — 'The Shady Characters' — and they combine adventure with deep friendship and faith.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How do you combine friendship, adventure, and faith?",
+        "options": [
+          "Build a community around shared joy and spiritual growth",
+          "Keep faith and fun strictly separate",
+          "Only befriend people who share your beliefs",
+          "Sacrifice all recreation for prayer and service"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 1,
+        "Faith": 1,
+        "Mercy": 1
+      }
+    },
+    {
+      "title": "Standing Against Fascism",
+      "story": "In 1920s Italy, Mussolini's Fascists are rising to power. Despite his father's connections to the political establishment, Pier Giorgio actively opposes Fascism, joining Catholic Action and speaking out for workers' rights. He is beaten by Blackshirts at a protest but refuses to back down — combining his faith with fearless political courage.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What political movement did Pier Giorgio Frassati actively oppose?",
+        "choices": [
+          "Italian Fascism",
+          "Communism",
+          "Anarchism",
+          "Monarchism"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Courage": 2,
+        "Wisdom": 1
+      }
+    },
+    {
+      "title": "A Death That Shook Turin",
+      "story": "At just 24, Pier Giorgio contracts polio — likely from the sick he served in Turin's poorest neighborhoods. He dies on July 4, 1925. His aristocratic family expects a small funeral. Instead, thousands of poor people flood the streets of Turin, weeping for the young man who gave them everything. His family is stunned — they had no idea.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What disease took Pier Giorgio Frassati's life at age 24?",
+        "choices": [
+          "Polio",
+          "Tuberculosis",
+          "Influenza",
+          "Typhoid"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Mercy": 2,
+        "Faith": 1
+      }
+    },
+    {
+      "title": "The Rosary in His Hands",
+      "story": "When Pier Giorgio lay dying, his family found a Rosary clutched in his paralyzed hands — he could barely move but refused to let go of it. At his funeral, a small note was discovered in his pocket with instructions to deliver medicine to a sick man he had been visiting. Even on his deathbed, he was thinking of others.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "You are gravely ill but know someone who needs help. What do you do?",
+        "options": [
+          "Make sure someone carries out the errand of mercy on your behalf",
+          "Focus entirely on your own recovery",
+          "Feel guilty but accept you can't help right now",
+          "Wait until you recover to help them"
+        ],
+        "answer_index": 0
+      },
+      "reward": {
+        "Mercy": 2,
+        "Courage": 1
+      }
+    }
+  ]
+};
     // Merge extra quests into main quests object
     for (const [saint, extra] of Object.entries(extraQuests)) {
       if (quests[saint]) quests[saint].push(...extra);
@@ -738,6 +1478,10 @@
       teresa: "Not all of us can do great things. But we can do small things with great love.",
       patrick: "Christ with me, Christ before me, Christ behind me, Christ in me.",
       therese: "Miss no single opportunity of making some small sacrifice.",
+      frassati: "To live without faith, without a patrimony to defend, without a steady struggle for truth — that is not living but existing.",
+      joan: "I am not afraid; I was born to do this.",
+      aquinas: "The things that we love tell us what we are.",
+      teresa: "Not all of us can do great things. But we can do small things with great love.",
       frassati: "To live without faith, without a patrimony to defend, without a steady struggle for truth — that is not living but existing."
     };
 
