@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Saint Quest</title>
+  <meta name="description" content="An interactive Catholic saints trivia and adventure game. Choose a saint, journey through their story, answer challenges, and build your virtue profile.">
+  <meta name="theme-color" content="#1a0a2e">
+  <meta property="og:title" content="Saint Quest — Catholic Saints Adventure Game">
+  <meta property="og:description" content="Choose a saint, journey through their story, answer challenges, and build your virtue profile.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jcrowan3.github.io/saint-quest-mini/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Saint Quest — Catholic Saints Adventure Game">
+  <meta name="twitter:description" content="Choose a saint, journey through their story, and build your virtue profile.">
+  <title>Saint Quest — Catholic Saints Adventure Game</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -56,7 +65,6 @@
 
     .screen {
       display: none;
-      animation: slideIn 0.5s ease-out;
       background: var(--card-bg);
       padding: 25px;
       border-radius: var(--border-radius);
@@ -68,9 +76,10 @@
 
     .screen.active {
       display: block;
+      animation: screenEnter 0.5s ease-out;
     }
 
-    @keyframes slideIn {
+    @keyframes screenEnter {
       from { transform: translateY(20px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
@@ -117,9 +126,16 @@
 
     .progress {
       height: 100%;
-      background: var(--accent-gold);
+      background: linear-gradient(90deg, var(--accent-gold), #f5d64a, var(--accent-gold));
+      background-size: 200% 100%;
       border-radius: 5px;
-      transition: width 0.5s ease;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: progressShimmer 2s ease-in-out infinite;
+    }
+
+    @keyframes progressShimmer {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 0%; }
     }
 
     .btn {
@@ -141,6 +157,7 @@
     .btn:hover {
       background: #f5d64a;
       transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
     }
 
     .btn:active {
@@ -180,9 +197,15 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .saint-card:hover {
+    .saint-card:hover, .saint-card:focus-visible {
       background: rgba(255, 255, 255, 0.1);
       transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+    }
+
+    .saint-card:focus-visible {
+      outline: 2px solid var(--accent-gold);
+      outline-offset: 3px;
     }
 
     .saint-card h3 {
@@ -346,11 +369,32 @@
     .correct {
       background: rgba(76, 175, 80, 0.2);
       border: 1px solid #4CAF50;
+      animation: resultPop 0.4s ease-out;
     }
 
     .incorrect {
       background: rgba(244, 67, 54, 0.2);
       border: 1px solid #F44336;
+      animation: resultPop 0.4s ease-out;
+    }
+
+    @keyframes resultPop {
+      0% { transform: scale(0.8); opacity: 0; }
+      60% { transform: scale(1.02); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .radio-option {
+      animation: optionSlide 0.3s ease-out both;
+    }
+    .radio-option:nth-child(1) { animation-delay: 0.05s; }
+    .radio-option:nth-child(2) { animation-delay: 0.1s; }
+    .radio-option:nth-child(3) { animation-delay: 0.15s; }
+    .radio-option:nth-child(4) { animation-delay: 0.2s; }
+
+    @keyframes optionSlide {
+      from { transform: translateX(-10px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
     }
 
     /* Streak display */
@@ -476,9 +520,33 @@
     .review-card.review-correct { border-left: 4px solid #4CAF50; }
     .review-card.review-wrong { border-left: 4px solid #F44336; }
 
+    /* Fun fact */
+    .fun-fact {
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: rgba(212, 175, 55, 0.08);
+      border-left: 3px solid var(--accent-gold);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.92em;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.85);
+      animation: factReveal 0.5s ease-out;
+    }
+    .fun-fact::before {
+      content: "💡 Did you know? ";
+      font-weight: bold;
+      color: var(--accent-gold);
+    }
+    @keyframes factReveal {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     @media (max-width: 768px) {
       .columns {
         flex-direction: column;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
       }
 
       .avatar {
@@ -486,11 +554,46 @@
       }
 
       h1 {
-        font-size: 2em;
+        font-size: 1.6em;
       }
 
       h2 {
-        font-size: 1.5em;
+        font-size: 1.3em;
+      }
+
+      .screen {
+        padding: 16px;
+      }
+
+      .saint-card {
+        padding: 14px;
+      }
+
+      .btn {
+        padding: 10px 18px;
+        font-size: 0.95em;
+      }
+
+      .sound-toggle {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1em;
+        top: 10px;
+        right: 10px;
+      }
+
+      .achievement-badge {
+        min-width: 65px;
+        padding: 8px;
+        font-size: 0.75em;
+      }
+
+      .match-grid {
+        flex-direction: column;
+      }
+
+      .fun-fact {
+        font-size: 0.85em;
       }
     }
   
@@ -502,6 +605,30 @@
     .match-item.selected { border-color: var(--accent-gold); background: rgba(212, 175, 55, 0.15); }
     .match-item.matched { background: rgba(46, 139, 87, 0.4); border-color: #2e8b57; pointer-events: none; }
     .match-item.wrong-flash { background: rgba(220, 20, 60, 0.4); border-color: #dc143c; }
+
+    /* Sound toggle */
+    .sound-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 1500;
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.3em;
+      backdrop-filter: blur(10px);
+      transition: var(--transition);
+    }
+    .sound-toggle:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: scale(1.1);
+    }
 
     /* Timeline Challenge */
     .timeline-events { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
@@ -518,11 +645,13 @@
   </style>
 </head>
 <body>
+  <button class="sound-toggle" id="sound-toggle" onclick="toggleSound()" aria-label="Toggle sound" title="Toggle sound">🔊</button>
   <div class="container">
     <h1>⚔️ Saint Quest 🛡️</h1>
+    <p style="text-align: center; color: rgba(255,255,255,0.5); font-size: 0.9em; margin-bottom: 15px; letter-spacing: 1px;">Journey Through the Lives of the Saints</p>
 
     <!-- Select Screen -->
-    <div id="select-screen" class="screen active">
+    <div id="select-screen" class="screen active" role="region" aria-label="Saint selection">
       <h2>Choose Your Hero</h2>
       <div class="daily-section">
         <button class="btn" id="daily-challenge-btn" onclick="startDailyChallenge()">📅 Daily Challenge</button>
@@ -534,12 +663,12 @@
         <button class="diff-btn" onclick="setDifficulty('normal',this)">Normal</button>
         <button class="diff-btn" onclick="setDifficulty('hard',this)">Hard</button>
       </div>
-      <div class="columns" id="saint-grid"></div>
+      <div class="columns" id="saint-grid" role="list" aria-label="Available saints"></div>
       <div id="achievements-display" style="margin-top: 20px;"></div>
     </div>
 
     <!-- Intro Screen -->
-    <div id="intro-screen" class="screen">
+    <div id="intro-screen" class="screen" role="region" aria-label="Saint introduction">
       <div class="story-card" style="text-align: center;">
         <div id="intro-avatar" style="font-size: 120px; margin: 20px 0;"></div>
         <h2 id="intro-name"></h2>
@@ -550,10 +679,10 @@
     </div>
 
     <!-- Play Screen -->
-    <div id="play-screen" class="screen">
+    <div id="play-screen" class="screen" role="main" aria-label="Quest gameplay">
       <div class="progress-container">
         <div class="progress-bar">
-          <div class="progress" id="progress-bar"></div>
+          <div class="progress" id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         <p id="progress-text" style="text-align: center;"></p>
       </div>
@@ -585,12 +714,12 @@
     </div>
 
     <!-- Done Screen -->
-    <div id="done-screen" class="screen">
+    <div id="done-screen" class="screen" role="region" aria-label="Results">
       <div class="story-card" style="text-align: center; border-color: var(--accent-gold); background: rgba(212, 175, 55, 0.1);">
         <h1>Sainthood Unlocked!</h1>
         <div style="font-size: 80px;">😇</div>
         <p style="font-size: 1.3em;">You have completed the journey of <span id="saint-name"></span>.</p>
-        <p><i>"Start by doing what's necessary; then do what's possible; and suddenly you are doing the impossible."</i></p>
+        <p id="done-quote" style="font-style: italic; color: var(--accent-gold); margin-top: 10px;"></p>
       </div>
 
       <p id="score-display" style="font-size: 1.5em; color: var(--accent-gold); text-align: center; margin: 15px 0;"></p>
@@ -613,9 +742,9 @@
 
   <div class="balloons" id="balloons"></div>
 
-  <div class="footer">
-    &copy; Saint Quest Game | Faithful to Catholic Virtues
-  </div>
+  <footer class="footer" role="contentinfo">
+    &copy; Saint Quest | Faithful to Catholic Virtues | <a href="https://github.com/jcrowan3/saint-quest-mini" style="color: var(--accent-gold); text-decoration: none; opacity: 0.8;" target="_blank" rel="noopener">GitHub</a>
+  </footer>
 
   <script>
     // Game Data (embedded)
@@ -649,7 +778,8 @@
       "reward": {
         "Mercy": 2,
         "Courage": 1
-      }
+      },
+      "funFact": "According to the Fioretti, the wolf of Gubbio lived peacefully among the townspeople for two years after Francis brokered peace, and was mourned when it died."
     },
     {
       "title": "Sermon to the Birds",
@@ -668,7 +798,8 @@
       "reward": {
         "Mercy": 1,
         "Courage": 1
-      }
+      },
+      "funFact": "Pope John Paul II designated Francis as the patron saint of ecology in 1979, making him a spiritual patron of the environmental movement."
     },
     {
       "title": "Rebuild My Church",
@@ -687,7 +818,8 @@
       "reward": {
         "Courage": 2,
         "Mercy": 1
-      }
+      },
+      "funFact": "Francis rebuilt three churches by hand before understanding the deeper meaning of his calling — including San Damiano, which later became home to St. Clare's order."
     },
     {
       "title": "The Stigmata",
@@ -706,7 +838,8 @@
       "reward": {
         "Faith": 2,
         "Courage": 1
-      }
+      },
+      "funFact": "Francis is the first known person in recorded history to receive the stigmata — the wounds of Christ — which he tried to conceal for the remaining two years of his life."
     },
     {
       "title": "Lady Poverty",
@@ -725,7 +858,8 @@
       "reward": {
         "Mercy": 1,
         "Courage": 2
-      }
+      },
+      "funFact": "Francis's father was so furious at his son's conversion that he tried to disinherit him publicly. The bishop of Assisi literally had to wrap his cloak around naked Francis."
     },
     {
       "title": "Saints and Their Signs",
@@ -759,7 +893,8 @@
       "reward": {
         "Mercy": 1,
         "Wisdom": 1
-      }
+      },
+      "funFact": "The Summa Theologica contains approximately 1.5 million words — Thomas Aquinas dictated much of it while pacing, sometimes to multiple scribes at once."
     }
   ],
   "carlo": [
@@ -780,7 +915,8 @@
       "reward": {
         "Faith": 2,
         "Wisdom": 1
-      }
+      },
+      "funFact": "Carlo's Eucharistic miracles website is still online today and has been translated into multiple languages, continuing his digital mission."
     },
     {
       "title": "Coding for the Kingdom",
@@ -799,7 +935,8 @@
       "reward": {
         "Wisdom": 2,
         "Faith": 1
-      }
+      },
+      "funFact": "Carlo was an avid programmer who taught himself to code. He also loved playing video games, especially Halo, making him remarkably relatable to modern teens."
     },
     {
       "title": "Daily Mass",
@@ -856,7 +993,8 @@
       "reward": {
         "Faith": 2,
         "Courage": 1
-      }
+      },
+      "funFact": "When Carlo's body was exhumed in 2019 for his beatification, it was found to be partially intact. He was beatified by Pope Francis in October 2020 and canonized in 2025."
     }
   ],
   "joan": [
@@ -896,7 +1034,8 @@
       "reward": {
         "Courage": 2,
         "Faith": 1
-      }
+      },
+      "funFact": "Joan arrived at Orléans on April 29, 1429. The English had besieged the city for seven months, and the French had all but given up hope."
     },
     {
       "title": "The Coronation at Reims",
@@ -953,7 +1092,8 @@
       "reward": {
         "Courage": 2,
         "Faith": 2
-      }
+      },
+      "funFact": "The executioner at Rouen reportedly said he greatly feared being damned for burning a holy woman. Her heart was said to be found intact among the ashes."
     },
     {
       "title": "The Sword of Fierbois",
@@ -1027,7 +1167,8 @@
       "reward": {
         "Wisdom": 2,
         "Faith": 1
-      }
+      },
+      "funFact": "Albertus Magnus was himself a polymath who wrote on everything from botany to mineralogy. He is the patron saint of scientists."
     },
     {
       "title": "The Summa Theologica",
@@ -1103,7 +1244,8 @@
       "reward": {
         "Faith": 2,
         "Wisdom": 2
-      }
+      },
+      "funFact": "Thomas died on March 7, 1274, just three months after his mystical experience. He was only 49 years old but had produced more written work than most scholars produce in a lifetime."
     },
     {
       "title": "The Family Kidnapping",
@@ -1177,7 +1319,8 @@
       "reward": {
         "Courage": 1,
         "Faith": 2
-      }
+      },
+      "funFact": "Mother Teresa's birth name Anjezë means 'flower' in Albanian. She chose the name Teresa after St. Thérèse of Lisieux, the patroness of missionaries."
     },
     {
       "title": "The Sari as Habit",
@@ -1346,7 +1489,8 @@
       "reward": {
         "Courage": 2,
         "Mercy": 1
-      }
+      },
+      "funFact": "Patrick's escape walk of nearly 200 miles took him through terrain he had never traveled. He was guided, he wrote, entirely by faith and the voice he heard in his dreams."
     },
     {
       "title": "The Shamrock",
@@ -1443,7 +1587,8 @@
       "reward": {
         "Courage": 2,
         "Faith": 1
-      }
+      },
+      "funFact": "The guards had to physically carry Thérèse away from Pope Leo XIII. Despite this, her boldness ultimately worked — she entered the Carmelite convent at just 15."
     },
     {
       "title": "The Little Way",
@@ -1540,7 +1685,8 @@
       "reward": {
         "Mercy": 2,
         "Courage": 1
-      }
+      },
+      "funFact": "At Pier Giorgio's funeral, his wealthy parents were astonished when thousands of poor people they had never seen lined the streets of Turin to pay their respects."
     },
     {
       "title": "The Mountain Climber",
@@ -1630,10 +1776,6 @@
       teresa: "Not all of us can do great things. But we can do small things with great love.",
       patrick: "Christ with me, Christ before me, Christ behind me, Christ in me.",
       therese: "Miss no single opportunity of making some small sacrifice.",
-      frassati: "To live without faith, without a patrimony to defend, without a steady struggle for truth — that is not living but existing.",
-      joan: "I am not afraid; I was born to do this.",
-      aquinas: "The things that we love tell us what we are.",
-      teresa: "Not all of us can do great things. But we can do small things with great love.",
       frassati: "To live without faith, without a patrimony to defend, without a steady struggle for truth — that is not living but existing."
     };
 
@@ -1720,6 +1862,16 @@
     let answerHistory = [];
     let isDailyChallenge = false;
 
+    function advanceToNextQuest() {
+      currentCheckpoint++;
+      if (currentCheckpoint >= currentQuests.length) {
+        if (!inBonusRound) startBonusRound(); else endGame();
+      } else {
+        loadQuest();
+      }
+      isAnswerSubmitted = false;
+    }
+
     function shuffleArray(arr) {
       const a = [...arr];
       for (let i = a.length - 1; i > 0; i--) {
@@ -1788,11 +1940,7 @@
       resultEl.className = 'result incorrect';
       resultEl.textContent = "⏰ Time's up!";
       questionContainer.appendChild(resultEl);
-      showContinue(() => {
-        currentCheckpoint++;
-        if (currentCheckpoint >= currentQuests.length) { if (!inBonusRound) startBonusRound(); else endGame(); } else { loadQuest(); }
-        isAnswerSubmitted = false;
-      });
+      showContinue(() => advanceToNextQuest());
     }
 
     function showHint(q) {
@@ -1827,8 +1975,16 @@
       setTimeout(() => container.classList.remove('shake'), 400);
     }
 
-    // Sound effects — lazy AudioContext (Security Fix: avoid eager creation)
+    // Sound effects
+    let soundEnabled = safeGetJSON('saintQuestSound', true);
     let audioContext = null;
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      localStorage.setItem('saintQuestSound', JSON.stringify(soundEnabled));
+      document.getElementById('sound-toggle').textContent = soundEnabled ? '🔊' : '🔇';
+    }
+    document.getElementById('sound-toggle').textContent = soundEnabled ? '🔊' : '🔇';
     function getAudioContext() {
       if (!audioContext) {
         try {
@@ -1840,6 +1996,7 @@
     }
 
     function playSound(type) {
+      if (!soundEnabled) return;
       const ctx = getAudioContext();
       if (!ctx) return;
 
@@ -1962,13 +2119,15 @@
         questionContainer.appendChild(resultEl);
       }
       answerHistory.push({ title: q.title, question: 'Matching Challenge', choices: [], selectedIndex: 0, correctIndex: 0, wasCorrect: allCorrect, isBonus: false });
+      if (q.funFact) {
+        const factEl = document.createElement('div');
+        factEl.className = 'fun-fact';
+        factEl.textContent = q.funFact;
+        questionContainer.appendChild(factEl);
+      }
       updateStreakDisplay();
       updateProfile();
-      setTimeout(() => {
-        currentCheckpoint++;
-        if (currentCheckpoint >= currentQuests.length) { if (!inBonusRound) startBonusRound(); else endGame(); } else { loadQuest(); }
-        isAnswerSubmitted = false;
-      }, 2000);
+      setTimeout(() => advanceToNextQuest(), 3000);
     }
 
     // === Timeline Challenge Logic ===
@@ -2049,13 +2208,15 @@
       }
 
       answerHistory.push({ title: q.title, question: 'Timeline Challenge', choices: [], selectedIndex: correct, correctIndex: sorted.length, wasCorrect: allCorrect, isBonus: false });
+      if (q.funFact) {
+        const factEl = document.createElement('div');
+        factEl.className = 'fun-fact';
+        factEl.textContent = q.funFact;
+        questionContainer.appendChild(factEl);
+      }
       updateStreakDisplay();
       updateProfile();
-      setTimeout(() => {
-        currentCheckpoint++;
-        if (currentCheckpoint >= currentQuests.length) { if (!inBonusRound) startBonusRound(); else endGame(); } else { loadQuest(); }
-        isAnswerSubmitted = false;
-      }, 2500);
+      setTimeout(() => advanceToNextQuest(), 3000);
     }
 
     // === Save/Resume Progress ===
@@ -2365,18 +2526,18 @@
         questionContainer.appendChild(resultEl);
       }
 
+      // Show fun fact if available
+      if (q.funFact) {
+        const factEl = document.createElement('div');
+        factEl.className = 'fun-fact';
+        factEl.textContent = q.funFact;
+        questionContainer.appendChild(factEl);
+      }
+
       updateStreakDisplay();
       updateProfile();
 
-      showContinue(() => {
-        currentCheckpoint++;
-        if (currentCheckpoint >= questList.length) {
-          if (!inBonusRound) startBonusRound(); else endGame();
-        } else {
-          loadQuest();
-        }
-        isAnswerSubmitted = false;
-      });
+      showContinue(() => advanceToNextQuest());
     }
 
     function updateStreakDisplay() {
@@ -2594,6 +2755,7 @@
       stopTimer();
       updateScreen();
       saintName.textContent = saints.find(s => s.id === currentSaint).name;
+      document.getElementById('done-quote').textContent = '"' + (saintQuotes[currentSaint] || '') + '"';
 
       // Score display
       const totalScore = Object.values(virtues).reduce((a, b) => a + b, 0);
@@ -2732,7 +2894,11 @@
       saints.forEach(s => {
         const card = document.createElement('div');
         card.className = 'saint-card';
+        card.setAttribute('role', 'listitem');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', 'Play as ' + s.name);
         card.onclick = () => selectSaint(s.id);
+        card.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectSaint(s.id); } };
 
         const avatar = document.createElement('div');
         avatar.className = 'avatar';
