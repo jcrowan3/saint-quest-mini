@@ -1,57 +1,58 @@
 import streamlit as st
 import json
 import time
+from typing import Dict, List, Any
 
-st.set_page_config(page_title="Saint Quest — Mini MVP", layout="wide")
+# --- CONSTANTS ---
+VIRTUES = ["Faith", "Mercy", "Courage", "Wisdom"]
+DEFAULT_SAINTS_FILE = "data/saints.json"
+DEFAULT_QUESTS_FILE = "data/quests.json"
 
-# --- LOAD CSS ---
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+# --- DATA LOADING WITH ERROR HANDLING ---
+def load_json_file(filepath: str, default: Any = None) -> Any:
+    """Load JSON file with error handling."""
+    try:
+        with open(filepath, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        st.error(f"Data file not found: {filepath}")
+        st.stop()
+    except json.JSONDecodeError as e:
+        st.error(f"Invalid JSON in {filepath}: {e}")
+        st.stop()
+    except Exception as e:
+        st.error(f"Error loading {filepath}: {e}")
+        st.stop()
 
-local_css("style.css")
-
-# --- DATA ---
 @st.cache_data
-def load_data():
-    with open("data/saints.json", "r") as f:
-        saints = json.load(f)
-    with open("data/quests.json", "r") as f:
-        quests = json.load(f)
+def load_data() -> tuple:
+    """Load saints and quests data."""
+    saints = load_json_file(DEFAULT_SAINTS_FILE, [])
+    quests = load_json_file(DEFAULT_QUESTS_FILE, {})
+    
+    # Basic validation
+    if not isinstance(saints, list):
+        st.error("Saints data should be a list")
+        st.stop()
+    
+    if not isinstance(quests, dict):
+        st.error("Quests data should be a dictionary")
+        st.stop()
+        
     return saints, quests
 
-saints, quests = load_data()
+# --- CSS ---
+def local_css(file_name: str):
+    """Load local CSS file."""
+    try:
+        with open(file_name) as f:
+            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.warning(f"CSS file not found: {file_name}")
 
-# --- STATE ---
-if "selected_saint" not in st.session_state:
-    st.session_state.selected_saint = None
-if "checkpoint_idx" not in st.session_state:
-    st.session_state.checkpoint_idx = 0
-if "virtues" not in st.session_state:
-    st.session_state.virtues = {"Faith": 0, "Mercy": 0, "Courage": 0, "Wisdom": 0}
-if "game_state" not in st.session_state:
-    st.session_state.game_state = "SELECT"
-
-# --- THEME INJECTION ---
-# Inject dynamic CSS based on saint
-bg_color = "#ffffff"
-if st.session_state.selected_saint == "francis":
-    bg_color = "#f4f9f4" # Subtle Green
-elif st.session_state.selected_saint == "carlo":
-    bg_color = "#f0f8ff" # Subtle Blue
-
-st.markdown(f"""
-<style>
-[data-testid="stAppViewContainer"] {{
-    background-color: {bg_color};
-}}
-</style>
-""", unsafe_allow_html=True)
-
-# --- HEADER ---
-st.markdown("<h1 style='text-align: center;'>⚔️ Saint Quest 🛡️</h1>", unsafe_allow_html=True)
-
-if st.session_state.game_state == "SELECT":
+# --- UI COMPONENTS ---
+def render_saint_selection(saints: List[Dict]):
+    """Render saint selection screen."""
     st.markdown("<h3 style='text-align: center;'>Choose Your Hero</h3>", unsafe_allow_html=True)
     st.write("")
     
@@ -59,30 +60,31 @@ if st.session_state.game_state == "SELECT":
     for i, s in enumerate(saints):
         with cols[i]:
             st.markdown(f"""
-            <div class='story-card hero-card' style='text-align: center;'>
-                <div style='font-size: 80px;'>{s['avatar']}</div>
-                <h3>{s['name']}</h3>
-                <p><i>Virtues: {', '.join(s['virtues'])}</i></p>
+            <div class='story-card' style='text-align: center;'>
+                <div style='font-size: 60px;'>{s.get('avatar', '❓')}</div>
+                <h3>{s.get('name', 'Unknown Saint')}</h3>
+                <p><i>Virtues: {', '.join(s.get('virtues', []))}</i></p>
             </div>
             """, unsafe_allow_html=True)
             
-            if st.button(f"Begin Journey", key=f"btn_{s['id']}"):
-                st.session_state.selected_saint = s["id"]
-                st.session_state.checkpoint_idx = 0
-                st.session_state.virtues = {"Faith": 0, "Mercy": 0, "Courage": 0, "Wisdom": 0}
-                st.session_state.game_state = "PLAY"
+            if st.button(f"Begin Journey", key=f"btn_{s.get('id', i)}", use_container_width=True):
+                initialize_game_state(s)
                 st.rerun()
 
-elif st.session_state.game_state == "PLAY":
+def render_game_play(saint: Dict, quest_list: List[Dict]):
+    """Render gameplay screen."""
     saint_id = st.session_state.selected_saint
-    saint = next(s for s in saints if s["id"] == saint_id)
-    quest_list = quests[saint_id]
     current_idx = st.session_state.checkpoint_idx
     
     # Progress
-    progress = (current_idx / len(quest_list))
+    progress = (current_idx / len(quest_list)) if quest_list else 0
     st.progress(progress)
     st.caption(f"Chapter {current_idx + 1} of {len(quest_list)}")
+
+    if current_idx >= len(quest_list):
+        st.session_state.game_state = "DONE"
+        st.rerun()
+        return
 
     q = quest_list[current_idx]
     
@@ -92,88 +94,92 @@ elif st.session_state.game_state == "PLAY":
         # Story Card
         st.markdown(f"""
         <div class='story-card'>
-            <h2>{q['title']}</h2>
-            <p style='font-size: 1.2em; line-height: 1.6;'>{q['story']}</p>
+            <h2>{q.get('title', 'Unknown Quest')}</h2>
+            <p style='font-size: 1.2em; line-height: 1.6;'>{q.get('story', '')}</p>
         </div>
         """, unsafe_allow_html=True)
 
-        ch = q['challenge']
+        ch = q.get('challenge', {})
         
         # Challenge Logic
-        if ch['type'] == 'trivia':
-            st.markdown("#### 📜 Knowledge Check")
-            st.info(ch['question'])
-            choice = st.radio("Your Answer:", ch['choices'], label_visibility="collapsed")
-            if st.button("Submit Answer"):
-                with st.spinner("Checking your answer..."):
-                    time.sleep(1)  # Add a small delay to show spinner
-                if ch['choices'].index(choice) == ch['answer_index']:
-                    st.success("Correct! +Virtue", icon="✅")
-                    # Reward virtues once (avoid double-counting)
-                    for k, v in q['reward'].items():
-                        st.session_state.virtues[k] += v
-                    # Visual feedback
-                    st.markdown("<div class='balloon-animation'>", unsafe_allow_html=True)
-                    st.balloons()
-                    st.markdown("</div>", unsafe_allow_html=True)
-                else:
-                    st.error("Not quite — try next challenge.")
-                st.session_state.checkpoint_idx += 1
-                if st.session_state.checkpoint_idx >= len(quest_list):
-                    st.session_state.game_state = "DONE"
-                st.rerun()
-
-        elif ch['type'] == 'dilemma':
-            st.markdown("#### ⚖️ What will you do?")
-            st.info(ch['prompt'])
-            choice = st.radio("Your Choice:", ch['options'], label_visibility="collapsed")
-            if st.button("Make Choice"):
-                with st.spinner("Reflecting on your choice..."):
-                    time.sleep(1)  # Add a small delay to show spinner
-                if ch['options'].index(choice) == ch['answer_index']:
-                    st.success("A virtuous path!", icon="✨")
-                    # Reward virtues once (avoid double-counting)
-                    for k, v in q['reward'].items():
-                        st.session_state.virtues[k] += v
-                    # Visual feedback
-                    st.markdown("<div class='balloon-animation'>", unsafe_allow_html=True)
-                    st.balloons()
-                    st.markdown("</div>", unsafe_allow_html=True)
-                else:
-                    st.warning("A difficult path... reflect on this.")
-                st.session_state.checkpoint_idx += 1
-                if st.session_state.checkpoint_idx >= len(quest_list):
-                    st.session_state.game_state = "DONE"
-                st.rerun()
+        if ch.get('type') == 'trivia':
+            render_trivia_challenge(ch, q)
+        elif ch.get('type') == 'dilemma':
+            render_dilemma_challenge(ch, q)
+        else:
+            st.warning("Unknown challenge type")
 
     with c2:
-        # Profile Sidebar
-        st.markdown(f"""
-        <div style='background-color: white; padding: 20px; border-radius: 16px; border: 1px solid #eee; text-align: center; box-shadow: 0 8px 16px rgba(0,0,0,0.05);'>
-            <div style='font-size: 60px;'>{saint['avatar']}</div>
-            <b>{saint['name']}</b>
-            <hr style='margin: 15px 0;'>
-            <div style='text-align: left;'>
-        """, unsafe_allow_html=True)
-        
-        for k, v in st.session_state.virtues.items():
-            color_class = f"v-{k.lower()}"
-            zero_class = " is-zero" if v == 0 else ""
-            st.markdown(
-                f"<span class='virtue-badge {color_class}{zero_class}'>{k}: {v}</span>",
-                unsafe_allow_html=True,
-            )
-        
-        st.markdown("</div></div>", unsafe_allow_html=True)
+        render_profile_sidebar(saint)
 
-elif st.session_state.game_state == "DONE":
-    saint = next(s for s in saints if s["id"] == st.session_state.selected_saint)
+def render_trivia_challenge(ch: Dict, q: Dict):
+    """Render trivia challenge."""
+    st.markdown("#### 📜 Knowledge Check")
+    st.info(ch.get('question', 'Question not available'))
     
+    choices = ch.get('choices', [])
+    if not choices:
+        st.error("No choices available for trivia")
+        return
+        
+    choice = st.radio("Your Answer:", choices, label_visibility="collapsed")
+    
+    if st.button("Submit Answer", use_container_width=True):
+        answer_index = ch.get('answer_index', 0)
+        if 0 <= answer_index < len(choices):
+            if choices.index(choice) == answer_index:
+                handle_correct_answer(q)
+            else:
+                handle_incorrect_answer()
+        else:
+            st.error("Invalid answer index in challenge data")
+
+def render_dilemma_challenge(ch: Dict, q: Dict):
+    """Render dilemma challenge."""
+    st.markdown("#### ⚖️ What will you do?")
+    st.info(ch.get('prompt', 'Prompt not available'))
+    
+    options = ch.get('options', [])
+    if not options:
+        st.error("No options available for dilemma")
+        return
+        
+    choice = st.radio("Your Choice:", options, label_visibility="collapsed")
+    
+    if st.button("Make Choice", use_container_width=True):
+        answer_index = ch.get('answer_index', 0)
+        if 0 <= answer_index < len(options):
+            if options.index(choice) == answer_index:
+                handle_correct_answer(q)
+            else:
+                handle_incorrect_answer()
+        else:
+            st.error("Invalid answer index in challenge data")
+
+def render_profile_sidebar(saint: Dict):
+    """Render player profile sidebar."""
+    st.markdown(f"""
+    <div style='background-color: white; padding: 20px; border-radius: 12px; border: 1px solid #eee; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05);'>
+        <div style='font-size: 50px;'>{saint.get('avatar', '❓')}</div>
+        <b>{saint.get('name', 'Unknown Saint')}</b>
+        <hr style='margin: 15px 0;'>
+        <div style='text-align: left;'>
+    """, unsafe_allow_html=True)
+    
+    for k, v in st.session_state.virtues.items():
+        if v > 0:
+            color_class = f"v-{k.lower()}"
+            st.markdown(f"<span class='virtue-badge {color_class}'>{k}: {v}</span>", unsafe_allow_html=True)
+    
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
+def render_game_done(saint: Dict):
+    """Render game completion screen."""
     st.markdown(f"""
     <div class='story-card' style='text-align: center; border-color: gold; background-color: #fffef0;'>
         <h1>Sainthood Unlocked!</h1>
         <div style='font-size: 80px;'>😇</div>
-        <p style='font-size: 1.3em;'>You have completed the journey of <b>{saint['name']}</b>.</p>
+        <p style='font-size: 1.3em;'>You have completed the journey of <b>{saint.get('name', 'Unknown Saint')}</b>.</p>
         <p><i>"Start by doing what's necessary; then do what's possible; and suddenly you are doing the impossible."</i></p>
     </div>
     """, unsafe_allow_html=True)
@@ -183,6 +189,78 @@ elif st.session_state.game_state == "DONE":
     st.subheader("Final Virtue Profile")
     st.json(st.session_state.virtues)
 
-    if st.button("Start New Journey"):
+    if st.button("Start New Journey", use_container_width=True):
         st.session_state.game_state = "SELECT"
         st.rerun()
+
+# --- GAME LOGIC ---
+def initialize_game_state(saint: Dict):
+    """Initialize game state for a new game."""
+    st.session_state.selected_saint = saint["id"]
+    st.session_state.checkpoint_idx = 0
+    st.session_state.virtues = {virtue: 0 for virtue in VIRTUES}
+    st.session_state.game_state = "PLAY"
+
+def handle_correct_answer(q: Dict):
+    """Handle correct answer."""
+    st.toast("Correct! +Virtue")
+    time.sleep(0.5)
+    st.balloons()
+    reward = q.get('reward', {})
+    for k, v in reward.items():
+        if k in st.session_state.virtues:
+            st.session_state.virtues[k] += v
+    st.session_state.checkpoint_idx += 1
+
+def handle_incorrect_answer():
+    """Handle incorrect answer."""
+    st.error("Not quite — try next challenge.")
+    st.session_state.checkpoint_idx += 1
+
+# --- MAIN APP ---
+def main():
+    st.set_page_config(page_title="Saint Quest — Mini MVP", layout="wide")
+    
+    # Load CSS
+    local_css("style.css")
+    
+    # Load data
+    saints, quests = load_data()
+    
+    # Initialize session state
+    if "game_state" not in st.session_state:
+        st.session_state.game_state = "SELECT"
+    
+    # Route to appropriate screen
+    if st.session_state.game_state == "SELECT":
+        render_saint_selection(saints)
+    elif st.session_state.game_state == "PLAY":
+        if st.session_state.selected_saint:
+            saint = next((s for s in saints if s["id"] == st.session_state.selected_saint), None)
+            if saint:
+                quest_list = quests.get(saint["id"], [])
+                render_game_play(saint, quest_list)
+            else:
+                st.error("Selected saint not found")
+                st.session_state.game_state = "SELECT"
+                st.rerun()
+        else:
+            st.error("No saint selected")
+            st.session_state.game_state = "SELECT"
+            st.rerun()
+    elif st.session_state.game_state == "DONE":
+        if st.session_state.selected_saint:
+            saint = next((s for s in saints if s["id"] == st.session_state.selected_saint), None)
+            if saint:
+                render_game_done(saint)
+            else:
+                st.error("Selected saint not found")
+                st.session_state.game_state = "SELECT"
+                st.rerun()
+        else:
+            st.error("No saint selected")
+            st.session_state.game_state = "SELECT"
+            st.rerun()
+
+if __name__ == "__main__":
+    main()
