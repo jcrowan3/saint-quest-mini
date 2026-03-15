@@ -109,13 +109,13 @@ elif st.session_state.game_state == "PLAY":
                     time.sleep(1)  # Add a small delay to show spinner
                 if ch['choices'].index(choice) == ch['answer_index']:
                     st.success("Correct! +Virtue", icon="✅")
-                    st.session_state.virtues[q['reward'].keys()[0]] += list(q['reward'].values())[0]
-                    # Add animation class for visual feedback
+                    # Reward virtues once (avoid double-counting)
+                    for k, v in q['reward'].items():
+                        st.session_state.virtues[k] += v
+                    # Visual feedback
                     st.markdown("<div class='balloon-animation'>", unsafe_allow_html=True)
                     st.balloons()
                     st.markdown("</div>", unsafe_allow_html=True)
-                    for k,v in q['reward'].items():
-                        st.session_state.virtues[k] += v
                 else:
                     st.error("Not quite — try next challenge.")
                 st.session_state.checkpoint_idx += 1
@@ -132,13 +132,13 @@ elif st.session_state.game_state == "PLAY":
                     time.sleep(1)  # Add a small delay to show spinner
                 if ch['options'].index(choice) == ch['answer_index']:
                     st.success("A virtuous path!", icon="✨")
-                    st.session_state.virtues[q['reward'].keys()[0]] += list(q['reward'].values())[0]
-                    # Add animation class for visual feedback
+                    # Reward virtues once (avoid double-counting)
+                    for k, v in q['reward'].items():
+                        st.session_state.virtues[k] += v
+                    # Visual feedback
                     st.markdown("<div class='balloon-animation'>", unsafe_allow_html=True)
                     st.balloons()
                     st.markdown("</div>", unsafe_allow_html=True)
-                    for k,v in q['reward'].items():
-                        st.session_state.virtues[k] += v
                 else:
                     st.warning("A difficult path... reflect on this.")
                 st.session_state.checkpoint_idx += 1
