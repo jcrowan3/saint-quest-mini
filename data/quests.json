@@ -83,5 +83,300 @@
       },
       "reward": {"Faith": 2, "Wisdom": 1}
     }
+  ],
+  "joseph": [
+    {
+      "title": "The Dreamer",
+      "story": "Joseph receives a dream from God about taking Mary as his wife despite her pregnancy.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "What does Joseph do when faced with uncertainty and social pressure?",
+        "options": [
+          "Trust God's message and take Mary as his wife",
+          "Quietly divorce her to avoid shame",
+          "Seek advice from others before deciding",
+          "Wait for another sign before acting"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Responsibility": 2, "Humility": 1}
+    },
+    {
+      "title": "Provider and Protector",
+      "story": "Joseph works hard to provide for Jesus and Mary, fleeing to Egypt to protect them from Herod.",
+      "challenge": {
+        "type": "trivia",
+        "question": "Which virtue is most shown by Joseph's work as a carpenter to provide for his family?",
+        "choices": ["Responsibility", "Pride", "Greed", "Laziness"],
+        "answer_index": 0
+      },
+      "reward": {"Responsibility": 2, "Humility": 1}
+    },
+    {
+      "title": "The Silent Saint",
+      "story": "Though Scripture records no words spoken by Joseph, his actions speak volumes about his character.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How can we show our virtues without needing to talk about them?",
+        "options": [
+          "Let our actions speak for themselves",
+          "Tell everyone about our good deeds",
+          "Wait for others to notice before acting",
+          "Only act when we know we'll be praised"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Humility": 2, "Responsibility": 1}
+    }
+  ],
+  "therese": [
+    {
+      "title": "The Little Way",
+      "story": "Therese discovers that holiness is found in doing small things with great love.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How can we practice love in our daily lives?",
+        "options": [
+          "Do small kindnesses with great love",
+          "Wait for big opportunities to show love",
+          "Only love those who love us back",
+          "Love others to be seen as holy"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Simplicity": 2, "Love": 1}
+    },
+    {
+      "title": "Shower of Roses",
+      "story": "Therese promises to send roses from heaven as a sign of her intercession.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What does Therese's 'little way' teach us about spiritual growth?",
+        "choices": [
+          "Holiness comes from faithfulness in small things",
+          "We must perform great deeds to be holy",
+          "Spiritual growth requires isolation from others",
+          "We need to earn God's love through perfection"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Love": 2, "Simplicity": 1}
+    },
+    {
+      "title": "Offering Up Suffering",
+      "story": "Therese offers her daily struggles and sufferings as gifts to God.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How can we respond to daily frustrations and inconveniences?",
+        "options": [
+          "Offer them as small sacrifices of love",
+          "Complain loudly about the inconvenience",
+          "Avoid situations that might be difficult",
+          "See suffering as punishment from God"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Simplicity": 1, "Love": 2}
+    }
+  ],
+  "kolbe": [
+    {
+      "title": "The Knight of the Immaculata",
+      "story": "Kolbe founds a movement to spread devotion to Mary and combat evil through good publications.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How should we respond to evil and hatred in the world?",
+        "options": [
+          "Fight evil with love and truth",
+          "Respond to hatred with more hatred",
+          "Withdraw from society to stay pure",
+          "Ignore evil and focus only on personal holiness"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Charity": 2, "Courage": 1}
+    },
+    {
+      "title": "Auschwitz Volunteer",
+      "story": "In Auschwitz, Kolbe volunteers to die in place of a stranger who has a family.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What ultimate act of love did Kolbe perform in Auschwitz?",
+        "choices": [
+          "He died so another man could live",
+          "He shared his food with everyone",
+          "He escaped and told the world about the camp",
+          "He became the camp leader to improve conditions"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Charity": 2, "Courage": 1}
+    },
+    {
+      "title": "The Power of the Press",
+      "story": "Kolbe uses printing presses to spread religious materials and combat secularism.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How can we use modern communication tools for good?",
+        "options": [
+          "Share truth and beauty to uplift others",
+          "Spread content that gets the most views",
+          "Only communicate with people who agree with us",
+          "Use technology to put others down"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Courage": 2, "Charity": 1}
+    }
+  ],
+  "bernadette": [
+    {
+      "title": "The Vision at the Grotto",
+      "story": "Bernadette sees a beautiful lady who identifies herself as the Immaculate Conception.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How should we respond when others doubt our experiences?",
+        "options": [
+          "Stay faithful to what we know is true",
+          "Change our story to please others",
+          "Doubt ourselves when others disagree",
+          "Stop sharing our experience entirely"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Humility": 2, "Faith": 1}
+    },
+    {
+      "title": "The Spring of Lourdes",
+      "story": "The lady directs Bernadette to dig in the ground, where a spring of healing water appears.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What does Bernadette's humble obedience teach us?",
+        "choices": [
+          "God often works through the simple and humble",
+          "Only special people receive visions from God",
+          "We must earn miracles through perfection",
+          "Miracles only happen in holy places"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Faith": 2, "Humility": 1}
+    },
+    {
+      "title": "Suffering with Joy",
+      "story": "Despite her illnesses and hardships, Bernadette maintains a joyful spirit.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How can we maintain joy even when facing difficulties?",
+        "options": [
+          "Find joy in loving God and others despite circumstances",
+          "Pretend everything is fine when it's not",
+          "Wait for circumstances to change before being joyful",
+          "See joy as a reward for avoiding suffering"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Humility": 1, "Faith": 2}
+    }
+  ],
+  "padrepio": [
+    {
+      "title": "The Saint with the Wounds",
+      "story": "Padre Pio bears the wounds of Christ (stigmata) and offers suffering for the salvation of souls.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How can we view our own sufferings in light of Christ's love?",
+        "options": [
+          "Offer our sufferings in union with Christ for others",
+          "See suffering as meaningless punishment",
+          "Avoid all suffering at any cost",
+          "Only accept suffering that makes us look holy"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Piety": 2, "Suffering": 1}
+    },
+    {
+      "title": "The Confessor Who Knew Souls",
+      "story": "Padre Pio spends hours in the confessional, often knowing penitents' sins before they speak.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What virtue is most important when seeking forgiveness and healing?",
+        "choices": [
+          "Humility and honesty in confession",
+          "Trying to appear better than we are",
+          "Confessing only minor sins",
+          "Avoiding confession altogether"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Piety": 2, "Suffering": 1}
+    },
+    {
+      "title": "Prayer and Suffering",
+      "story": "Padre Pio says, 'Prayer is the best weapon we have; it is the key to God's heart.'",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How should we respond to anxiety and worry?",
+        "options": [
+          "Bring our worries to God in prayer",
+          "Worry more to show we care",
+          "Distract ourselves with entertainment",
+          "See prayer as useless when we're anxious"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Suffering": 2, "Piety": 1}
+    }
+  ],
+  "johnpaulii": [
+    {
+      "title": "The Pope Who Forgave His Assassin",
+      "story": "After being shot and seriously wounded, John Paul II visits his attacker in prison to offer forgiveness.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How can we respond when someone deeply hurts us?",
+        "options": [
+          "Offer forgiveness while seeking justice",
+          "Seek revenge to make them pay",
+          "Hold a grudge forever",
+          "Pretend it didn't hurt us at all"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Mercy": 2, "Hope": 1}
+    },
+    {
+      "title": "Be Not Afraid",
+      "story": "John Paul II's famous call to overcome fear with faith and trust in God.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What does John Paul II teach us about fear and faith?",
+        "choices": [
+          "Trust in God's love helps us overcome fear",
+          "We should never feel afraid of anything",
+          "Fear shows we lack faith completely",
+          "We must earn courage through good deeds"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Hope": 2, "Mercy": 1}
+    },
+    {
+      "title": "The Pilgrim Pope",
+      "story": "John Paul II travels more than any pope before him, bringing the gospel to the ends of the earth.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "How can we share our faith with others respectfully?",
+        "options": [
+          "Share our faith while respecting others' dignity",
+          "Only share with people who already believe like us",
+          "Force others to accept our beliefs",
+          "Keep our faith completely private"
+        ],
+        "answer_index": 0
+      },
+      "reward": {"Mercy": 1, "Hope": 2}
+    }
   ]
 }
