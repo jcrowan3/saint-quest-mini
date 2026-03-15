@@ -4,12 +4,14 @@
 html, body, [class*="css"] {
     font-family: 'Lato', sans-serif;
     color: #2c3e50;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
 }
 
 /* Headers */
 h1, h2, h3 {
     font-family: 'Cinzel', serif;
     color: #8e44ad;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 /* THEMES (Subtle Backgrounds) */
@@ -17,50 +19,179 @@ h1, h2, h3 {
 [data-testid="stAppViewContainer"] {
     background-color: #ffffff;
     transition: background-color 0.5s ease;
+    padding: 20px;
 }
 
 /* Story Card */
 .story-card {
-    background-color: #ffffff;
+    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
     border: 1px solid #e0e0e0;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 30px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
     margin-bottom: 25px;
-    border-left: 6px solid #f1c40f;
+    border-left: 8px solid #f1c40f;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.story-card:hover {
+    box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+    transform: translateY(-5px);
+}
+
+/* Story Card Pseudo-element for decorative effect */
+.story-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #f1c40f, #8e44ad, #3498db);
 }
 
 /* Virtue Badges */
 .virtue-badge {
     display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px;
+    padding: 8px 16px;
+    border-radius: 25px;
     font-weight: bold;
-    font-size: 0.85em;
-    margin-right: 6px;
-    margin-bottom: 6px;
+    font-size: 0.9em;
+    margin-right: 8px;
+    margin-bottom: 8px;
     color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    transform: translateY(0);
 }
-.v-faith { background-color: #3498db; }
-.v-mercy { background-color: #e74c3c; }
-.v-courage { background-color: #e67e22; }
-.v-wisdom { background-color: #9b59b6; }
+.virtue-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.virtue-badge.is-zero {
+    opacity: 0.45;
+    filter: saturate(0.6);
+}
+
+.v-faith { background: linear-gradient(135deg, #3498db, #2980b9); }
+.v-mercy { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+.v-courage { background: linear-gradient(135deg, #e67e22, #d35400); }
+.v-wisdom { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
 
 /* Button Override */
 div.stButton > button {
     width: 100%;
-    border-radius: 8px;
+    border-radius: 12px;
     font-weight: bold;
     border: 2px solid #8e44ad;
     color: #8e44ad;
     background-color: white;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
+    padding: 12px 20px;
+    font-size: 1.05em;
+    box-shadow: 0 4px 8px rgba(142, 68, 173, 0.2);
 }
+
 div.stButton > button:hover {
     background-color: #8e44ad;
     color: white;
     border-color: #8e44ad;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(142, 68, 173, 0.3);
+}
+
+/* Radio Button Styling */
+div.stRadio > label {
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+}
+
+div.stRadio > label:hover {
+    background-color: #e9ecef;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(142, 68, 173, 0.2);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+div.stRadio > label[data-testid="stMarkdownContainer"] {
+    margin-bottom: 15px;
+    padding: 15px 20px;
+    background-color: white;
+    border-left: 4px solid #8e44ad;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+}
+
+/* Progress Bar Styling */
+progress {
+    height: 12px;
+    border-radius: 6px;
+    background-color: #f0f0f0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: none;
+}
+
+progress::-webkit-progress-bar {
+    background-color: #f0f0f0;
+    border-radius: 6px;
+}
+
+progress::-webkit-progress-value {
+    background: linear-gradient(90deg, #8e44ad, #f1c40f);
+    border-radius: 6px;
+    transition: width 0.5s ease;
+}
+
+/* Toast and Feedback Styling */
+.stToast {
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Balloon Animation */
+.balloon-animation {
+    animation: balloonPulse 0.8s ease-in-out;
+}
+
+@keyframes balloonPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Hero Selection Card */
+.story-card.hero-card {
+    text-align: center;
+    padding: 40px 30px;
+    background: linear-gradient(145deg, #ffffff 0%, #f0f4f8 100%);
+    border: 2px solid #dfe6e9;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+}
+
+.story-card.hero-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 24px rgba(0,0,0,0.1);
+    border-color: #8e44ad;
+}
+
+/* Footer/Overall container */
+[data-testid="stAppViewContainer"] > div {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
 }
