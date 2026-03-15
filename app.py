@@ -157,9 +157,12 @@ elif st.session_state.game_state == "PLAY":
         """, unsafe_allow_html=True)
         
         for k, v in st.session_state.virtues.items():
-            if v > 0:
-                color_class = f"v-{k.lower()}"
-                st.markdown(f"<span class='virtue-badge {color_class}'>{k}: {v}</span>", unsafe_allow_html=True)
+            color_class = f"v-{k.lower()}"
+            zero_class = " is-zero" if v == 0 else ""
+            st.markdown(
+                f"<span class='virtue-badge {color_class}{zero_class}'>{k}: {v}</span>",
+                unsafe_allow_html=True,
+            )
         
         st.markdown("</div></div>", unsafe_allow_html=True)
 
