@@ -59,8 +59,8 @@ if st.session_state.game_state == "SELECT":
     for i, s in enumerate(saints):
         with cols[i]:
             st.markdown(f"""
-            <div class='story-card' style='text-align: center;'>
-                <div style='font-size: 60px;'>{s['avatar']}</div>
+            <div class='story-card hero-card' style='text-align: center;'>
+                <div style='font-size: 80px;'>{s['avatar']}</div>
                 <h3>{s['name']}</h3>
                 <p><i>Virtues: {', '.join(s['virtues'])}</i></p>
             </div>
@@ -105,10 +105,15 @@ elif st.session_state.game_state == "PLAY":
             st.info(ch['question'])
             choice = st.radio("Your Answer:", ch['choices'], label_visibility="collapsed")
             if st.button("Submit Answer"):
+                with st.spinner("Checking your answer..."):
+                    time.sleep(1)  # Add a small delay to show spinner
                 if ch['choices'].index(choice) == ch['answer_index']:
-                    st.toast("Correct! +Virtue")
-                    time.sleep(0.5)
+                    st.success("Correct! +Virtue", icon="✅")
+                    st.session_state.virtues[q['reward'].keys()[0]] += list(q['reward'].values())[0]
+                    # Add animation class for visual feedback
+                    st.markdown("<div class='balloon-animation'>", unsafe_allow_html=True)
                     st.balloons()
+                    st.markdown("</div>", unsafe_allow_html=True)
                     for k,v in q['reward'].items():
                         st.session_state.virtues[k] += v
                 else:
@@ -123,9 +128,15 @@ elif st.session_state.game_state == "PLAY":
             st.info(ch['prompt'])
             choice = st.radio("Your Choice:", ch['options'], label_visibility="collapsed")
             if st.button("Make Choice"):
+                with st.spinner("Reflecting on your choice..."):
+                    time.sleep(1)  # Add a small delay to show spinner
                 if ch['options'].index(choice) == ch['answer_index']:
-                    st.success("A virtuous path!")
+                    st.success("A virtuous path!", icon="✨")
+                    st.session_state.virtues[q['reward'].keys()[0]] += list(q['reward'].values())[0]
+                    # Add animation class for visual feedback
+                    st.markdown("<div class='balloon-animation'>", unsafe_allow_html=True)
                     st.balloons()
+                    st.markdown("</div>", unsafe_allow_html=True)
                     for k,v in q['reward'].items():
                         st.session_state.virtues[k] += v
                 else:
@@ -138,8 +149,8 @@ elif st.session_state.game_state == "PLAY":
     with c2:
         # Profile Sidebar
         st.markdown(f"""
-        <div style='background-color: white; padding: 20px; border-radius: 12px; border: 1px solid #eee; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05);'>
-            <div style='font-size: 50px;'>{saint['avatar']}</div>
+        <div style='background-color: white; padding: 20px; border-radius: 16px; border: 1px solid #eee; text-align: center; box-shadow: 0 8px 16px rgba(0,0,0,0.05);'>
+            <div style='font-size: 60px;'>{saint['avatar']}</div>
             <b>{saint['name']}</b>
             <hr style='margin: 15px 0;'>
             <div style='text-align: left;'>
