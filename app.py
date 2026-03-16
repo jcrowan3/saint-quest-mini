@@ -53,6 +53,22 @@ def local_css(file_name: str):
 # --- UI COMPONENTS ---
 def render_saint_selection(saints: List[Dict]):
     """Render saint selection screen."""
+    # Show daily reflection
+    from datetime import date
+    today = date.today().strftime('%m-%d')
+    reflections = load_json_file("data/reflections.json", {})
+    if today in reflections:
+        reflection = reflections[today]
+        st.markdown(f"""
+        <div style='background-color: #f0f8ff; padding: 15px; border-radius: 10px; border-left: 4px solid #4CAF50; margin-bottom: 20px;'>
+            <h4 style='color: #2E7D32; margin-top: 0;'>Daily Reflection ({today})</h4>
+            <p><strong>Saint:</strong> {reflection.get('saint', 'Unknown').title().replace('_', ' ')}</p>
+            <p style='font-style: italic;'>{reflection.get('reflection', 'No reflection available.')}</p>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.info(f"No daily reflection available for {today}")
+    
     st.markdown("<h3 style='text-align: center;'>Choose Your Hero</h3>", unsafe_allow_html=True)
     st.write("")
     
@@ -111,6 +127,7 @@ def render_game_play(saint: Dict, quest_list: List[Dict]):
 
     with c2:
         render_profile_sidebar(saint)
+        show_virtue_dashboard()
 
 def render_trivia_challenge(ch: Dict, q: Dict):
     """Render trivia challenge."""
@@ -264,3 +281,100 @@ def main():
 
 if __name__ == "__main__":
     main()
+# Virtue tracking functions
+def get_virtue_progress():
+    """Get earned virtue points from localStorage"""
+    if 'virtue_progress' not in st.session_state:
+        # Initialize with zero points for all virtues
+        st.session_state.virtue_progress = {}
+        # Get all possible virtues from saints data
+        saints = load_saints()
+        all_virtues = set()
+        for saint in saints:
+            for virtue in saint['virtues']:
+                all_virtues.add(virtue)
+        for virtue in all_virtues:
+            st.session_state.virtue_progress[virtue] = 0
+    return st.session_state.virtue_progress
+
+def add_quest_completion(saint_id, quest_title):
+    """Mark a quest as completed and award virtue points"""
+    if 'completed_quests' not in st.session_state:
+        st.session_state.completed_quests = set()
+    
+    quest_key = f"{saint_id}:{quest_title}"
+    if quest_key in st.session_state.completed_quests:
+        return False  # Already completed
+    
+    # Add to completed set
+    st.session_state.completed_quests.add(quest_key)
+    
+    # Award virtue points
+    quests = load_quests()
+    if saint_id in quests:
+        for quest in quests[saint_id]:
+            if quest['title'] == quest_title:
+                reward = quest.get('reward', {})
+                virtue_progress = get_virtue_progress()
+                for virtue, points in reward.items():
+                    virtue_progress[virtue] = virtue_progress.get(virtue, 0) + points
+                break
+    
+    return True
+
+def get_total_possible_points():
+    """Calculate total possible points per virtue from all quests"""
+    saints = load_saints()
+    quests = load_quests()
+    
+    # Get all virtues
+    all_virtues = set()
+    for saint in saints:
+        for virtue in saint['virtues']:
+            all_virtues.add(virtue)
+    
+    # Calculate totals
+    totals = {virtue: 0 for virtue in all_virtues}
+    for saint_id, saint_quests in quests.items():
+        for quest in saint_quests:
+            reward = quest.get('reward', {})
+            for virtue, points in reward.items():
+                if virtue in totals:
+                    totals[virtue] += points
+    return totals
+
+def show_virtue_dashboard():
+    """Display the virtue progress dashboard"""
+    st.subheader("🌟 Virtue Progress")
+    
+    virtue_progress = get_virtue_progress()
+    total_points = get_total_possible_points()
+    
+    if not virtue_progress:
+        st.info("Start completing quests to earn virtue points!")
+        return
+    
+    # Create columns for progress bars
+    cols = st.columns(2)
+    col_index = 0
+    
+    for virtue in sorted(virtue_progress.keys()):
+        earned = virtue_progress.get(virtue, 0)
+        total = total_points.get(virtue, 0)
+        percentage = min(100, int((earned / total * 100) if total > 0 else 0))
+        
+        # Determine color based on progress
+        if percentage >= 66:
+            color = "green"
+        elif percentage >= 33:
+            color = "yellow"
+        else:
+            color = "red"
+        
+        with cols[col_index]:
+            st.markdown(f"**{virtue.title()}**")
+            st.progress(percentage / 100.0)
+            st.caption(f"{earned}/{total} points ({percentage}%)")
+            
+        col_index = (col_index + 1) % 2
+
