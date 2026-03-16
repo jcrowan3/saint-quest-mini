@@ -19,6 +19,57 @@ h1, h2, h3 {
     transition: background-color 0.5s ease;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+    /* Reduce padding on mobile */
+    .story-card {
+        padding: 15px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    /* Adjust columns for mobile */
+    div[data-testid="column"] {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        min-width: unset !important;
+    }
+    
+    /* Make buttons full width on mobile */
+    div.stButton > button {
+        width: 100% !important;
+        margin-bottom: 10px !important;
+    }
+    
+    /* Adjust text sizes for better readability on mobile */
+    h1 { font-size: 1.8rem !important; }
+    h2 { font-size: 1.5rem !important; }
+    h3 { font-size: 1.25rem !important; }
+    p { font-size: 1rem !important; }
+    
+    /* Reduce avatar sizes */
+    div[style*="font-size: 60px"] { font-size: 40px !important; }
+    div[style*="font-size: 50px"] { font-size: 35px !important; }
+    div[style*="font-size: 80px"] { font-size: 50px !important; }
+    
+    /* Adjust virtue badge sizes */
+    .virtue-badge {
+        padding: 4px 8px !important;
+        font-size: 0.75em !important;
+        margin-right: 4px !important;
+        margin-bottom: 4px !important;
+    }
+    
+    /* Reduce sidebar width on mobile */
+    [data-testid="stSidebar"] {
+        width: 100% !important;
+    }
+    
+    /* Make progress bars full width */
+    .stProgress > div {
+        width: 100% !important;
+    }
+}
+
 /* Story Card */
 .story-card {
     background-color: #ffffff;
