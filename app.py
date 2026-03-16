@@ -72,20 +72,23 @@ def render_saint_selection(saints: List[Dict]):
     st.markdown("<h3 style='text-align: center;'>Choose Your Hero</h3>", unsafe_allow_html=True)
     st.write("")
     
-    cols = st.columns(len(saints))
-    for i, s in enumerate(saints):
-        with cols[i]:
-            st.markdown(f"""
-            <div class='story-card' style='text-align: center;'>
-                <div style='font-size: 60px;'>{s.get('avatar', '❓')}</div>
-                <h3>{s.get('name', 'Unknown Saint')}</h3>
-                <p><i>Virtues: {', '.join(s.get('virtues', []))}</i></p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button(f"Begin Journey", key=f"btn_{s.get('id', i)}", use_container_width=True):
-                initialize_game_state(s)
-                st.rerun()
+    # Create responsive grid - max 3 columns per row
+    cols_per_row = 3
+    for i in range(0, len(saints), cols_per_row):
+        cols = st.columns(cols_per_row)
+        for j, s in enumerate(saints[i:i+cols_per_row]):
+            with cols[j]:
+                st.markdown(f"""
+                <div class='story-card' style='text-align: center;'>
+                    <div style='font-size: 60px;'>{s.get('avatar', '❓')}</div>
+                    <h3>{s.get('name', 'Unknown Saint')}</h3>
+                    <p><i>Virtues: {', '.join(s.get('virtues', []))}</i></p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                if st.button(f"Begin Journey", key=f"btn_{s.get('id', i+j)}", use_container_width=True):
+                    initialize_game_state(s)
+                    st.rerun()
 
 def render_game_play(saint: Dict, quest_list: List[Dict]):
     """Render gameplay screen."""
@@ -104,30 +107,59 @@ def render_game_play(saint: Dict, quest_list: List[Dict]):
 
     q = quest_list[current_idx]
     
-    c1, c2 = st.columns([2, 1])
-    
-    with c1:
-        # Story Card
-        st.markdown(f"""
-        <div class='story-card'>
-            <h2>{q.get('title', 'Unknown Quest')}</h2>
-            <p style='font-size: 1.2em; line-height: 1.6;'>{q.get('story', '')}</p>
-        </div>
-        """, unsafe_allow_html=True)
+    # Responsive layout: stacked on mobile, side-by-side on desktop
+    if st.session_state.get('mobile_view', False):
+        # Mobile: stack vertically
+        with st.container():
+            # Story Card
+            st.markdown(f"""
+            <div class='story-card'>
+                <h2>{q.get('title', 'Unknown Quest')}</h2>
+                <p style='font-size: 1.2em; line-height: 1.6;'>{q.get('story', '')}</p>
+            </div>
+            """, unsafe_allow_html=True)
 
-        ch = q.get('challenge', {})
+            ch = q.get('challenge', {})
+            
+            # Challenge Logic
+            if ch.get('type') == 'trivia':
+                render_trivia_challenge(ch, q)
+            elif ch.get('type') == 'dilemma':
+                render_dilemma_challenge(ch, q)
+            else:
+                st.warning("Unknown challenge type")
         
-        # Challenge Logic
-        if ch.get('type') == 'trivia':
-            render_trivia_challenge(ch, q)
-        elif ch.get('type') == 'dilemma':
-            render_dilemma_challenge(ch, q)
-        else:
-            st.warning("Unknown challenge type")
+        st.markdown("<br>", unsafe_allow_html=True)  # Add spacing
+        
+        with st.container():
+            render_profile_sidebar(saint)
+            show_virtue_dashboard()
+    else:
+        # Desktop: side-by-side
+        c1, c2 = st.columns([2, 1])
+        
+        with c1:
+            # Story Card
+            st.markdown(f"""
+            <div class='story-card'>
+                <h2>{q.get('title', 'Unknown Quest')}</h2>
+                <p style='font-size: 1.2em; line-height: 1.6;'>{q.get('story', '')}</p>
+            </div>
+            """, unsafe_allow_html=True)
 
-    with c2:
-        render_profile_sidebar(saint)
-        show_virtue_dashboard()
+            ch = q.get('challenge', {})
+            
+            # Challenge Logic
+            if ch.get('type') == 'trivia':
+                render_trivia_challenge(ch, q)
+            elif ch.get('type') == 'dilemma':
+                render_dilemma_challenge(ch, q)
+            else:
+                st.warning("Unknown challenge type")
+
+        with c2:
+            render_profile_sidebar(saint)
+            show_virtue_dashboard()
 
 def render_trivia_challenge(ch: Dict, q: Dict):
     """Render trivia challenge."""
@@ -236,7 +268,16 @@ def handle_incorrect_answer():
 
 # --- MAIN APP ---
 def main():
-    st.set_page_config(page_title="Saint Quest — Mini MVP", layout="wide")
+    st.set_page_config(
+        page_title="Saint Quest — Mini MVP", 
+        layout="centered",  # Better for mobile
+        initial_sidebar_state="auto"
+    )
+    
+    # Simple mobile detection based on URL params or user agent (Streamlit limitation workaround)
+    # For now, we'll rely on CSS media queries for responsiveness
+    # In a production app, we'd use st.query_params or custom JavaScript
+    pass
     
     # Load CSS
     local_css("style.css")
