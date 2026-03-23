@@ -1847,6 +1847,7 @@
     ];
 
     // Security: HTML escape helper
+    /** @param {string} str - Raw string to escape @returns {string} HTML-safe string */
     function escapeHTML(str) {
       const div = document.createElement('div');
       div.appendChild(document.createTextNode(str));
@@ -1854,6 +1855,7 @@
     }
 
     // Security: Safe localStorage read
+    /** Safely read and parse JSON from localStorage @returns {*} Parsed value or fallback */
     function safeGetJSON(key, fallback) {
       try {
         return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
@@ -1863,6 +1865,7 @@
     }
 
     // Safe localStorage write with quota checking
+    /** Write to localStorage with quota error handling */
     function safeSetItem(key, value) {
       try {
         localStorage.setItem(key, value);
@@ -1914,6 +1917,7 @@
     }
 
     // Seeded PRNG for daily challenge (mulberry32)
+    /** Mulberry32 PRNG — deterministic random for daily challenges @returns {Function} Random number generator */
     function seededRandom(seed) {
       let t = seed + 0x6D2B79F5;
       return function() {
@@ -1923,6 +1927,7 @@
       };
     }
 
+    /** Fisher-Yates shuffle using a seeded RNG for reproducible ordering */
     function seededShuffle(arr, rng) {
       const a = [...arr];
       for (let i = a.length - 1; i > 0; i--) {
@@ -1937,21 +1942,55 @@
       return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
     }
 
-    // Game State
+    // --- Configuration constants ---
+    const CONFIG = {
+      DIFFICULTY_MULTIPLIERS: { easy: 0.75, normal: 1.0, hard: 1.5 },
+      TIMER_SECONDS: 15,
+      STREAK_BONUS_THRESHOLD: 3,   // +1 random virtue
+      STREAK_ALL_THRESHOLD: 5,     // +1 ALL virtues
+      BALLOON_COUNT: 20,
+      BALLOON_CLEANUP_MS: 16000,
+      DEFAULT_VIRTUES: { "Faith": 0, "Mercy": 0, "Courage": 0, "Wisdom": 0 },
+    };
+
+    // --- Game State (consolidated) ---
+    const gameState = {
+      currentSaint: null,
+      currentCheckpoint: 0,
+      virtues: { ...CONFIG.DEFAULT_VIRTUES },
+      screen: "select",
+      difficulty: "easy",
+      timerInterval: null,
+      timeLeft: CONFIG.TIMER_SECONDS,
+      currentQuests: [],
+      inBonusRound: false,
+      bonusQuestions: [],
+      bonusIndex: 0,
+      currentStreak: 0,
+      maxStreak: 0,
+      totalCorrect: 0,
+      totalQuestions: 0,
+      bonusCorrect: 0,
+      answerHistory: [],
+      isDailyChallenge: false,
+    };
+
+    // Legacy aliases — these globals reference gameState for backward compatibility
+    // with the rest of the codebase. New code should use gameState directly.
     let currentSaint = null;
     let currentCheckpoint = 0;
     let virtues = {"Faith": 0, "Mercy": 0, "Courage": 0, "Wisdom": 0};
     let gameScreen = "select";
     let difficulty = "easy";
     let timerInterval = null;
-    let timeLeft = 15;
+    let timeLeft = CONFIG.TIMER_SECONDS;
 
     let currentQuests = [];
     let inBonusRound = false;
     let bonusQuestions = [];
     let bonusIndex = 0;
 
-    // New state: streaks, tracking, daily challenge
+    // Streaks, tracking, daily challenge
     let currentStreak = 0;
     let maxStreak = 0;
     let totalCorrect = 0;
@@ -1961,6 +2000,7 @@
     let isDailyChallenge = false;
 
     // Shared state reset — used by selectSaint, startDailyChallenge, resetGame
+    /** Reset all game state for a new journey. @param {string|null} saintId - Saint to load, or null to clear */
     function resetGameState(saintId) {
       currentSaint = saintId || null;
       currentCheckpoint = 0;
@@ -1988,6 +2028,7 @@
       isAnswerSubmitted = false;
     }
 
+    /** Fisher-Yates shuffle (in-place, Math.random) @returns {Array} The shuffled array */
     function shuffleArray(arr) {
       const a = [...arr];
       for (let i = a.length - 1; i > 0; i--) {
@@ -2072,6 +2113,7 @@
       hintEl.style.display = 'block';
     }
 
+    /** Spawn celebratory particle burst at screen center @param {string} emoji - Emoji to use as particle */
     function spawnParticles(emoji) {
       for (let i = 0; i < 12; i++) {
         const p = document.createElement('div');
@@ -2159,6 +2201,7 @@
     let matchTotal = 0;
     let matchShuffledRight = [];
 
+    /** Render a matching-pairs challenge (click left then right to pair items) */
     function renderMatchingChallenge(ch) {
       matchPairs = ch.pairs;
       matchCorrect = 0;
@@ -2247,6 +2290,7 @@
     let timelinePlacements = [];
     let timelineNextSlot = 0;
 
+    /** Render a timeline challenge (place events in chronological order) */
     function renderTimelineChallenge(ch) {
       timelineEvents = [...ch.events];
       timelinePlacements = [];
@@ -2328,6 +2372,7 @@
     }
 
     // === Save/Resume Progress ===
+    /** Save current game state to localStorage for resume functionality */
     function saveProgress() {
       if (!currentSaint) return;
       try {
@@ -2585,10 +2630,10 @@
           for (const [key, value] of Object.entries(q.reward)) { virtues[key] += value; }
           const resultEl = document.createElement('div');
           resultEl.className = 'result correct';
-          if (currentStreak >= 5) {
+          if (currentStreak >= CONFIG.STREAK_ALL_THRESHOLD) {
             for (const key of Object.keys(virtues)) { virtues[key] += 1; }
             resultEl.textContent = 'Correct! +Virtue | 🔥 ' + currentStreak + ' streak! +1 ALL virtues!';
-          } else if (currentStreak >= 3) {
+          } else if (currentStreak >= CONFIG.STREAK_BONUS_THRESHOLD) {
             const virtueKeys = Object.keys(virtues);
             const bonusKey = virtueKeys[Math.floor(Math.random() * virtueKeys.length)];
             virtues[bonusKey] += 1;
@@ -2611,29 +2656,31 @@
       showContinue(() => advanceToNextQuest());
     }
 
+    /** Update the streak counter display with bonus info and tooltips */
     function updateStreakDisplay() {
       const el = document.getElementById('streak-display');
-      if (currentStreak >= 5) {
+      if (currentStreak >= CONFIG.STREAK_ALL_THRESHOLD) {
         const flames = '🔥'.repeat(Math.min(currentStreak - 2, 5));
         el.textContent = flames + ' ' + currentStreak + ' Streak! +1 ALL virtues! ' + flames;
         el.title = 'Streak bonus: 5+ correct in a row grants +1 to every virtue!';
         el.classList.add('streak-fire');
         setTimeout(() => el.classList.remove('streak-fire'), 500);
         spawnParticles('⭐');
-      } else if (currentStreak >= 3) {
+      } else if (currentStreak >= CONFIG.STREAK_BONUS_THRESHOLD) {
         el.textContent = '🔥 ' + currentStreak + ' Streak! +1 bonus virtue!';
-        el.title = 'Streak bonus: 3+ correct in a row grants +1 to a random virtue!';
+        el.title = 'Streak bonus: ' + CONFIG.STREAK_BONUS_THRESHOLD + '+ correct in a row grants +1 to a random virtue!';
         el.classList.add('streak-fire');
         setTimeout(() => el.classList.remove('streak-fire'), 500);
       } else if (currentStreak > 0) {
         el.textContent = '✅ ' + currentStreak + ' in a row';
-        el.title = 'Keep going! 3+ streak = bonus virtue, 5+ = +1 ALL virtues';
+        el.title = 'Keep going! ' + CONFIG.STREAK_BONUS_THRESHOLD + '+ streak = bonus virtue, ' + CONFIG.STREAK_ALL_THRESHOLD + '+ = +1 ALL virtues';
       } else {
         el.textContent = '';
         el.title = '';
       }
     }
 
+    /** Draw the virtue profile radar chart on the canvas element */
     function drawRadarChart() {
       const canvas = document.getElementById('radar-canvas');
       const ctx = canvas.getContext('2d');
@@ -2816,7 +2863,7 @@
           for (const key of Object.keys(virtues)) { virtues[key] += 1; }
           const resultEl = document.createElement('div');
           resultEl.className = 'result correct';
-          resultEl.textContent = currentStreak >= 3
+          resultEl.textContent = currentStreak >= CONFIG.STREAK_BONUS_THRESHOLD
             ? 'Bonus point! +1 to all virtues | 🔥 ' + currentStreak + ' streak!'
             : 'Bonus point! +1 to all virtues';
           questionContainer.appendChild(resultEl);
@@ -2952,7 +2999,7 @@
 
     function showBalloons() {
       balloonsEl.style.opacity = '1';
-      const count = 20; // capped for mobile performance
+      const count = CONFIG.BALLOON_COUNT;
 
       for (let i = 0; i < count; i++) {
         const balloon = document.createElement('div');
@@ -2964,7 +3011,7 @@
         balloonsEl.appendChild(balloon);
       }
       // Auto-cleanup after animations finish to free DOM nodes
-      setTimeout(() => { balloonsEl.innerHTML = ''; }, 16000);
+      setTimeout(() => { balloonsEl.innerHTML = ''; }, CONFIG.BALLOON_CLEANUP_MS);
     }
 
     function saveHighScore() {
@@ -3314,14 +3361,14 @@
     }
 
     // Score multiplier based on difficulty
+    /** @returns {number} Score multiplier for the current difficulty level */
     function getMultiplier() {
-      return difficulty === 'hard' ? 1.5 : difficulty === 'normal' ? 1.0 : 0.75;
+      return CONFIG.DIFFICULTY_MULTIPLIERS[difficulty] || 1.0;
     }
 
+    /** @returns {string} Display label for the current score multiplier */
     function getMultiplierLabel() {
-      if (difficulty === 'hard') return '1.5x';
-      if (difficulty === 'normal') return '1.0x';
-      return '0.75x';
+      return getMultiplier() + 'x';
     }
 
     // Initial setup
