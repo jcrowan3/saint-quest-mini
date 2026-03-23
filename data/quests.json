@@ -42,6 +42,22 @@
         "answer_index": 0
       },
       "reward": {"Courage": 2, "Mercy": 1}
+    },
+    {
+      "title": "Franciscan Virtues",
+      "story": "Francis inspired many followers who each carried forward a unique gift. Can you match these Franciscan saints to their contributions?",
+      "challenge": {
+        "type": "matching",
+        "prompt": "Match each Franciscan saint to their contribution:",
+        "pairs": [
+          {"left": "St. Francis of Assisi", "right": "Canticle of the Sun"},
+          {"left": "St. Clare of Assisi", "right": "Founded the Poor Clares"},
+          {"left": "St. Anthony of Padua", "right": "Patron of lost things"},
+          {"left": "St. Bonaventure", "right": "Doctor of the Church"}
+        ]
+      },
+      "reward": {"Wisdom": 2, "Faith": 1},
+      "funFact": "The Franciscan order today has over 100,000 members worldwide across its three main branches."
     }
   ],
   "carlo": [
@@ -82,6 +98,23 @@
         "answer_index": 0
       },
       "reward": {"Faith": 2, "Wisdom": 1}
+    },
+    {
+      "title": "A Short Life, A Lasting Legacy",
+      "story": "Carlo Acutis lived only 15 years, yet his impact on the Church continues to grow. Place the key moments of his life in order.",
+      "challenge": {
+        "type": "timeline",
+        "prompt": "Arrange these events from Carlo's life in chronological order:",
+        "events": [
+          {"text": "Carlo is born in London to Italian parents", "year": 1991},
+          {"text": "Receives First Holy Communion in Milan", "year": 1998},
+          {"text": "Begins building his Eucharistic Miracles website", "year": 2002},
+          {"text": "Carlo dies of leukemia at age 15", "year": 2006},
+          {"text": "Beatified by Pope Francis in Assisi", "year": 2020}
+        ]
+      },
+      "reward": {"Faith": 2, "Hope": 1},
+      "funFact": "Carlo's Eucharistic Miracles exhibition has been displayed in every continent and translated into dozens of languages."
     }
   ],
   "joseph": [
@@ -177,6 +210,22 @@
         "answer_index": 0
       },
       "reward": {"Simplicity": 1, "Love": 2}
+    },
+    {
+      "title": "Doctors of Love",
+      "story": "Therese was named a Doctor of the Church in 1997 — one of only four women to receive this honor. Can you match each female Doctor to her distinctive contribution?",
+      "challenge": {
+        "type": "matching",
+        "prompt": "Match each female Doctor of the Church to her contribution:",
+        "pairs": [
+          {"left": "St. Therese of Lisieux", "right": "The Little Way of spiritual childhood"},
+          {"left": "St. Teresa of Avila", "right": "Interior Castle of mystical prayer"},
+          {"left": "St. Catherine of Siena", "right": "Dialogue with Divine Providence"},
+          {"left": "St. Hildegard of Bingen", "right": "Visionary writings on nature and medicine"}
+        ]
+      },
+      "reward": {"Wisdom": 2, "Love": 1},
+      "funFact": "St. Therese was the youngest person ever named a Doctor of the Church, a title recognizing her profound theological influence despite dying at age 24."
     }
   ],
   "kolbe": [
@@ -227,6 +276,23 @@
         "answer_index": 0
       },
       "reward": {"Courage": 2, "Charity": 1}
+    },
+    {
+      "title": "The Journey of a Martyr",
+      "story": "Maximilian Kolbe's life was a journey from youthful vision to ultimate sacrifice. Arrange the key events of his life in order.",
+      "challenge": {
+        "type": "timeline",
+        "prompt": "Place these events from Kolbe's life in chronological order:",
+        "events": [
+          {"text": "Young Raymund has a vision of the Virgin Mary offering two crowns", "year": 1906},
+          {"text": "Founds the Militia Immaculata in Rome", "year": 1917},
+          {"text": "Ordained a Franciscan priest", "year": 1918},
+          {"text": "Establishes Niepokalanow, the 'City of the Immaculata' in Poland", "year": 1927},
+          {"text": "Volunteers to die in place of a stranger at Auschwitz", "year": 1941}
+        ]
+      },
+      "reward": {"Courage": 2, "Faith": 1},
+      "funFact": "At its peak, Niepokalanow housed nearly 800 Franciscan friars and published a daily newspaper with a circulation of 230,000."
     }
   ],
   "bernadette": [

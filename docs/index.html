@@ -1862,6 +1862,57 @@
       }
     }
 
+    // Safe localStorage write with quota checking
+    function safeSetItem(key, value) {
+      try {
+        localStorage.setItem(key, value);
+      } catch (e) {
+        if (e.name === 'QuotaExceededError' || e.code === 22) {
+          showToast('Storage full — progress may not save. Try clearing old browser data.', '#b83838');
+        }
+        console.warn('localStorage write failed:', e);
+      }
+    }
+
+    // Generic toast notification
+    function showToast(message, bgColor) {
+      const toast = document.createElement('div');
+      toast.className = 'achievement-toast';
+      if (bgColor) toast.style.background = bgColor;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    // Pending achievement toasts to show on selection screen
+    let pendingAchievementToasts = [];
+
+    // Show any queued achievement toasts (called when returning to select screen)
+    function showPendingAchievementToasts() {
+      pendingAchievementToasts.forEach((ach, i) => {
+        setTimeout(() => {
+          const toast = document.createElement('div');
+          toast.className = 'achievement-toast';
+          const iconEl = document.createElement('span');
+          iconEl.style.fontSize = '2em';
+          iconEl.textContent = ach.icon;
+          toast.appendChild(iconEl);
+          const textEl = document.createElement('div');
+          const line1 = document.createElement('div');
+          line1.textContent = 'Achievement Unlocked!';
+          line1.style.fontSize = '0.85em';
+          textEl.appendChild(line1);
+          const line2 = document.createElement('strong');
+          line2.textContent = ach.name;
+          textEl.appendChild(line2);
+          toast.appendChild(textEl);
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 3500);
+        }, 500 + i * 1500);
+      });
+      pendingAchievementToasts = [];
+    }
+
     // Seeded PRNG for daily challenge (mulberry32)
     function seededRandom(seed) {
       let t = seed + 0x6D2B79F5;
@@ -2046,7 +2097,7 @@
 
     function toggleSound() {
       soundEnabled = !soundEnabled;
-      localStorage.setItem('saintQuestSound', JSON.stringify(soundEnabled));
+      safeSetItem('saintQuestSound', JSON.stringify(soundEnabled));
       document.getElementById('sound-toggle').textContent = soundEnabled ? '🔊' : '🔇';
     }
     document.getElementById('sound-toggle').textContent = soundEnabled ? '🔊' : '🔇';
@@ -2280,7 +2331,7 @@
     function saveProgress() {
       if (!currentSaint) return;
       try {
-        localStorage.setItem('saintquest_resume', JSON.stringify({
+        safeSetItem('saintquest_resume', JSON.stringify({
           saint: currentSaint,
           checkpoint: currentCheckpoint,
           virtues: virtues,
@@ -2410,6 +2461,7 @@
       buildAchievementsDisplay();
       updateDailyStatus();
       updateScreen();
+      showPendingAchievementToasts();
     }
 
     function loadQuest() {
@@ -2916,7 +2968,7 @@
 
       if (score > scores[currentSaint]) {
         scores[currentSaint] = score;
-        localStorage.setItem('saintQuestScores', JSON.stringify(scores));
+        safeSetItem('saintQuestScores', JSON.stringify(scores));
       }
     }
 
@@ -3062,8 +3114,8 @@
         }
       });
 
-      localStorage.setItem('saintQuestAchievements', JSON.stringify(achievements));
-      localStorage.setItem('saintQuestStats', JSON.stringify(stats));
+      safeSetItem('saintQuestAchievements', JSON.stringify(achievements));
+      safeSetItem('saintQuestStats', JSON.stringify(stats));
 
       // Show unlocked achievements on done screen
       const doneAch = document.getElementById('done-achievements');
@@ -3098,28 +3150,8 @@
       });
       doneAch.appendChild(achGrid);
 
-      // Toast for newly unlocked
-      newlyUnlocked.forEach((ach, i) => {
-        setTimeout(() => {
-          const toast = document.createElement('div');
-          toast.className = 'achievement-toast';
-          const iconEl = document.createElement('span');
-          iconEl.style.fontSize = '2em';
-          iconEl.textContent = ach.icon;
-          toast.appendChild(iconEl);
-          const textEl = document.createElement('div');
-          const line1 = document.createElement('div');
-          line1.textContent = 'Achievement Unlocked!';
-          line1.style.fontSize = '0.85em';
-          textEl.appendChild(line1);
-          const line2 = document.createElement('strong');
-          line2.textContent = ach.name;
-          textEl.appendChild(line2);
-          toast.appendChild(textEl);
-          document.body.appendChild(toast);
-          setTimeout(() => toast.remove(), 3500);
-        }, i * 1500);
-      });
+      // Queue toasts for display on selection screen (not here, where they compete with results)
+      pendingAchievementToasts = pendingAchievementToasts.concat(newlyUnlocked);
     }
 
     // Build answer review section
@@ -3199,7 +3231,7 @@
 
     function saveDailyResult(score) {
       const today = dateSeed();
-      localStorage.setItem('saintQuestDaily', JSON.stringify({
+      safeSetItem('saintQuestDaily', JSON.stringify({
         lastDate: today,
         lastScore: score
       }));
@@ -3271,7 +3303,7 @@
     function incrementGamesPlayed() {
       const stats = safeGetJSON('saintQuestStats', {});
       stats.gamesPlayed = (stats.gamesPlayed || 0) + 1;
-      localStorage.setItem('saintQuestStats', JSON.stringify(stats));
+      safeSetItem('saintQuestStats', JSON.stringify(stats));
     }
 
     // Score multiplier based on difficulty
