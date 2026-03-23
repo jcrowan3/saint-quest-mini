@@ -2615,18 +2615,22 @@
       const el = document.getElementById('streak-display');
       if (currentStreak >= 5) {
         const flames = '🔥'.repeat(Math.min(currentStreak - 2, 5));
-        el.textContent = flames + ' ' + currentStreak + ' Streak! ' + flames;
+        el.textContent = flames + ' ' + currentStreak + ' Streak! +1 ALL virtues! ' + flames;
+        el.title = 'Streak bonus: 5+ correct in a row grants +1 to every virtue!';
         el.classList.add('streak-fire');
         setTimeout(() => el.classList.remove('streak-fire'), 500);
         spawnParticles('⭐');
       } else if (currentStreak >= 3) {
-        el.textContent = '🔥 ' + currentStreak + ' Streak!';
+        el.textContent = '🔥 ' + currentStreak + ' Streak! +1 bonus virtue!';
+        el.title = 'Streak bonus: 3+ correct in a row grants +1 to a random virtue!';
         el.classList.add('streak-fire');
         setTimeout(() => el.classList.remove('streak-fire'), 500);
       } else if (currentStreak > 0) {
         el.textContent = '✅ ' + currentStreak + ' in a row';
+        el.title = 'Keep going! 3+ streak = bonus virtue, 5+ = +1 ALL virtues';
       } else {
         el.textContent = '';
+        el.title = '';
       }
     }
 
@@ -2948,8 +2952,9 @@
 
     function showBalloons() {
       balloonsEl.style.opacity = '1';
+      const count = 20; // capped for mobile performance
 
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < count; i++) {
         const balloon = document.createElement('div');
         balloon.className = 'balloon';
         balloon.textContent = '🎈';
@@ -2958,6 +2963,8 @@
         balloon.style.animationDelay = Math.random() * 5 + 's';
         balloonsEl.appendChild(balloon);
       }
+      // Auto-cleanup after animations finish to free DOM nodes
+      setTimeout(() => { balloonsEl.innerHTML = ''; }, 16000);
     }
 
     function saveHighScore() {
@@ -3062,7 +3069,7 @@
       achievementDefs.forEach(def => {
         const badge = document.createElement('div');
         badge.className = 'achievement-badge ' + (unlocked.includes(def.id) ? 'unlocked' : 'locked');
-        badge.title = unlocked.includes(def.id) ? def.desc : '???';
+        badge.title = unlocked.includes(def.id) ? def.desc : 'Hint: ' + def.desc;
 
         const icon = document.createElement('div');
         icon.style.fontSize = '2em';
@@ -3076,7 +3083,7 @@
 
         const desc = document.createElement('div');
         desc.style.cssText = 'font-size: 0.75em; opacity: 0.7;';
-        desc.textContent = unlocked.includes(def.id) ? def.desc : '???';
+        desc.textContent = unlocked.includes(def.id) ? def.desc : 'Hint: ' + def.desc;
         badge.appendChild(desc);
 
         grid.appendChild(badge);
