@@ -1,65 +1,117 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useCallback } from 'react';
+import { saints, getQuestsForSaint } from '@/lib/data';
+import type { Saint, Quest, QuestResult } from '@/lib/types';
+import SaintCard from '@/app/components/SaintCard';
+import QuestFlow from '@/app/components/QuestFlow';
+import CompletionScreen from '@/app/components/CompletionScreen';
+
+type GameView = 'home' | 'questing' | 'complete';
 
 export default function Home() {
+  const [view, setView] = useState<GameView>('home');
+  const [selectedSaint, setSelectedSaint] = useState<Saint | null>(null);
+  const [quests, setQuests] = useState<Quest[]>([]);
+  const [results, setResults] = useState<QuestResult[]>([]);
+
+  const handleSelectSaint = useCallback((saint: Saint) => {
+    setSelectedSaint(saint);
+    setQuests(getQuestsForSaint(saint.id));
+    setResults([]);
+    setView('questing');
+  }, []);
+
+  const handleQuestComplete = useCallback((allResults: QuestResult[]) => {
+    setResults(allResults);
+    setView('complete');
+  }, []);
+
+  const handleRestart = useCallback(() => {
+    setSelectedSaint(null);
+    setQuests([]);
+    setResults([]);
+    setView('home');
+  }, []);
+
+  if (view === 'questing' && selectedSaint) {
+    return (
+      <QuestFlow
+        saint={selectedSaint}
+        quests={quests}
+        onComplete={handleQuestComplete}
+        onBack={handleRestart}
+      />
+    );
+  }
+
+  if (view === 'complete' && selectedSaint) {
+    return (
+      <CompletionScreen
+        saint={selectedSaint}
+        results={results}
+        onPlayAgain={handleRestart}
+      />
+    );
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="min-h-screen bg-amber-50 px-4 pb-16 pt-12">
+      {/* Hero header */}
+      <header className="text-center mb-12">
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-100 border-2 border-amber-200 mb-5 text-4xl shadow-sm">
+          ✨
+        </div>
+        <h1 className="text-5xl font-bold text-amber-900 tracking-tight leading-none mb-3">
+          Saint Quest
+        </h1>
+        <p className="text-amber-700 text-lg max-w-xs mx-auto leading-snug">
+          Walk with the saints. Answer challenges. Grow in virtue.
+        </p>
+      </header>
+
+      {/* Saint picker */}
+      <section className="max-w-3xl mx-auto">
+        <div className="flex items-center gap-3 justify-center mb-6">
+          <div className="h-px flex-1 bg-amber-200 max-w-16" />
+          <p className="text-xs font-bold text-amber-600 uppercase tracking-widest">
+            Choose your saint
           </p>
+          <div className="h-px flex-1 bg-amber-200 max-w-16" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {saints.map(saint => (
+            <SaintCard key={saint.id} saint={saint} onClick={handleSelectSaint} />
+          ))}
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* How it works */}
+      <section className="max-w-xl mx-auto mt-14">
+        <div className="bg-white rounded-2xl border border-amber-100 shadow-sm p-6">
+          <h2 className="text-sm font-bold text-gray-700 uppercase tracking-widest text-center mb-5">
+            How it works
+          </h2>
+          <div className="grid grid-cols-3 gap-4 text-center">
+            {[
+              { icon: '🙏', label: 'Pick a saint', desc: 'Choose a holy guide' },
+              { icon: '⚔️', label: 'Face challenges', desc: 'Trivia, dilemmas & puzzles' },
+              { icon: '🌟', label: 'Earn virtues', desc: 'Grow in faith & wisdom' },
+            ].map(step => (
+              <div key={step.label}>
+                <div className="text-3xl mb-2">{step.icon}</div>
+                <p className="font-bold text-gray-800 text-xs">{step.label}</p>
+                <p className="text-gray-500 text-xs mt-0.5 leading-snug">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <footer className="text-center mt-10 text-amber-500/60 text-xs">
+        Saint Quest · A virtuous adventure
+      </footer>
+    </main>
   );
 }
