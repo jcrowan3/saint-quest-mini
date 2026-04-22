@@ -1,38 +1,61 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { saints, getQuestsForSaint } from '@/lib/data';
 import type { Saint, Quest, QuestResult } from '@/lib/types';
 import SaintCard from '@/app/components/SaintCard';
 import QuestFlow from '@/app/components/QuestFlow';
 import CompletionScreen from '@/app/components/CompletionScreen';
+import { useGame } from '@/lib/context/GameContext';
 
 type GameView = 'home' | 'questing' | 'complete';
 
 export default function Home() {
+  const { gameState, selectSaint: ctxSelectSaint, resetProgress } = useGame();
   const [view, setView] = useState<GameView>('home');
   const [selectedSaint, setSelectedSaint] = useState<Saint | null>(null);
   const [quests, setQuests] = useState<Quest[]>([]);
   const [results, setResults] = useState<QuestResult[]>([]);
+  const [resumed, setResumed] = useState(false);
+
+  // Resume an in-progress saint from localStorage after hydration. Must run
+  // post-mount to avoid SSR/client mismatch — the server render has no access
+  // to localStorage, so the 'home' view is always the initial paint.
+  useEffect(() => {
+    if (resumed) return;
+    const saintId = gameState.userProgress.currentSaintId;
+    const saint = saintId ? saints.find(s => s.id === saintId) : null;
+    if (saint) {
+      /* eslint-disable react-hooks/set-state-in-effect -- see comment above */
+      setSelectedSaint(saint);
+      setQuests(getQuestsForSaint(saint.id));
+      setView('questing');
+      /* eslint-enable react-hooks/set-state-in-effect */
+    }
+    setResumed(true);
+  }, [gameState.userProgress.currentSaintId, resumed]);
 
   const handleSelectSaint = useCallback((saint: Saint) => {
+    ctxSelectSaint(saint);
     setSelectedSaint(saint);
     setQuests(getQuestsForSaint(saint.id));
     setResults([]);
     setView('questing');
-  }, []);
+  }, [ctxSelectSaint]);
 
   const handleQuestComplete = useCallback((allResults: QuestResult[]) => {
+    resetProgress();
     setResults(allResults);
     setView('complete');
-  }, []);
+  }, [resetProgress]);
 
   const handleRestart = useCallback(() => {
+    resetProgress();
     setSelectedSaint(null);
     setQuests([]);
     setResults([]);
     setView('home');
-  }, []);
+  }, [resetProgress]);
 
   if (view === 'questing' && selectedSaint) {
     return (
