@@ -1,115 +1,100 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { GameState, UserProgress, Saint, VirtueProgress } from '../types';
+import type { Saint } from '@/lib/types';
+
+interface VirtueProgress {
+  [virtue: string]: number;
+}
+
+interface UserProgress {
+  currentSaintId: string | null;
+  currentQuestIndex: number;
+  virtues: VirtueProgress;
+  completedQuests: string[];
+}
+
+interface GameState {
+  selectedSaint: Saint | null;
+  userProgress: UserProgress;
+}
 
 interface GameContextType {
   gameState: GameState;
-  selectSaint: (saint: Saint, resetVirtues?: boolean) => void;
-  completeQuest: (questId: string, rewards: { virtue: string; points: number }[]) => void;
-  nextQuest: () => void;
+  selectSaint: (saint: Saint) => void;
+  completeQuest: (questTitle: string, rewards: Record<string, number>) => void;
   resetProgress: () => void;
 }
-
-const defaultVirtues: VirtueProgress = {
-  Faith: 0,
-  Mercy: 0,
-  Courage: 0,
-  Wisdom: 0,
-};
 
 const defaultProgress: UserProgress = {
   currentSaintId: null,
   currentQuestIndex: 0,
-  virtues: defaultVirtues,
+  virtues: {},
   completedQuests: [],
-  relicsUnlocked: [],
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
-export function GameProvider({ children }: { children: React.ReactNode }) {
-  const [gameState, setGameState] = useState<GameState>({
-    selectedSaint: null,
-    userProgress: defaultProgress,
-  });
-
-  // Load from localStorage on mount
-  useEffect(() => {
+function loadInitialState(): GameState {
+  if (typeof window === 'undefined') {
+    return { selectedSaint: null, userProgress: defaultProgress };
+  }
+  try {
     const saved = localStorage.getItem('saintQuestProgress');
     if (saved) {
-      try {
-        const progress = JSON.parse(saved);
-        setGameState(prev => ({
-          ...prev,
-          userProgress: progress,
-        }));
-      } catch (e) {
-        console.error('Failed to load progress:', e);
-      }
+      const progress = JSON.parse(saved) as UserProgress;
+      return { selectedSaint: null, userProgress: progress };
     }
-  }, []);
+  } catch {
+    // ignore corrupted saves
+  }
+  return { selectedSaint: null, userProgress: defaultProgress };
+}
 
-  // Save to localStorage whenever progress changes
+export function GameProvider({ children }: { children: React.ReactNode }) {
+  const [gameState, setGameState] = useState<GameState>(loadInitialState);
+
   useEffect(() => {
     localStorage.setItem('saintQuestProgress', JSON.stringify(gameState.userProgress));
   }, [gameState.userProgress]);
 
-  const selectSaint = (saint: Saint, resetVirtues: boolean = false) => {
-    // Check if switching to a different saint or starting fresh
-    const isSameSaint = gameState.userProgress.currentSaintId === saint.id;
-
+  const selectSaint = (saint: Saint) => {
     setGameState({
       selectedSaint: saint,
       userProgress: {
         currentSaintId: saint.id,
-        currentQuestIndex: isSameSaint ? gameState.userProgress.currentQuestIndex : 0,
-        virtues: resetVirtues ? defaultVirtues : gameState.userProgress.virtues, // Reset or keep virtues
-        completedQuests: isSameSaint ? gameState.userProgress.completedQuests : [],
-        relicsUnlocked: isSameSaint ? gameState.userProgress.relicsUnlocked : [],
+        currentQuestIndex: 0,
+        virtues: {},
+        completedQuests: [],
       },
     });
   };
 
-  const completeQuest = (questId: string, rewards: { virtue: string; points: number }[]) => {
+  const completeQuest = (questTitle: string, rewards: Record<string, number>) => {
     setGameState(prev => {
       const newVirtues = { ...prev.userProgress.virtues };
-      rewards.forEach(reward => {
-        const virtue = reward.virtue as keyof VirtueProgress;
-        newVirtues[virtue] = (newVirtues[virtue] || 0) + reward.points;
-      });
-
+      for (const [virtue, pts] of Object.entries(rewards)) {
+        newVirtues[virtue] = (newVirtues[virtue] ?? 0) + pts;
+      }
       return {
         ...prev,
         userProgress: {
           ...prev.userProgress,
           virtues: newVirtues,
-          completedQuests: [...prev.userProgress.completedQuests, questId],
+          completedQuests: [...prev.userProgress.completedQuests, questTitle],
+          currentQuestIndex: prev.userProgress.currentQuestIndex + 1,
         },
       };
     });
   };
 
-  const nextQuest = () => {
-    setGameState(prev => ({
-      ...prev,
-      userProgress: {
-        ...prev.userProgress,
-        currentQuestIndex: prev.userProgress.currentQuestIndex + 1,
-      },
-    }));
-  };
-
   const resetProgress = () => {
-    setGameState({
-      selectedSaint: null,
-      userProgress: defaultProgress,
-    });
+    setGameState({ selectedSaint: null, userProgress: defaultProgress });
     localStorage.removeItem('saintQuestProgress');
   };
 
   return (
-    <GameContext.Provider value={{ gameState, selectSaint, completeQuest, nextQuest, resetProgress }}>
+    <GameContext.Provider value={{ gameState, selectSaint, completeQuest, resetProgress }}>
       {children}
     </GameContext.Provider>
   );

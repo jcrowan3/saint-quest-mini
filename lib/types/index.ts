@@ -1,57 +1,64 @@
-export type Virtue = 'Faith' | 'Mercy' | 'Courage' | 'Wisdom';
-
-export type ChallengeType = 'trivia' | 'dilemma' | 'memory';
-
-export interface VirtueReward {
-  virtue: Virtue;
-  points: number;
-}
-
-export interface Challenge {
-  id: string;
-  type: ChallengeType;
-  question: string;
-  options: string[];
-  correctAnswer: number;
-  explanation?: string;
-}
-
-export interface Quest {
-  id: string;
-  title: string;
-  story: string;
-  challenge: Challenge;
-  rewards: VirtueReward[];
-  imageUrl?: string;
-}
-
 export interface Saint {
   id: string;
   name: string;
-  fullName: string;
-  description: string;
-  primaryVirtues: Virtue[];
-  quests: Quest[];
-  imageUrl?: string;
-  color: string;
+  avatar: string;
+  virtues: string[];
 }
 
-export interface VirtueProgress {
-  Faith: number;
-  Mercy: number;
-  Courage: number;
-  Wisdom: number;
+export interface DilemmaChallenge {
+  type: 'dilemma';
+  prompt: string;
+  options: string[];
+  answer_index: number;
 }
 
-export interface UserProgress {
-  currentSaintId: string | null;
-  currentQuestIndex: number;
-  virtues: VirtueProgress;
-  completedQuests: string[];
-  relicsUnlocked: string[];
+export interface TriviaChallenge {
+  type: 'trivia';
+  question: string;
+  choices: string[];
+  answer_index: number;
 }
 
-export interface GameState {
-  selectedSaint: Saint | null;
-  userProgress: UserProgress;
+export interface MatchingPair {
+  left: string;
+  right: string;
 }
+
+export interface MatchingChallenge {
+  type: 'matching';
+  prompt: string;
+  pairs: MatchingPair[];
+}
+
+export interface TimelineEvent {
+  text: string;
+  year: number;
+}
+
+export interface TimelineChallenge {
+  type: 'timeline';
+  prompt: string;
+  events: TimelineEvent[];
+}
+
+export type Challenge =
+  | DilemmaChallenge
+  | TriviaChallenge
+  | MatchingChallenge
+  | TimelineChallenge;
+
+export interface Quest {
+  title: string;
+  story: string;
+  challenge: Challenge;
+  reward: Record<string, number>;
+  funFact?: string;
+}
+
+export interface QuestResult {
+  questIndex: number;
+  correct: boolean;
+  virtueGained: Record<string, number>;
+}
+
+export type GameView = 'home' | 'questing' | 'complete';

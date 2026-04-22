@@ -1,67 +1,117 @@
 'use client';
 
-import Link from 'next/link';
+import { useState, useCallback } from 'react';
+import { saints, getQuestsForSaint } from '@/lib/data';
+import type { Saint, Quest, QuestResult } from '@/lib/types';
+import SaintCard from '@/app/components/SaintCard';
+import QuestFlow from '@/app/components/QuestFlow';
+import CompletionScreen from '@/app/components/CompletionScreen';
+
+type GameView = 'home' | 'questing' | 'complete';
 
 export default function Home() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden opacity-10">
-        <div className="absolute top-20 left-20 text-9xl animate-float">✝️</div>
-        <div className="absolute bottom-20 right-20 text-9xl animate-float-delayed">🌟</div>
-        <div className="absolute top-40 right-40 text-7xl animate-float">❤️</div>
-        <div className="absolute bottom-40 left-40 text-7xl animate-float-delayed">📖</div>
-      </div>
+  const [view, setView] = useState<GameView>('home');
+  const [selectedSaint, setSelectedSaint] = useState<Saint | null>(null);
+  const [quests, setQuests] = useState<Quest[]>([]);
+  const [results, setResults] = useState<QuestResult[]>([]);
 
-      <div className="relative text-center max-w-3xl bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-12">
-        {/* Logo/Title */}
-        <div className="mb-6">
-          <div className="text-7xl mb-4 animate-bounce-slow">✨</div>
-          <h1 className="text-7xl font-black mb-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Saint Quest
-          </h1>
-          <div className="h-1 w-32 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full mb-4"></div>
+  const handleSelectSaint = useCallback((saint: Saint) => {
+    setSelectedSaint(saint);
+    setQuests(getQuestsForSaint(saint.id));
+    setResults([]);
+    setView('questing');
+  }, []);
+
+  const handleQuestComplete = useCallback((allResults: QuestResult[]) => {
+    setResults(allResults);
+    setView('complete');
+  }, []);
+
+  const handleRestart = useCallback(() => {
+    setSelectedSaint(null);
+    setQuests([]);
+    setResults([]);
+    setView('home');
+  }, []);
+
+  if (view === 'questing' && selectedSaint) {
+    return (
+      <QuestFlow
+        saint={selectedSaint}
+        quests={quests}
+        onComplete={handleQuestComplete}
+        onBack={handleRestart}
+      />
+    );
+  }
+
+  if (view === 'complete' && selectedSaint) {
+    return (
+      <CompletionScreen
+        saint={selectedSaint}
+        results={results}
+        onPlayAgain={handleRestart}
+      />
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-amber-50 px-4 pb-16 pt-12">
+      {/* Hero header */}
+      <header className="text-center mb-12">
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-100 border-2 border-amber-200 mb-5 text-4xl shadow-sm">
+          ✨
+        </div>
+        <h1 className="text-5xl font-bold text-amber-900 tracking-tight leading-none mb-3">
+          Saint Quest
+        </h1>
+        <p className="text-amber-700 text-lg max-w-xs mx-auto leading-snug">
+          Walk with the saints. Answer challenges. Grow in virtue.
+        </p>
+      </header>
+
+      {/* Saint picker */}
+      <section className="max-w-3xl mx-auto">
+        <div className="flex items-center gap-3 justify-center mb-6">
+          <div className="h-px flex-1 bg-amber-200 max-w-16" />
+          <p className="text-xs font-bold text-amber-600 uppercase tracking-widest">
+            Choose your saint
+          </p>
+          <div className="h-px flex-1 bg-amber-200 max-w-16" />
         </div>
 
-        <p className="text-3xl mb-4 text-gray-800 font-bold">
-          Journey to Sainthood
-        </p>
-        <p className="text-lg mb-10 text-gray-600 max-w-xl mx-auto leading-relaxed">
-          Embark on a journey with the saints. Complete quests, grow in virtue,
-          and discover what it means to become an everyday saint.
-        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {saints.map(saint => (
+            <SaintCard key={saint.id} saint={saint} onClick={handleSelectSaint} />
+          ))}
+        </div>
+      </section>
 
-        <div className="space-y-6">
-          <Link
-            href="/saints"
-            className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-16 py-5 rounded-2xl text-2xl font-bold transition-all shadow-xl hover:shadow-2xl hover:scale-105 transform"
-          >
-            Begin Your Quest →
-          </Link>
-
-          <div className="pt-10">
-            <h3 className="text-sm font-bold text-gray-500 mb-5 tracking-wider">GROW IN VIRTUE</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-              <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl p-5 shadow-lg hover:shadow-xl hover:scale-105 transition-all">
-                <span className="text-4xl block mb-2">✝️</span>
-                <p className="text-sm font-bold text-blue-800">Faith</p>
+      {/* How it works */}
+      <section className="max-w-xl mx-auto mt-14">
+        <div className="bg-white rounded-2xl border border-amber-100 shadow-sm p-6">
+          <h2 className="text-sm font-bold text-gray-700 uppercase tracking-widest text-center mb-5">
+            How it works
+          </h2>
+          <div className="grid grid-cols-3 gap-4 text-center">
+            {[
+              { icon: '🙏', label: 'Pick a saint', desc: 'Choose a holy guide' },
+              { icon: '⚔️', label: 'Face challenges', desc: 'Trivia, dilemmas & puzzles' },
+              { icon: '🌟', label: 'Earn virtues', desc: 'Grow in faith & wisdom' },
+            ].map(step => (
+              <div key={step.label}>
+                <div className="text-3xl mb-2">{step.icon}</div>
+                <p className="font-bold text-gray-800 text-xs">{step.label}</p>
+                <p className="text-gray-500 text-xs mt-0.5 leading-snug">{step.desc}</p>
               </div>
-              <div className="bg-gradient-to-br from-pink-100 to-pink-200 rounded-2xl p-5 shadow-lg hover:shadow-xl hover:scale-105 transition-all">
-                <span className="text-4xl block mb-2">❤️</span>
-                <p className="text-sm font-bold text-pink-800">Mercy</p>
-              </div>
-              <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-2xl p-5 shadow-lg hover:shadow-xl hover:scale-105 transition-all">
-                <span className="text-4xl block mb-2">🦁</span>
-                <p className="text-sm font-bold text-red-800">Courage</p>
-              </div>
-              <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl p-5 shadow-lg hover:shadow-xl hover:scale-105 transition-all">
-                <span className="text-4xl block mb-2">📖</span>
-                <p className="text-sm font-bold text-purple-800">Wisdom</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      <footer className="text-center mt-10 text-amber-500/60 text-xs">
+        Saint Quest · A virtuous adventure
+      </footer>
+    </main>
   );
 }
