@@ -5,6 +5,15 @@ export interface Saint {
   virtues: string[];
 }
 
+export interface DailyRecommendation {
+  dateKey: string;
+  label: string;
+  saint: Saint;
+  source: 'feast' | 'season' | 'weekly';
+  reflection: string;
+  seasonalQuest?: string;
+}
+
 export interface DilemmaChallenge {
   type: 'dilemma';
   prompt: string;

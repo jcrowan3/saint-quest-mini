@@ -1,12 +1,123 @@
 import saintsRaw from '@/data/saints.json';
 import questsRaw from '@/data/quests.json';
-import type { Saint, Quest } from '@/lib/types';
+import reflectionsRaw from '@/data/reflections.json';
+import type { DailyRecommendation, Saint, Quest } from '@/lib/types';
 
 export const saints = saintsRaw as unknown as Saint[];
 
 export function getQuestsForSaint(saintId: string): Quest[] {
   const all = questsRaw as unknown as Record<string, Quest[]>;
   return all[saintId] ?? [];
+}
+
+const reflections = reflectionsRaw as Record<string, { saint: string; reflection: string }>;
+
+const WEEKLY_ROTATION_START = Date.UTC(2026, 0, 4);
+
+const SEASONAL_QUESTS: Array<{
+  start: string;
+  end: string;
+  label: string;
+  saintId: string;
+  quest: string;
+  reflection: string;
+}> = [
+  {
+    start: '12-01',
+    end: '12-24',
+    label: 'Advent Quest',
+    saintId: 'therese',
+    quest: 'Prepare a small act of hidden love today.',
+    reflection: 'Advent invites little, faithful acts that make room for Christ.',
+  },
+  {
+    start: '12-25',
+    end: '01-07',
+    label: 'Christmas Quest',
+    saintId: 'francis',
+    quest: 'Share joy with someone who may feel overlooked.',
+    reflection: 'Christmas joy grows when it is given away with simplicity and peace.',
+  },
+  {
+    start: '02-14',
+    end: '03-31',
+    label: 'Lenten Quest',
+    saintId: 'padrepio',
+    quest: 'Offer one small sacrifice with patience and prayer.',
+    reflection: 'Lent turns ordinary struggle into a path of mercy and conversion.',
+  },
+  {
+    start: '04-01',
+    end: '05-31',
+    label: 'Easter Quest',
+    saintId: 'johnpaulii',
+    quest: 'Choose hope: encourage someone with a brave, kind word.',
+    reflection: 'Easter courage says, “Be not afraid,” because Christ is risen.',
+  },
+];
+
+function pad2(value: number) {
+  return String(value).padStart(2, '0');
+}
+
+function getDateKey(date: Date) {
+  return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+}
+
+function getMonthDay(date: Date) {
+  return `${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+}
+
+function isMonthDayInRange(monthDay: string, start: string, end: string) {
+  return start <= end
+    ? monthDay >= start && monthDay <= end
+    : monthDay >= start || monthDay <= end;
+}
+
+function getWeeklySaint(date: Date) {
+  const current = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+  const weekIndex = Math.floor((current - WEEKLY_ROTATION_START) / (7 * 24 * 60 * 60 * 1000));
+  const safeIndex = ((weekIndex % saints.length) + saints.length) % saints.length;
+  return saints[safeIndex];
+}
+
+export function getDailyRecommendation(date = new Date()): DailyRecommendation {
+  const dateKey = getDateKey(date);
+  const monthDay = getMonthDay(date);
+  const feast = reflections[monthDay];
+  const feastSaint = feast ? saints.find(s => s.id === feast.saint) : undefined;
+
+  if (feastSaint && feast) {
+    return {
+      dateKey,
+      label: `Today's feast: ${feastSaint.name}`,
+      saint: feastSaint,
+      source: 'feast',
+      reflection: feast.reflection,
+    };
+  }
+
+  const season = SEASONAL_QUESTS.find(s => isMonthDayInRange(monthDay, s.start, s.end));
+  if (season) {
+    const saint = saints.find(s => s.id === season.saintId) ?? getWeeklySaint(date);
+    return {
+      dateKey,
+      label: season.label,
+      saint,
+      source: 'season',
+      reflection: season.reflection,
+      seasonalQuest: season.quest,
+    };
+  }
+
+  const saint = getWeeklySaint(date);
+  return {
+    dateKey,
+    label: 'Saint of the week',
+    saint,
+    source: 'weekly',
+    reflection: `This week, walk with ${saint.name} and practice ${saint.virtues.join(' and ')}.`,
+  };
 }
 
 export const SAINT_ACCENTS: Record<string, {
