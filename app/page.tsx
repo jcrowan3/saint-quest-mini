@@ -144,7 +144,9 @@ export default function Home() {
           <div className="mb-8 rounded-3xl border-2 border-amber-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-start gap-4">
-                <div className="text-5xl" aria-hidden="true">{recommendation.saint.avatar}</div>
+                <div className="text-5xl" aria-hidden="true">
+                  {recommendation.displayAvatar ?? recommendation.saint.avatar}
+                </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-2 mb-1">
                     <p className="text-xs font-bold uppercase tracking-widest text-amber-600">
@@ -157,7 +159,7 @@ export default function Home() {
                     )}
                   </div>
                   <h2 className="text-2xl font-bold text-amber-950">
-                    {recommendation.saint.name}
+                    {recommendation.displayName ?? recommendation.saint.name}
                   </h2>
                   <p className="mt-2 text-sm leading-relaxed text-amber-800">
                     {recommendation.reflection}

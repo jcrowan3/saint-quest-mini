@@ -9,6 +9,8 @@ export interface DailyRecommendation {
   dateKey: string;
   label: string;
   saint: Saint;
+  displayName?: string;
+  displayAvatar?: string;
   source: 'feast' | 'season' | 'weekly';
   reflection: string;
   seasonalQuest?: string;
