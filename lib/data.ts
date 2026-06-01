@@ -12,6 +12,21 @@ export function getQuestsForSaint(saintId: string): Quest[] {
 
 const reflections = reflectionsRaw as Record<string, { saint: string; reflection: string }>;
 
+function titleizeSaintId(saintId: string) {
+  return saintId
+    .split('_')
+    .filter(Boolean)
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+function getFeastDisplayName(feast: { saint: string; reflection: string }, saint?: Saint) {
+  if (saint) return saint.name;
+
+  const [prefix] = feast.reflection.split(':', 1);
+  return prefix?.trim() || titleizeSaintId(feast.saint);
+}
+
 const WEEKLY_ROTATION_START = Date.UTC(2026, 0, 4);
 
 const SEASONAL_QUESTS: Array<{
@@ -87,11 +102,15 @@ export function getDailyRecommendation(date = new Date()): DailyRecommendation {
   const feast = reflections[monthDay];
   const feastSaint = feast ? saints.find(s => s.id === feast.saint) : undefined;
 
-  if (feastSaint && feast) {
+  if (feast) {
+    const recommendedSaint = feastSaint ?? getWeeklySaint(date);
+    const displayName = getFeastDisplayName(feast, feastSaint);
     return {
       dateKey,
-      label: `Today's feast: ${feastSaint.name}`,
-      saint: feastSaint,
+      label: `Today's feast: ${displayName}`,
+      saint: recommendedSaint,
+      displayName,
+      displayAvatar: feastSaint?.avatar ?? '✦',
       source: 'feast',
       reflection: feast.reflection,
     };
