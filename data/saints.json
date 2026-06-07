@@ -3,48 +3,72 @@
     "id": "francis",
     "name": "St. Francis of Assisi",
     "avatar": "🐺",
-    "virtues": ["Mercy", "Courage"]
+    "virtues": ["Mercy", "Courage"],
+    "patronages": ["Animals", "Creation", "Peacemakers"],
+    "lifeSituations": ["Making peace", "Caring for creation", "Choosing simplicity"],
+    "finderPrompt": "Walk with Francis when you want peace, simplicity, and love for creation."
   },
   {
     "id": "carlo",
     "name": "St. Carlo Acutis",
     "avatar": "💻",
-    "virtues": ["Wisdom", "Faith"]
+    "virtues": ["Wisdom", "Faith"],
+    "patronages": ["Students", "Technology", "Young people"],
+    "lifeSituations": ["Using technology well", "School stress", "Growing in Eucharistic faith"],
+    "finderPrompt": "Carlo is a good guide for students and anyone trying to use technology with holiness."
   },
   {
     "id": "joseph",
     "name": "St. Joseph",
     "avatar": "🌳",
-    "virtues": ["Responsibility", "Humility"]
+    "virtues": ["Responsibility", "Humility"],
+    "patronages": ["Families", "Workers", "Fathers"],
+    "lifeSituations": ["Starting a new responsibility", "Family care", "Work challenges"],
+    "finderPrompt": "Joseph helps when duty feels quiet, heavy, or deeply important."
   },
   {
     "id": "therese",
     "name": "St. Therese of Lisieux",
     "avatar": "🌹",
-    "virtues": ["Simplicity", "Love"]
+    "virtues": ["Simplicity", "Love"],
+    "patronages": ["Missions", "Sick people", "Everyday holiness"],
+    "lifeSituations": ["Feeling overlooked", "Small acts of love", "Needing patience"],
+    "finderPrompt": "Therese shows how small acts can become brave love."
   },
   {
     "id": "kolbe",
     "name": "St. Maximilian Kolbe",
     "avatar": "✝️",
-    "virtues": ["Charity", "Courage"]
+    "virtues": ["Charity", "Courage"],
+    "patronages": ["Prisoners", "Families", "Media"],
+    "lifeSituations": ["Defending someone", "Choosing sacrifice", "Needing courage"],
+    "finderPrompt": "Kolbe is a courageous companion when love asks for sacrifice."
   },
   {
     "id": "bernadette",
     "name": "St. Bernadette Soubirous",
     "avatar": "💧",
-    "virtues": ["Humility", "Faith"]
+    "virtues": ["Humility", "Faith"],
+    "patronages": ["Sick people", "Pilgrims", "Those who feel unseen"],
+    "lifeSituations": ["Being misunderstood", "Illness", "Trusting God quietly"],
+    "finderPrompt": "Bernadette helps when faith needs humility, honesty, and trust."
   },
   {
     "id": "padrepio",
     "name": "St. Padre Pio",
     "avatar": "✋",
-    "virtues": ["Piety", "Suffering"]
+    "virtues": ["Piety", "Suffering"],
+    "patronages": ["Confession", "Healing", "Prayer"],
+    "lifeSituations": ["Carrying suffering", "Seeking mercy", "Building a prayer habit"],
+    "finderPrompt": "Padre Pio points hard days toward prayer, mercy, and perseverance."
   },
   {
     "id": "johnpaulii",
     "name": "St. John Paul II",
     "avatar": "🕊️",
-    "virtues": ["Mercy", "Hope"]
+    "virtues": ["Mercy", "Hope"],
+    "patronages": ["Young people", "Families", "World peace"],
+    "lifeSituations": ["Needing hope", "Making brave choices", "Forgiving others"],
+    "finderPrompt": "John Paul II is a hopeful guide for courage, mercy, and big-hearted love."
   }
 ]

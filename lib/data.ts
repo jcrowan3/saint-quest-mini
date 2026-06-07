@@ -5,6 +5,40 @@ import type { DailyRecommendation, Saint, Quest } from '@/lib/types';
 
 export const saints = saintsRaw as unknown as Saint[];
 
+export interface SaintFinderMatch {
+  saint: Saint;
+  score: number;
+  matchedTags: string[];
+}
+
+function uniqueSorted(values: string[]) {
+  return Array.from(new Set(values)).sort((a, b) => a.localeCompare(b));
+}
+
+export const patronageOptions = uniqueSorted(saints.flatMap(saint => saint.patronages));
+export const lifeSituationOptions = uniqueSorted(saints.flatMap(saint => saint.lifeSituations));
+
+export function getSaintFinderMatches(selectedTags: string[]): SaintFinderMatch[] {
+  if (selectedTags.length === 0) {
+    return saints.map(saint => ({ saint, score: 0, matchedTags: [] }));
+  }
+
+  const selected = new Set(selectedTags);
+
+  return saints
+    .map(saint => {
+      const tags = [...saint.patronages, ...saint.lifeSituations];
+      const matchedTags = tags.filter(tag => selected.has(tag));
+      return {
+        saint,
+        score: matchedTags.length,
+        matchedTags,
+      };
+    })
+    .filter(match => match.score > 0)
+    .sort((a, b) => b.score - a.score || a.saint.name.localeCompare(b.saint.name));
+}
+
 export function getQuestsForSaint(saintId: string): Quest[] {
   const all = questsRaw as unknown as Record<string, Quest[]>;
   return all[saintId] ?? [];

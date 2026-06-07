@@ -1,7 +1,14 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
-import { saints, getDailyRecommendation, getQuestsForSaint } from '@/lib/data';
+import { useState, useCallback, useEffect, useMemo } from 'react';
+import {
+  getDailyRecommendation,
+  getQuestsForSaint,
+  getSaintFinderMatches,
+  lifeSituationOptions,
+  patronageOptions,
+  saints,
+} from '@/lib/data';
 import type { DailyRecommendation, Saint, Quest, QuestResult } from '@/lib/types';
 import SaintCard from '@/app/components/SaintCard';
 import QuestFlow from '@/app/components/QuestFlow';
@@ -49,6 +56,10 @@ export default function Home() {
   const [recommendation, setRecommendation] = useState<DailyRecommendation | null>(null);
   const [streak, setStreak] = useState<StreakState | null>(null);
   const [resumed, setResumed] = useState(false);
+  const [finderTags, setFinderTags] = useState<string[]>([]);
+
+  const finderMatches = useMemo(() => getSaintFinderMatches(finderTags), [finderTags]);
+  const hasFinderFilters = finderTags.length > 0;
 
   useEffect(() => {
     const daily = getDailyRecommendation();
@@ -87,6 +98,14 @@ export default function Home() {
     if (!recommendation) return;
     handleSelectSaint(recommendation.saint);
   }, [handleSelectSaint, recommendation]);
+
+  const toggleFinderTag = useCallback((tag: string) => {
+    setFinderTags(current => (
+      current.includes(tag)
+        ? current.filter(item => item !== tag)
+        : [...current, tag]
+    ));
+  }, []);
 
   const handleQuestComplete = useCallback((allResults: QuestResult[]) => {
     resetProgress();
@@ -184,14 +203,100 @@ export default function Home() {
         <div className="flex items-center gap-3 justify-center mb-6">
           <div className="h-px flex-1 bg-amber-200 max-w-16" />
           <p className="text-xs font-bold text-amber-600 uppercase tracking-widest">
-            Choose your saint
+            Find your saint
           </p>
           <div className="h-px flex-1 bg-amber-200 max-w-16" />
         </div>
 
+        <div className="mb-6 rounded-2xl border border-amber-200 bg-white p-5 shadow-sm">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <h2 className="text-xl font-bold text-amber-950">
+                What do you need today?
+              </h2>
+              <p className="mt-1 text-sm leading-relaxed text-amber-800">
+                Choose patronages or life situations to reveal saints who fit.
+              </p>
+            </div>
+            {hasFinderFilters && (
+              <button
+                onClick={() => setFinderTags([])}
+                className="self-start rounded-xl border border-amber-200 px-3 py-2 text-xs font-bold uppercase tracking-wide text-amber-700 transition-colors hover:bg-amber-50"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <p className="mb-2 text-xs font-bold uppercase tracking-widest text-amber-600">
+                Patronage
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {patronageOptions.map(tag => {
+                  const selected = finderTags.includes(tag);
+                  return (
+                    <button
+                      key={tag}
+                      onClick={() => toggleFinderTag(tag)}
+                      aria-pressed={selected}
+                      className={`rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors ${
+                        selected
+                          ? 'border-amber-700 bg-amber-700 text-white'
+                          : 'border-amber-200 bg-amber-50 text-amber-900 hover:bg-amber-100'
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div>
+              <p className="mb-2 text-xs font-bold uppercase tracking-widest text-amber-600">
+                Life Situation
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {lifeSituationOptions.map(tag => {
+                  const selected = finderTags.includes(tag);
+                  return (
+                    <button
+                      key={tag}
+                      onClick={() => toggleFinderTag(tag)}
+                      aria-pressed={selected}
+                      className={`rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors ${
+                        selected
+                          ? 'border-amber-700 bg-amber-700 text-white'
+                          : 'border-amber-200 bg-amber-50 text-amber-900 hover:bg-amber-100'
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-5 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">
+            {hasFinderFilters
+              ? `${finderMatches.length} matching saint${finderMatches.length === 1 ? '' : 's'}`
+              : 'All saints are ready for a quest'}
+          </div>
+        </div>
+
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {saints.map(saint => (
-            <SaintCard key={saint.id} saint={saint} onClick={handleSelectSaint} />
+          {finderMatches.map(({ saint, matchedTags }) => (
+            <div key={saint.id} className="space-y-2">
+              <SaintCard saint={saint} onClick={handleSelectSaint} />
+              {hasFinderFilters && (
+                <p className="rounded-xl bg-white/80 px-3 py-2 text-center text-xs font-semibold leading-snug text-amber-800 shadow-sm">
+                  {matchedTags.length > 0 ? saint.finderPrompt : 'Available for any quest'}
+                </p>
+              )}
+            </div>
           ))}
         </div>
       </section>
