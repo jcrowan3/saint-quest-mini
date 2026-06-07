@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Saint Quest icon</title>
+  <desc id="desc">A gold halo and cross above a shield.</desc>
+  <rect width="512" height="512" rx="96" fill="#fffbeb"/>
+  <circle cx="256" cy="178" r="82" fill="none" stroke="#f59e0b" stroke-width="30"/>
+  <path fill="#92400e" d="M246 119h20v152h-20z"/>
+  <path fill="#92400e" d="M189 181h114v20H189z"/>
+  <path fill="#f59e0b" d="M128 248c38-17 77-25 116-25h24c39 0 78 8 116 25v62c0 85-51 135-128 164-77-29-128-79-128-164z"/>
+  <path fill="#fff7ed" d="M256 270c35 0 66 8 94 23v31c0 54-35 88-94 113-59-25-94-59-94-113v-31c28-15 59-23 94-23z"/>
+  <path fill="#b45309" d="M246 305h20v80h-20z"/>
+  <path fill="#b45309" d="M214 335h84v20h-84z"/>
+</svg>
