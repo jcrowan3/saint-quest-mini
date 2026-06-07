@@ -3,6 +3,9 @@ export interface Saint {
   name: string;
   avatar: string;
   virtues: string[];
+  patronages: string[];
+  lifeSituations: string[];
+  finderPrompt: string;
 }
 
 export interface DailyRecommendation {
