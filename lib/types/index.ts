@@ -16,6 +16,7 @@ export interface DailyRecommendation {
   displayAvatar?: string;
   source: 'feast' | 'season' | 'weekly';
   reflection: string;
+  questGuide?: string;
   seasonalQuest?: string;
 }
 

@@ -188,13 +188,18 @@ export default function Home() {
                       Today&apos;s quest: {recommendation.seasonalQuest}
                     </p>
                   )}
+                  {recommendation.questGuide && (
+                    <p className="mt-2 rounded-xl bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900">
+                      {recommendation.questGuide}
+                    </p>
+                  )}
                 </div>
               </div>
               <button
                 onClick={handleStartRecommendation}
                 className="shrink-0 rounded-2xl bg-amber-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition-opacity hover:opacity-90"
               >
-                Start recommended quest →
+                Start quest with {recommendation.saint.name} →
               </button>
             </div>
           </div>

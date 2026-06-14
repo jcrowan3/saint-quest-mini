@@ -46,6 +46,39 @@ export function getQuestsForSaint(saintId: string): Quest[] {
 
 const reflections = reflectionsRaw as Record<string, { saint: string; reflection: string }>;
 
+const FEAST_QUEST_GUIDES: Record<string, string> = {
+  all_saints: 'therese',
+  all_souls: 'padrepio',
+  catherine: 'johnpaulii',
+  cecilia: 'carlo',
+  dominic: 'carlo',
+  fatima: 'bernadette',
+  francis_xavier: 'francis',
+  holy_innocents: 'joseph',
+  isidore: 'joseph',
+  james: 'johnpaulii',
+  jesus: 'francis',
+  john: 'johnpaulii',
+  john_baptist: 'bernadette',
+  lucy: 'therese',
+  mark: 'johnpaulii',
+  martin: 'francis',
+  mary: 'bernadette',
+  matthew: 'padrepio',
+  monica: 'therese',
+  our_lady_of_guadalupe: 'bernadette',
+  patrick: 'johnpaulii',
+  peter_paul: 'johnpaulii',
+  philip_james: 'johnpaulii',
+  presentation: 'bernadette',
+  silvester: 'joseph',
+  stephen: 'kolbe',
+  teresa: 'therese',
+  thomas: 'carlo',
+  transfiguration: 'johnpaulii',
+  valentine: 'kolbe',
+};
+
 function titleizeSaintId(saintId: string) {
   return saintId
     .split('_')
@@ -130,6 +163,11 @@ function getWeeklySaint(date: Date) {
   return saints[safeIndex];
 }
 
+function getFeastQuestGuide(feastSaintId: string) {
+  const guideId = FEAST_QUEST_GUIDES[feastSaintId];
+  return guideId ? saints.find(s => s.id === guideId) : undefined;
+}
+
 export function getDailyRecommendation(date = new Date()): DailyRecommendation {
   const dateKey = getDateKey(date);
   const monthDay = getMonthDay(date);
@@ -137,7 +175,8 @@ export function getDailyRecommendation(date = new Date()): DailyRecommendation {
   const feastSaint = feast ? saints.find(s => s.id === feast.saint) : undefined;
 
   if (feast) {
-    const recommendedSaint = feastSaint ?? getWeeklySaint(date);
+    const feastGuide = feastSaint ?? getFeastQuestGuide(feast.saint);
+    const recommendedSaint = feastGuide ?? getWeeklySaint(date);
     const displayName = getFeastDisplayName(feast, feastSaint);
     return {
       dateKey,
@@ -147,6 +186,7 @@ export function getDailyRecommendation(date = new Date()): DailyRecommendation {
       displayAvatar: feastSaint?.avatar ?? '✦',
       source: 'feast',
       reflection: feast.reflection,
+      questGuide: feastSaint ? undefined : `Quest guide: ${recommendedSaint.name}`,
     };
   }
 
