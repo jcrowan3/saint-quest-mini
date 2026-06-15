@@ -14,6 +14,8 @@ export interface DailyRecommendation {
   saint: Saint;
   displayName?: string;
   displayAvatar?: string;
+  questGuideLabel?: string;
+  feastHasQuest?: boolean;
   source: 'feast' | 'season' | 'weekly';
   reflection: string;
   seasonalQuest?: string;
