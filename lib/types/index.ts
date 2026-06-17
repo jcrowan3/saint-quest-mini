@@ -6,6 +6,10 @@ export interface Saint {
   patronages: string[];
   lifeSituations: string[];
   finderPrompt: string;
+  feastDay: string;
+  sourceTradition: string;
+  patronageRationale: string;
+  devotionalNote?: string;
 }
 
 export interface DailyRecommendation {

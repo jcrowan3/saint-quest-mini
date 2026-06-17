@@ -6,7 +6,11 @@
     "virtues": ["Mercy", "Courage"],
     "patronages": ["Animals", "Creation", "Peacemakers"],
     "lifeSituations": ["Making peace", "Caring for creation", "Choosing simplicity"],
-    "finderPrompt": "Walk with Francis when you want peace, simplicity, and love for creation."
+    "finderPrompt": "Walk with Francis when you want peace, simplicity, and love for creation.",
+    "feastDay": "October 4",
+    "sourceTradition": "Medieval Franciscan tradition and Catholic calendars remember Francis as the founder of the Friars Minor and a witness to poverty, peace, and care for creation.",
+    "patronageRationale": "His preaching of peace, simple living, and affection for creatures explains the links to animals, creation, and peacemaking.",
+    "devotionalNote": "Stories about Francis preaching to birds and taming the wolf of Gubbio are beloved devotional traditions; present them as teaching stories rather than classroom historical proof."
   },
   {
     "id": "carlo",
@@ -15,7 +19,11 @@
     "virtues": ["Wisdom", "Faith"],
     "patronages": ["Students", "Technology", "Young people"],
     "lifeSituations": ["Using technology well", "School stress", "Growing in Eucharistic faith"],
-    "finderPrompt": "Carlo is a good guide for students and anyone trying to use technology with holiness."
+    "finderPrompt": "Carlo is a good guide for students and anyone trying to use technology with holiness.",
+    "feastDay": "October 12",
+    "sourceTradition": "Modern Church biographies remember Carlo for Eucharistic devotion, charity, and using web skills to share Eucharistic miracle research.",
+    "patronageRationale": "His teenage witness, school life, and thoughtful use of computers support the student, technology, and young people tags.",
+    "devotionalNote": "Carlo's cause is recent, so keep claims concrete and avoid implying an official patronage title beyond common devotional association."
   },
   {
     "id": "joseph",
@@ -24,7 +32,10 @@
     "virtues": ["Responsibility", "Humility"],
     "patronages": ["Families", "Workers", "Fathers"],
     "lifeSituations": ["Starting a new responsibility", "Family care", "Work challenges"],
-    "finderPrompt": "Joseph helps when duty feels quiet, heavy, or deeply important."
+    "finderPrompt": "Joseph helps when duty feels quiet, heavy, or deeply important.",
+    "feastDay": "March 19",
+    "sourceTradition": "The Gospels name Joseph as Mary's husband and Jesus' foster father; Catholic devotion also honors him as a worker on May 1.",
+    "patronageRationale": "His care for the Holy Family and his trade as a carpenter ground the family, fatherhood, and worker connections."
   },
   {
     "id": "therese",
@@ -33,7 +44,10 @@
     "virtues": ["Simplicity", "Love"],
     "patronages": ["Missions", "Sick people", "Everyday holiness"],
     "lifeSituations": ["Feeling overlooked", "Small acts of love", "Needing patience"],
-    "finderPrompt": "Therese shows how small acts can become brave love."
+    "finderPrompt": "Therese shows how small acts can become brave love.",
+    "feastDay": "October 1",
+    "sourceTradition": "Therese's autobiography and Carmelite tradition shaped her 'little way' of trust, hidden love, and prayer for missionaries.",
+    "patronageRationale": "Her hidden prayer for missions, long illness, and teaching on ordinary holiness explain the mission, sickness, and everyday holiness tags."
   },
   {
     "id": "kolbe",
@@ -42,7 +56,11 @@
     "virtues": ["Charity", "Courage"],
     "patronages": ["Prisoners", "Families", "Media"],
     "lifeSituations": ["Defending someone", "Choosing sacrifice", "Needing courage"],
-    "finderPrompt": "Kolbe is a courageous companion when love asks for sacrifice."
+    "finderPrompt": "Kolbe is a courageous companion when love asks for sacrifice.",
+    "feastDay": "August 14",
+    "sourceTradition": "Twentieth-century martyr accounts remember Kolbe's Marian devotion, publishing apostolate, and voluntary death in Auschwitz in another prisoner's place.",
+    "patronageRationale": "His imprisonment and sacrifice connect him to prisoners and families, while his Catholic publishing work supports the media tag.",
+    "devotionalNote": "When teaching children, keep the Auschwitz context age-appropriate and emphasize sacrificial love without graphic detail."
   },
   {
     "id": "bernadette",
@@ -51,7 +69,11 @@
     "virtues": ["Humility", "Faith"],
     "patronages": ["Sick people", "Pilgrims", "Those who feel unseen"],
     "lifeSituations": ["Being misunderstood", "Illness", "Trusting God quietly"],
-    "finderPrompt": "Bernadette helps when faith needs humility, honesty, and trust."
+    "finderPrompt": "Bernadette helps when faith needs humility, honesty, and trust.",
+    "feastDay": "April 16",
+    "sourceTradition": "Lourdes tradition and Church investigations remember Bernadette as the young visionary who reported apparitions of Mary and later lived religious life quietly.",
+    "patronageRationale": "Her poverty, illness, pilgrim shrine at Lourdes, and experience of being doubted support the sickness, pilgrimage, and unseen tags.",
+    "devotionalNote": "Marian apparition details belong to devotional tradition approved for belief; avoid presenting private revelation as required doctrine."
   },
   {
     "id": "padrepio",
@@ -60,7 +82,11 @@
     "virtues": ["Piety", "Suffering"],
     "patronages": ["Confession", "Healing", "Prayer"],
     "lifeSituations": ["Carrying suffering", "Seeking mercy", "Building a prayer habit"],
-    "finderPrompt": "Padre Pio points hard days toward prayer, mercy, and perseverance."
+    "finderPrompt": "Padre Pio points hard days toward prayer, mercy, and perseverance.",
+    "feastDay": "September 23",
+    "sourceTradition": "Modern Capuchin and Church records remember Padre Pio for prayer, confession, patient suffering, and spiritual counsel.",
+    "patronageRationale": "His long ministry hearing confessions, reputation for intercession, and intense prayer life explain the confession, healing, and prayer tags.",
+    "devotionalNote": "Miracle and stigmata stories are part of his devotional history; focus quests on prayer, mercy, and perseverance."
   },
   {
     "id": "johnpaulii",
@@ -69,6 +95,9 @@
     "virtues": ["Mercy", "Hope"],
     "patronages": ["Young people", "Families", "World peace"],
     "lifeSituations": ["Needing hope", "Making brave choices", "Forgiving others"],
-    "finderPrompt": "John Paul II is a hopeful guide for courage, mercy, and big-hearted love."
+    "finderPrompt": "John Paul II is a hopeful guide for courage, mercy, and big-hearted love.",
+    "feastDay": "October 22",
+    "sourceTradition": "Recent papal teaching, World Youth Day history, and canonization records remember John Paul II's public witness to mercy, family life, youth, and peace.",
+    "patronageRationale": "His outreach to young people, teaching on family dignity, and global peace witness support the young people, families, and world peace tags."
   }
 ]
