@@ -178,12 +178,15 @@ export function getDailyRecommendation(date = new Date()): DailyRecommendation {
     const feastGuide = feastSaint ?? getFeastQuestGuide(feast.saint);
     const recommendedSaint = feastGuide ?? getWeeklySaint(date);
     const displayName = getFeastDisplayName(feast, feastSaint);
+    const feastHasQuest = Boolean(feastSaint);
     return {
       dateKey,
       label: `Today's feast: ${displayName}`,
       saint: recommendedSaint,
       displayName,
       displayAvatar: feastSaint?.avatar ?? '✦',
+      feastHasQuest,
+      questGuideLabel: feastHasQuest ? undefined : `Quest guide: ${recommendedSaint.name}`,
       source: 'feast',
       reflection: feast.reflection,
       questGuide: feastSaint ? undefined : `Quest guide: ${recommendedSaint.name}`,

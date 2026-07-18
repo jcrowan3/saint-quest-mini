@@ -99,6 +99,14 @@ export default function Home() {
     handleSelectSaint(recommendation.saint);
   }, [handleSelectSaint, recommendation]);
 
+  const recommendationLaunchLabel = useMemo(() => {
+    if (!recommendation) return 'Start recommended quest';
+    if (recommendation.source === 'feast' && recommendation.feastHasQuest === false) {
+      return `Start ${recommendation.saint.name}'s quest`;
+    }
+    return 'Start recommended quest';
+  }, [recommendation]);
+
   const toggleFinderTag = useCallback((tag: string) => {
     setFinderTags(current => (
       current.includes(tag)
@@ -183,6 +191,11 @@ export default function Home() {
                   <p className="mt-2 text-sm leading-relaxed text-amber-800">
                     {recommendation.reflection}
                   </p>
+                  {recommendation.questGuideLabel && (
+                    <p className="mt-2 text-sm font-semibold text-amber-900">
+                      {recommendation.questGuideLabel}
+                    </p>
+                  )}
                   {recommendation.seasonalQuest && (
                     <p className="mt-2 rounded-xl bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900">
                       Today&apos;s quest: {recommendation.seasonalQuest}
@@ -199,7 +212,7 @@ export default function Home() {
                 onClick={handleStartRecommendation}
                 className="shrink-0 rounded-2xl bg-amber-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition-opacity hover:opacity-90"
               >
-                Start quest with {recommendation.saint.name} →
+                {recommendationLaunchLabel} →
               </button>
             </div>
           </div>
