@@ -6,6 +6,10 @@ export interface Saint {
   patronages: string[];
   lifeSituations: string[];
   finderPrompt: string;
+  feastDay: string;
+  sourceTradition: string;
+  patronageRationale: string;
+  devotionalNote?: string;
 }
 
 export interface DailyRecommendation {
@@ -18,6 +22,7 @@ export interface DailyRecommendation {
   feastHasQuest?: boolean;
   source: 'feast' | 'season' | 'weekly';
   reflection: string;
+  questGuide?: string;
   seasonalQuest?: string;
 }
 

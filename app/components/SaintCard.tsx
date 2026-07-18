@@ -12,13 +12,10 @@ export default function SaintCard({ saint, onClick }: Props) {
   const accent = SAINT_ACCENTS[saint.id] ?? DEFAULT_ACCENT;
 
   return (
-    <button
-      onClick={() => onClick(saint)}
-      className="group bg-white rounded-2xl p-4 text-center border-2 shadow-sm transition-all duration-150 hover:shadow-lg hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer w-full"
+    <article
+      className="group flex h-full flex-col bg-white rounded-2xl p-4 text-center border-2 shadow-sm transition-all duration-150 hover:shadow-lg hover:-translate-y-1"
       style={{
         borderColor: accent.border,
-        // @ts-expect-error custom property
-        '--tw-ring-color': accent.ring,
       }}
     >
       <div className="text-5xl mb-3 transition-transform duration-150 group-hover:scale-110">
@@ -41,6 +38,46 @@ export default function SaintCard({ saint, onClick }: Props) {
           );
         })}
       </div>
-    </button>
+      <details className="mt-3 text-left">
+        <summary
+          className="cursor-pointer rounded-xl px-2 py-1.5 text-center text-xs font-bold uppercase tracking-wide outline-none transition-colors hover:bg-black/5 focus-visible:ring-2 focus-visible:ring-offset-2"
+          style={{
+            color: accent.text,
+            // @ts-expect-error custom property
+            '--tw-ring-color': accent.ring,
+          }}
+        >
+          Parent sources
+        </summary>
+        <div className="mt-2 space-y-2 rounded-xl bg-gray-50 p-3 text-xs leading-relaxed text-gray-700">
+          <p>
+            <span className="font-bold text-gray-900">Feast:</span> {saint.feastDay}
+          </p>
+          <p>
+            <span className="font-bold text-gray-900">Source:</span> {saint.sourceTradition}
+          </p>
+          <p>
+            <span className="font-bold text-gray-900">Why these patronages:</span>{' '}
+            {saint.patronageRationale}
+          </p>
+          {saint.devotionalNote && (
+            <p>
+              <span className="font-bold text-gray-900">Note:</span> {saint.devotionalNote}
+            </p>
+          )}
+        </div>
+      </details>
+      <button
+        onClick={() => onClick(saint)}
+        className="mt-auto w-full rounded-xl px-3 py-2.5 text-sm font-bold text-white shadow-sm transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2"
+        style={{
+          backgroundColor: accent.button,
+          // @ts-expect-error custom property
+          '--tw-ring-color': accent.ring,
+        }}
+      >
+        Start quest
+      </button>
+    </article>
   );
 }

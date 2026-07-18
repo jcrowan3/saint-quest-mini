@@ -201,6 +201,11 @@ export default function Home() {
                       Today&apos;s quest: {recommendation.seasonalQuest}
                     </p>
                   )}
+                  {recommendation.questGuide && (
+                    <p className="mt-2 rounded-xl bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900">
+                      {recommendation.questGuide}
+                    </p>
+                  )}
                 </div>
               </div>
               <button

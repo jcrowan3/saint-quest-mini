@@ -16,6 +16,24 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Saint Authoring
+
+Use the local authoring CLI before committing new saint data:
+
+```bash
+npm run saint:author -- new joan --name "St. Joan of Arc" --out drafts/joan.json
+npm run saint:author -- validate drafts/joan.json
+npm run saint:author -- preview drafts/joan.json
+```
+
+The validator also checks the committed catalog:
+
+```bash
+npm run saint:author -- validate
+```
+
+It verifies required saint metadata, at least three quest slots per saint, challenge answer indexes, matching/timeline data, and reward values.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
