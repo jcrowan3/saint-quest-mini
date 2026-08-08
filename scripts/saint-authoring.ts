@@ -141,7 +141,7 @@ function validateChallenge(challenge: Challenge, owner: string): ValidationResul
       errors.push(`${owner} matching needs at least two pairs`);
     } else {
       challenge.pairs.forEach((pair, index) => {
-        if (asString(pair.left).length === 0 || asString(pair.right).length === 0) {
+        if (!isObject(pair) || asString(pair.left).length === 0 || asString(pair.right).length === 0) {
           errors.push(`${owner} pair ${index + 1} needs left and right text`);
         }
       });
@@ -154,11 +154,18 @@ function validateChallenge(challenge: Challenge, owner: string): ValidationResul
       errors.push(`${owner} timeline needs at least two events`);
     } else {
       challenge.events.forEach((event, index) => {
+        if (!isObject(event)) {
+          errors.push(`${owner} event ${index + 1} must be an object with text and numeric year`);
+          return;
+        }
         if (asString(event.text).length === 0) errors.push(`${owner} event ${index + 1} is missing text`);
         if (!Number.isFinite(event.year)) errors.push(`${owner} event ${index + 1} is missing numeric year`);
       });
-      const sorted = [...challenge.events].sort((a, b) => a.year - b.year);
-      if (JSON.stringify(sorted) !== JSON.stringify(challenge.events)) {
+      const sortableEvents = challenge.events.filter(
+        (event): event is { text: string; year: number } => isObject(event) && Number.isFinite(event.year),
+      );
+      const sorted = [...sortableEvents].sort((a, b) => a.year - b.year);
+      if (sortableEvents.length === challenge.events.length && JSON.stringify(sorted) !== JSON.stringify(challenge.events)) {
         warnings.push(`${owner} timeline events should be stored in chronological order`);
       }
     }
