@@ -37,3 +37,31 @@ test('draft validation catches broken answer indexes', () => {
 
   assert.match(result.errors.join('\n'), /answer_index must point at a choice/);
 });
+
+test('draft validation reports malformed matching pairs without crashing', () => {
+  const draft = createDraft('ambrose', 'St. Ambrose');
+  draft.quests[0].challenge = {
+    type: 'matching',
+    prompt: 'Match each item.',
+    pairs: [null, 'not-an-object'],
+  } as unknown as typeof draft.quests[0]['challenge'];
+
+  const result = validateDraft(draft);
+
+  assert.match(result.errors.join('\n'), /pair 1 needs left and right text/);
+  assert.match(result.errors.join('\n'), /pair 2 needs left and right text/);
+});
+
+test('draft validation reports malformed timeline events without crashing', () => {
+  const draft = createDraft('ambrose', 'St. Ambrose');
+  draft.quests[0].challenge = {
+    type: 'timeline',
+    prompt: 'Put the events in order.',
+    events: [null, { text: 'A valid event without a year' }],
+  } as unknown as typeof draft.quests[0]['challenge'];
+
+  const result = validateDraft(draft);
+
+  assert.match(result.errors.join('\n'), /event 1 must be an object with text and numeric year/);
+  assert.match(result.errors.join('\n'), /event 2 is missing numeric year/);
+});
