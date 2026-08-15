@@ -39,6 +39,16 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
 
   const matchedLeftSet = new Set(Object.keys(matches).map(Number));
   const matchedRightSet = new Set(Object.values(matches));
+  const matchedCount = Object.keys(matches).length;
+  const announcement = submitted
+    ? correct
+      ? 'All pairs are matched correctly.'
+      : 'Some pairs are not matched correctly.'
+    : selectedLeft !== null
+      ? `${pairs[selectedLeft].left} selected. Choose its match from the right column.`
+      : matchedCount > 0
+        ? `${matchedCount} of ${pairs.length} pairs matched.`
+        : '';
 
   const handleLeftClick = (idx: number) => {
     if (submitted) return;
@@ -77,11 +87,15 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
 
       <div className="grid grid-cols-2 gap-3">
         {/* Left column */}
-        <div className="space-y-2">
+        <div className="space-y-2" role="group" aria-label="Items to match">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Match…</p>
           {pairs.map((pair, leftIdx) => {
             const isSelected = selectedLeft === leftIdx;
             const isMatched = matchedLeftSet.has(leftIdx);
+            const matchedRightIndex = matches[leftIdx];
+            const matchedRight = matchedRightIndex === undefined
+              ? null
+              : shuffledRight[matchedRightIndex];
 
             let className =
               'w-full p-3 rounded-xl text-xs text-left border-2 font-medium transition-all duration-150 cursor-pointer leading-snug ';
@@ -99,7 +113,20 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
             }
 
             return (
-              <button key={leftIdx} className={className} onClick={() => handleLeftClick(leftIdx)}>
+              <button
+                key={leftIdx}
+                className={className}
+                onClick={() => handleLeftClick(leftIdx)}
+                aria-pressed={isSelected}
+                aria-disabled={submitted}
+                aria-label={`${pair.left}. ${
+                  isSelected
+                    ? 'Selected; choose a match from the right column.'
+                    : matchedRight
+                      ? `Matched with ${matchedRight.text}; select to change this match.`
+                      : 'Select this item to start a match.'
+                }`}
+              >
                 {pair.left}
               </button>
             );
@@ -107,11 +134,17 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
         </div>
 
         {/* Right column */}
-        <div className="space-y-2">
+        <div className="space-y-2" role="group" aria-label="Possible matches">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider text-center">…to</p>
           {shuffledRight.map((item, shuffledIdx) => {
             const isMatched = matchedRightSet.has(shuffledIdx);
             const canTarget = selectedLeft !== null && !submitted;
+            const matchedLeftEntry = Object.entries(matches).find(([, rightIdx]) => (
+              rightIdx === shuffledIdx
+            ));
+            const matchedLeft = matchedLeftEntry
+              ? pairs[Number(matchedLeftEntry[0])]
+              : null;
 
             let className =
               'w-full p-3 rounded-xl text-xs text-left border-2 font-medium transition-all duration-150 leading-snug ';
@@ -134,6 +167,14 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
                 className={className}
                 onClick={() => handleRightClick(shuffledIdx)}
                 disabled={submitted}
+                aria-pressed={isMatched}
+                aria-label={`${item.text}. ${
+                  matchedLeft
+                    ? `Matched with ${matchedLeft.left}.`
+                    : canTarget
+                      ? `Match with ${pairs[selectedLeft].left}.`
+                      : 'Select an item from the left column first.'
+                }`}
               >
                 {item.text}
               </button>
@@ -156,6 +197,9 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
           {allMatched ? 'Check Matches →' : `Select all ${pairs.length} pairs to continue`}
         </button>
       )}
+      <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {announcement}
+      </p>
     </div>
   );
 }

@@ -1,10 +1,14 @@
-const CACHE_NAME = "saint-quest-v1";
+const CACHE_PREFIX = "saint-quest-";
+const CACHE_NAME = `${CACHE_PREFIX}v2`;
+const SCOPE_URL = new URL(self.registration.scope);
+const SCOPE_PATH = SCOPE_URL.pathname;
+const scopedPath = (path = "") => new URL(path, SCOPE_URL).pathname;
 const PRECACHE_URLS = [
-  "/",
-  "/manifest.webmanifest",
-  "/icon.svg",
-  "/icon-192.png",
-  "/icon-512.png",
+  scopedPath(),
+  scopedPath("manifest.webmanifest"),
+  scopedPath("icon.svg"),
+  scopedPath("icon-192.png"),
+  scopedPath("icon-512.png"),
 ];
 
 self.addEventListener("install", (event) => {
@@ -21,7 +25,10 @@ self.addEventListener("activate", (event) => {
       .then((cacheNames) =>
         Promise.all(
           cacheNames
-            .filter((cacheName) => cacheName !== CACHE_NAME)
+            .filter(
+              (cacheName) =>
+                cacheName.startsWith(CACHE_PREFIX) && cacheName !== CACHE_NAME
+            )
             .map((cacheName) => caches.delete(cacheName))
         )
       )
@@ -33,7 +40,11 @@ self.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  if (request.method !== "GET" || url.origin !== self.location.origin) {
+  if (
+    request.method !== "GET" ||
+    url.origin !== self.location.origin ||
+    !url.pathname.startsWith(SCOPE_PATH)
+  ) {
     return;
   }
 
@@ -45,7 +56,9 @@ self.addEventListener("fetch", (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
           return response;
         })
-        .catch(() => caches.match(request).then((cached) => cached ?? caches.match("/")))
+        .catch(() =>
+          caches.match(request).then((cached) => cached ?? caches.match(scopedPath()))
+        )
     );
     return;
   }
@@ -71,7 +84,7 @@ self.addEventListener("message", (event) => {
   }
 
   const urls = event.data.urls.filter(
-    (url) => typeof url === "string" && url.startsWith("/")
+    (url) => typeof url === "string" && url.startsWith(SCOPE_PATH)
   );
 
   event.waitUntil(

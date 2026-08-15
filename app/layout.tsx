@@ -5,6 +5,9 @@ import "./globals.css";
 import { GameProvider } from "@/lib/context/GameContext";
 import PwaRegistration from "./components/PwaRegistration";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const buildSha = process.env.NEXT_PUBLIC_BUILD_SHA ?? "local";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -19,7 +22,7 @@ export const metadata: Metadata = {
   title: "Saint Quest - Journey to Sainthood",
   description: "Embark on a journey with the saints. Complete quests, grow in virtue, and become an everyday saint.",
   applicationName: "Saint Quest",
-  manifest: "/manifest.webmanifest",
+  manifest: `${basePath}/manifest.webmanifest`,
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -27,11 +30,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+      { url: `${basePath}/icon.svg`, type: "image/svg+xml" },
+      { url: `${basePath}/icon-192.png`, sizes: "192x192", type: "image/png" },
+      { url: `${basePath}/icon-512.png`, sizes: "512x512", type: "image/png" },
     ],
-    apple: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: `${basePath}/icon-192.png`, sizes: "192x192", type: "image/png" }],
   },
 };
 
@@ -46,6 +49,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="saint-quest-build" content={buildSha} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

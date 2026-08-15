@@ -26,6 +26,7 @@ export default function TimelineChallenge({ challenge, onAnswer }: Props) {
 
   const [orderedEvents, setOrderedEvents] = useState<TimelineEvent[]>(initialOrder);
   const [submitted, setSubmitted] = useState(false);
+  const [announcement, setAnnouncement] = useState('');
 
   const correctOrder = useMemo(
     () => [...challenge.events].sort((a, b) => a.year - b.year),
@@ -34,21 +35,30 @@ export default function TimelineChallenge({ challenge, onAnswer }: Props) {
 
   const moveUp = (i: number) => {
     if (i === 0 || submitted) return;
+    const event = orderedEvents[i];
     const next = [...orderedEvents];
     [next[i - 1], next[i]] = [next[i], next[i - 1]];
     setOrderedEvents(next);
+    setAnnouncement(`Moved ${event.text} to position ${i}.`);
   };
 
   const moveDown = (i: number) => {
     if (i === orderedEvents.length - 1 || submitted) return;
+    const event = orderedEvents[i];
     const next = [...orderedEvents];
     [next[i], next[i + 1]] = [next[i + 1], next[i]];
     setOrderedEvents(next);
+    setAnnouncement(`Moved ${event.text} to position ${i + 2}.`);
   };
 
   const handleSubmit = () => {
     const isCorrect = orderedEvents.every((e, i) => e.year === correctOrder[i].year);
     setSubmitted(true);
+    setAnnouncement(
+      isCorrect
+        ? 'The timeline is in the correct order.'
+        : `The timeline is not in the correct order. Correct years: ${correctOrder.map(event => event.year).join(', ')}.`,
+    );
     setTimeout(() => onAnswer(isCorrect), 900);
   };
 
@@ -84,7 +94,7 @@ export default function TimelineChallenge({ challenge, onAnswer }: Props) {
                     onClick={() => moveUp(i)}
                     disabled={i === 0}
                     className="p-1 text-gray-400 hover:text-amber-600 disabled:opacity-20 text-xs leading-none transition-colors"
-                    aria-label="Move up"
+                    aria-label={`Move ${event.text} up`}
                   >
                     ▲
                   </button>
@@ -92,14 +102,14 @@ export default function TimelineChallenge({ challenge, onAnswer }: Props) {
                     onClick={() => moveDown(i)}
                     disabled={i === orderedEvents.length - 1}
                     className="p-1 text-gray-400 hover:text-amber-600 disabled:opacity-20 text-xs leading-none transition-colors"
-                    aria-label="Move down"
+                    aria-label={`Move ${event.text} down`}
                   >
                     ▼
                   </button>
                 </div>
               )}
               {submitted && (
-                <span className="shrink-0 text-lg">
+                <span className="shrink-0 text-lg" aria-hidden="true">
                   {inRightSpot ? '✓' : '✗'}
                 </span>
               )}
@@ -125,6 +135,9 @@ export default function TimelineChallenge({ challenge, onAnswer }: Props) {
           </p>
         </div>
       )}
+      <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {announcement}
+      </p>
     </div>
   );
 }
