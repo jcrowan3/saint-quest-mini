@@ -1,100 +1,82 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { Saint } from '@/lib/types';
-
-interface VirtueProgress {
-  [virtue: string]: number;
-}
-
-interface UserProgress {
-  currentSaintId: string | null;
-  currentQuestIndex: number;
-  virtues: VirtueProgress;
-  completedQuests: string[];
-}
-
-interface GameState {
-  selectedSaint: Saint | null;
-  userProgress: UserProgress;
-}
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import type { ActiveQuestSession, PlayerProgress, QuestResult } from '@/lib/types';
+import {
+  LEGACY_PROGRESS_STORAGE_KEY,
+  PROGRESS_STORAGE_KEY,
+  abandonQuest as abandonQuestProgress,
+  checkpointQuest as checkpointQuestProgress,
+  createDefaultProgress,
+  finishQuest as finishQuestProgress,
+  parsePlayerProgress,
+  startQuest as startQuestProgress,
+} from '@/lib/progress';
 
 interface GameContextType {
-  gameState: GameState;
-  selectSaint: (saint: Saint) => void;
-  completeQuest: (questTitle: string, rewards: Record<string, number>) => void;
-  resetProgress: () => void;
+  progress: PlayerProgress;
+  hydrated: boolean;
+  startQuest: (saintId: string) => void;
+  checkpointQuest: (session: ActiveQuestSession) => void;
+  finishQuest: (saintId: string, results: QuestResult[]) => void;
+  abandonQuest: () => void;
 }
-
-const defaultProgress: UserProgress = {
-  currentSaintId: null,
-  currentQuestIndex: 0,
-  virtues: {},
-  completedQuests: [],
-};
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
-function loadInitialState(): GameState {
-  if (typeof window === 'undefined') {
-    return { selectedSaint: null, userProgress: defaultProgress };
+function createRunId(saintId: string) {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
   }
-  try {
-    const saved = localStorage.getItem('saintQuestProgress');
-    if (saved) {
-      const progress = JSON.parse(saved) as UserProgress;
-      return { selectedSaint: null, userProgress: progress };
-    }
-  } catch {
-    // ignore corrupted saves
-  }
-  return { selectedSaint: null, userProgress: defaultProgress };
+  return `${saintId}:${Date.now()}:${Math.random().toString(36).slice(2)}`;
 }
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
-  const [gameState, setGameState] = useState<GameState>(loadInitialState);
+  const [progress, setProgress] = useState<PlayerProgress>(createDefaultProgress);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('saintQuestProgress', JSON.stringify(gameState.userProgress));
-  }, [gameState.userProgress]);
+    try {
+      setProgress(parsePlayerProgress(
+        localStorage.getItem(PROGRESS_STORAGE_KEY),
+        localStorage.getItem(LEGACY_PROGRESS_STORAGE_KEY),
+      ));
+    } catch {
+      setProgress(createDefaultProgress());
+    } finally {
+      setHydrated(true);
+    }
+  }, []);
 
-  const selectSaint = (saint: Saint) => {
-    setGameState({
-      selectedSaint: saint,
-      userProgress: {
-        currentSaintId: saint.id,
-        currentQuestIndex: 0,
-        virtues: {},
-        completedQuests: [],
-      },
-    });
-  };
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(progress));
+    } catch {
+      // Private browsing or a full storage quota should not block play.
+    }
+  }, [hydrated, progress]);
 
-  const completeQuest = (questTitle: string, rewards: Record<string, number>) => {
-    setGameState(prev => {
-      const newVirtues = { ...prev.userProgress.virtues };
-      for (const [virtue, pts] of Object.entries(rewards)) {
-        newVirtues[virtue] = (newVirtues[virtue] ?? 0) + pts;
-      }
-      return {
-        ...prev,
-        userProgress: {
-          ...prev.userProgress,
-          virtues: newVirtues,
-          completedQuests: [...prev.userProgress.completedQuests, questTitle],
-          currentQuestIndex: prev.userProgress.currentQuestIndex + 1,
-        },
-      };
-    });
-  };
+  const startQuest = useCallback((saintId: string) => {
+    setProgress(current => startQuestProgress(current, saintId, createRunId(saintId)));
+  }, []);
 
-  const resetProgress = () => {
-    setGameState({ selectedSaint: null, userProgress: defaultProgress });
-    localStorage.removeItem('saintQuestProgress');
-  };
+  const checkpointQuest = useCallback((session: ActiveQuestSession) => {
+    setProgress(current => checkpointQuestProgress(current, session));
+  }, []);
+
+  const finishQuest = useCallback((saintId: string, results: QuestResult[]) => {
+    setProgress(current => finishQuestProgress(current, saintId, results));
+  }, []);
+
+  const abandonQuest = useCallback(() => {
+    setProgress(abandonQuestProgress);
+  }, []);
 
   return (
-    <GameContext.Provider value={{ gameState, selectSaint, completeQuest, resetProgress }}>
+    <GameContext.Provider
+      value={{ progress, hydrated, startQuest, checkpointQuest, finishQuest, abandonQuest }}
+    >
       {children}
     </GameContext.Provider>
   );

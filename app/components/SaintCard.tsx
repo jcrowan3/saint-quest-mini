@@ -5,19 +5,25 @@ import { SAINT_ACCENTS, DEFAULT_ACCENT, getVirtueStyle } from '@/lib/data';
 
 interface Props {
   saint: Saint;
+  completed?: boolean;
   onClick: (saint: Saint) => void;
 }
 
-export default function SaintCard({ saint, onClick }: Props) {
+export default function SaintCard({ saint, completed = false, onClick }: Props) {
   const accent = SAINT_ACCENTS[saint.id] ?? DEFAULT_ACCENT;
 
   return (
     <article
-      className="group flex h-full flex-col bg-white rounded-2xl p-4 text-center border-2 shadow-sm transition-all duration-150 hover:shadow-lg hover:-translate-y-1"
+      className="group relative flex h-full flex-col bg-white rounded-2xl p-4 text-center border-2 shadow-sm transition-all duration-150 hover:shadow-lg hover:-translate-y-1"
       style={{
         borderColor: accent.border,
       }}
     >
+      {completed && (
+        <span className="absolute right-2 top-2 rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-800">
+          ✓ Done
+        </span>
+      )}
       <div className="text-5xl mb-3 transition-transform duration-150 group-hover:scale-110">
         {saint.avatar}
       </div>

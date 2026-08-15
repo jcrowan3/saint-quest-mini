@@ -20,7 +20,11 @@ export interface ValidationResult {
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const saints = saintsRaw as Saint[];
-const questsBySaint = questsRaw as QuestMap;
+// JSON imports infer a union of every concrete reward object. That inference
+// includes optional `undefined` keys, which is narrower than our validated
+// runtime QuestMap shape. Keep the untrusted-data boundary explicit here; the
+// validator below is responsible for checking the imported catalog.
+const questsBySaint = questsRaw as unknown as QuestMap;
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -261,7 +265,7 @@ export function validateDraft(draft: DraftFile): ValidationResult {
   return { errors, warnings };
 }
 
-export function createDraft(id: string, name = 'St. Example') {
+export function createDraft(id: string, name = 'St. Example'): DraftFile {
   const saint: Saint = {
     id,
     name,
@@ -316,7 +320,7 @@ export function createDraft(id: string, name = 'St. Example') {
         reward: { Courage: 1 },
       },
     ],
-  } satisfies DraftFile;
+  };
 }
 
 export function previewSaintCard(saint: Saint, quests: Quest[]) {

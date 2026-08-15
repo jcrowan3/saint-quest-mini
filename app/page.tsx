@@ -48,7 +48,14 @@ function updateStreak(dateKey: string): StreakState {
 }
 
 export default function Home() {
-  const { gameState, selectSaint: ctxSelectSaint, resetProgress } = useGame();
+  const {
+    progress,
+    hydrated,
+    startQuest,
+    checkpointQuest,
+    finishQuest,
+    abandonQuest,
+  } = useGame();
   const [view, setView] = useState<GameView>('home');
   const [selectedSaint, setSelectedSaint] = useState<Saint | null>(null);
   const [quests, setQuests] = useState<Quest[]>([]);
@@ -60,6 +67,14 @@ export default function Home() {
 
   const finderMatches = useMemo(() => getSaintFinderMatches(finderTags), [finderTags]);
   const hasFinderFilters = finderTags.length > 0;
+  const lifetimeVirtuePoints = useMemo(
+    () => Object.values(progress.cumulativeVirtues).reduce((total, points) => total + points, 0),
+    [progress.cumulativeVirtues],
+  );
+  const topVirtue = useMemo(
+    () => Object.entries(progress.cumulativeVirtues).sort(([, a], [, b]) => b - a)[0],
+    [progress.cumulativeVirtues],
+  );
 
   useEffect(() => {
     const daily = getDailyRecommendation();
@@ -73,26 +88,30 @@ export default function Home() {
   // post-mount to avoid SSR/client mismatch — the server render has no access
   // to localStorage, so the 'home' view is always the initial paint.
   useEffect(() => {
-    if (resumed) return;
-    const saintId = gameState.userProgress.currentSaintId;
+    if (!hydrated || resumed) return;
+    const session = progress.activeSession;
+    const saintId = session?.saintId;
     const saint = saintId ? saints.find(s => s.id === saintId) : null;
-    if (saint) {
+    const saintQuests = saint ? getQuestsForSaint(saint.id) : [];
+    if (saint && session && session.questIndex < saintQuests.length) {
       /* eslint-disable react-hooks/set-state-in-effect -- see comment above */
       setSelectedSaint(saint);
-      setQuests(getQuestsForSaint(saint.id));
+      setQuests(saintQuests);
       setView('questing');
       /* eslint-enable react-hooks/set-state-in-effect */
+    } else if (session) {
+      abandonQuest();
     }
     setResumed(true);
-  }, [gameState.userProgress.currentSaintId, resumed]);
+  }, [abandonQuest, hydrated, progress.activeSession, resumed]);
 
   const handleSelectSaint = useCallback((saint: Saint) => {
-    ctxSelectSaint(saint);
+    startQuest(saint.id);
     setSelectedSaint(saint);
     setQuests(getQuestsForSaint(saint.id));
     setResults([]);
     setView('questing');
-  }, [ctxSelectSaint]);
+  }, [startQuest]);
 
   const handleStartRecommendation = useCallback(() => {
     if (!recommendation) return;
@@ -116,24 +135,26 @@ export default function Home() {
   }, []);
 
   const handleQuestComplete = useCallback((allResults: QuestResult[]) => {
-    resetProgress();
+    if (selectedSaint) finishQuest(selectedSaint.id, allResults);
     setResults(allResults);
     setView('complete');
-  }, [resetProgress]);
+  }, [finishQuest, selectedSaint]);
 
   const handleRestart = useCallback(() => {
-    resetProgress();
+    abandonQuest();
     setSelectedSaint(null);
     setQuests([]);
     setResults([]);
     setView('home');
-  }, [resetProgress]);
+  }, [abandonQuest]);
 
-  if (view === 'questing' && selectedSaint) {
+  if (view === 'questing' && selectedSaint && progress.activeSession) {
     return (
       <QuestFlow
         saint={selectedSaint}
         quests={quests}
+        initialSession={progress.activeSession}
+        onCheckpoint={checkpointQuest}
         onComplete={handleQuestComplete}
         onBack={handleRestart}
       />
@@ -191,19 +212,14 @@ export default function Home() {
                   <p className="mt-2 text-sm leading-relaxed text-amber-800">
                     {recommendation.reflection}
                   </p>
-                  {recommendation.questGuideLabel && (
-                    <p className="mt-2 text-sm font-semibold text-amber-900">
-                      {recommendation.questGuideLabel}
-                    </p>
-                  )}
                   {recommendation.seasonalQuest && (
                     <p className="mt-2 rounded-xl bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900">
                       Today&apos;s quest: {recommendation.seasonalQuest}
                     </p>
                   )}
-                  {recommendation.questGuide && (
+                  {(recommendation.questGuideLabel ?? recommendation.questGuide) && (
                     <p className="mt-2 rounded-xl bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900">
-                      {recommendation.questGuide}
+                      {recommendation.questGuideLabel ?? recommendation.questGuide}
                     </p>
                   )}
                 </div>
@@ -216,6 +232,47 @@ export default function Home() {
               </button>
             </div>
           </div>
+        )}
+
+        {hydrated && (
+          <section
+            aria-labelledby="journey-heading"
+            className="mb-8 rounded-3xl border border-amber-200 bg-amber-100/60 p-5"
+          >
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-amber-600">
+                  Your journey
+                </p>
+                <h2 id="journey-heading" className="mt-1 text-xl font-bold text-amber-950">
+                  Progress that stays with you
+                </h2>
+                {topVirtue && (
+                  <p className="mt-1 text-sm text-amber-800">
+                    Strongest virtue: <span className="font-bold">{topVirtue[0]} +{topVirtue[1]}</span>
+                  </p>
+                )}
+              </div>
+              <dl className="grid grid-cols-3 gap-2 text-center">
+                <div className="rounded-2xl bg-white px-3 py-2 shadow-sm">
+                  <dt className="text-xs text-amber-700">Saints</dt>
+                  <dd className="text-xl font-bold text-amber-950">
+                    {progress.completedSaintIds.length}
+                  </dd>
+                </div>
+                <div className="rounded-2xl bg-white px-3 py-2 shadow-sm">
+                  <dt className="text-xs text-amber-700">Challenges</dt>
+                  <dd className="text-xl font-bold text-amber-950">
+                    {progress.totalChallengesCompleted}
+                  </dd>
+                </div>
+                <div className="rounded-2xl bg-white px-3 py-2 shadow-sm">
+                  <dt className="text-xs text-amber-700">Virtue</dt>
+                  <dd className="text-xl font-bold text-amber-950">{lifetimeVirtuePoints}</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
         )}
 
         <div className="flex items-center gap-3 justify-center mb-6">
@@ -308,7 +365,11 @@ export default function Home() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {finderMatches.map(({ saint, matchedTags }) => (
             <div key={saint.id} className="space-y-2">
-              <SaintCard saint={saint} onClick={handleSelectSaint} />
+              <SaintCard
+                saint={saint}
+                completed={progress.completedSaintIds.includes(saint.id)}
+                onClick={handleSelectSaint}
+              />
               {hasFinderFilters && (
                 <p className="rounded-xl bg-white/80 px-3 py-2 text-center text-xs font-semibold leading-snug text-amber-800 shadow-sm">
                   {matchedTags.length > 0 ? saint.finderPrompt : 'Available for any quest'}

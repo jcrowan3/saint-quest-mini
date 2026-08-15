@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export default function PwaRegistration() {
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return;
@@ -26,13 +28,15 @@ export default function PwaRegistration() {
 
       worker.postMessage({
         type: "CACHE_URLS",
-        urls: Array.from(new Set(["/", ...urls])),
+        urls: Array.from(new Set([`${basePath}/`, ...urls])),
       });
     };
 
     const registerServiceWorker = async () => {
       try {
-        await navigator.serviceWorker.register("/sw.js");
+        await navigator.serviceWorker.register(`${basePath}/sw.js`, {
+          scope: `${basePath}/`,
+        });
         await cacheLoadedAssets();
       } catch {
         // Offline support should never block the game if registration fails.

@@ -82,4 +82,24 @@ export interface QuestResult {
   virtueGained: Record<string, number>;
 }
 
+export type QuestPhase = 'story' | 'challenge' | 'feedback';
+
+export interface ActiveQuestSession {
+  runId: string;
+  saintId: string;
+  questIndex: number;
+  phase: QuestPhase;
+  results: QuestResult[];
+}
+
+export interface PlayerProgress {
+  version: 2;
+  activeSession: ActiveQuestSession | null;
+  completedSaintIds: string[];
+  cumulativeVirtues: Record<string, number>;
+  totalChallengesCompleted: number;
+  completedRuns: number;
+  lastCompletedRunId: string | null;
+}
+
 export type GameView = 'home' | 'questing' | 'complete';

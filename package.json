@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:pages": "NEXT_PUBLIC_BASE_PATH=/saint-quest-mini next build",
+    "typecheck": "tsc --noEmit",
+    "verify:pages": "node scripts/verify-pages-export.mjs",
     "start": "next start",
     "saint:author": "tsx scripts/saint-authoring.ts",
     "test": "tsx --test tests/**/*.test.ts",

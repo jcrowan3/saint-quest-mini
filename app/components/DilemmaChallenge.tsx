@@ -12,6 +12,11 @@ const LABELS = ['A', 'B', 'C', 'D'];
 
 export default function DilemmaChallenge({ challenge, onAnswer }: Props) {
   const [selected, setSelected] = useState<number | null>(null);
+  const announcement = selected === null
+    ? ''
+    : selected === challenge.answer_index
+      ? `Correct. ${challenge.options[selected]}`
+      : `Not quite. The correct answer is ${challenge.options[challenge.answer_index]}`;
 
   const handleSelect = (index: number) => {
     if (selected !== null) return;
@@ -47,21 +52,25 @@ export default function DilemmaChallenge({ challenge, onAnswer }: Props) {
               className={className}
               onClick={() => handleSelect(i)}
               disabled={selected !== null}
+              aria-pressed={selected === i}
             >
               <span className="shrink-0 w-6 h-6 rounded-full bg-amber-100 text-amber-700 text-xs font-bold flex items-center justify-center mt-0.5">
                 {LABELS[i]}
               </span>
               <span className="flex-1">{option}</span>
               {selected !== null && i === challenge.answer_index && (
-                <span className="shrink-0 text-emerald-500 text-lg">✓</span>
+                <span className="shrink-0 text-emerald-500 text-lg" aria-hidden="true">✓</span>
               )}
               {selected === i && i !== challenge.answer_index && (
-                <span className="shrink-0 text-red-400 text-lg">✗</span>
+                <span className="shrink-0 text-red-400 text-lg" aria-hidden="true">✗</span>
               )}
             </button>
           );
         })}
       </div>
+      <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {announcement}
+      </p>
     </div>
   );
 }

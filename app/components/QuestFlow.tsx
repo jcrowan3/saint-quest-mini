@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import type { Saint, Quest, QuestResult } from '@/lib/types';
+import { useState, useCallback, useMemo } from 'react';
+import type { ActiveQuestSession, QuestPhase, Saint, Quest, QuestResult } from '@/lib/types';
 import { SAINT_ACCENTS, DEFAULT_ACCENT, getVirtueStyle } from '@/lib/data';
 import DilemmaChallenge from './DilemmaChallenge';
 import TriviaChallenge from './TriviaChallenge';
@@ -9,11 +9,11 @@ import MatchingChallenge from './MatchingChallenge';
 import TimelineChallenge from './TimelineChallenge';
 import VirtueTracker from './VirtueTracker';
 
-type Phase = 'story' | 'challenge' | 'feedback';
-
 interface Props {
   saint: Saint;
   quests: Quest[];
+  initialSession: ActiveQuestSession;
+  onCheckpoint: (session: ActiveQuestSession) => void;
   onComplete: (results: QuestResult[]) => void;
   onBack: () => void;
 }
@@ -32,51 +32,78 @@ const CHALLENGE_ICONS: Record<string, string> = {
   timeline: '📅',
 };
 
-export default function QuestFlow({ saint, quests, onComplete, onBack }: Props) {
-  const [questIndex, setQuestIndex] = useState(0);
-  const [phase, setPhase] = useState<Phase>('story');
-  const [lastCorrect, setLastCorrect] = useState(false);
-  const [allResults, setAllResults] = useState<QuestResult[]>([]);
-  const [cumulativeVirtues, setCumulativeVirtues] = useState<Record<string, number>>({});
-  // key forces remount of challenge component on each new quest
-  const [challengeKey, setChallengeKey] = useState(0);
+export default function QuestFlow({
+  saint,
+  quests,
+  initialSession,
+  onCheckpoint,
+  onComplete,
+  onBack,
+}: Props) {
+  const safeInitialIndex = Math.min(initialSession.questIndex, Math.max(quests.length - 1, 0));
+  const [questIndex, setQuestIndex] = useState(safeInitialIndex);
+  const [phase, setPhase] = useState<QuestPhase>(initialSession.phase);
+  const [allResults, setAllResults] = useState<QuestResult[]>(initialSession.results);
 
   const accent = SAINT_ACCENTS[saint.id] ?? DEFAULT_ACCENT;
   const currentQuest = quests[questIndex];
   const progress = (questIndex + (phase === 'feedback' ? 1 : 0)) / quests.length;
+  const progressPercent = Math.round(progress * 100);
+  const currentResult = allResults.find(result => result.questIndex === questIndex);
+  const lastCorrect = currentResult?.correct ?? false;
+  const cumulativeVirtues = useMemo(() => {
+    const virtues: Record<string, number> = {};
+    for (const result of allResults) {
+      for (const [virtue, points] of Object.entries(result.virtueGained)) {
+        virtues[virtue] = (virtues[virtue] ?? 0) + points;
+      }
+    }
+    return virtues;
+  }, [allResults]);
+
+  const checkpoint = useCallback((
+    nextQuestIndex: number,
+    nextPhase: QuestPhase,
+    nextResults: QuestResult[],
+  ) => {
+    onCheckpoint({
+      runId: initialSession.runId,
+      saintId: saint.id,
+      questIndex: nextQuestIndex,
+      phase: nextPhase,
+      results: nextResults,
+    });
+  }, [initialSession.runId, onCheckpoint, saint.id]);
 
   const handleAnswer = useCallback(
     (correct: boolean) => {
+      if (allResults.some(result => result.questIndex === questIndex)) return;
       const virtueGained: Record<string, number> = correct ? { ...currentQuest.reward } : {};
 
       const result: QuestResult = { questIndex, correct, virtueGained };
-      setAllResults(prev => [...prev, result]);
-      setLastCorrect(correct);
-
-      if (correct) {
-        setCumulativeVirtues(prev => {
-          const next = { ...prev };
-          for (const [v, pts] of Object.entries(virtueGained)) {
-            next[v] = (next[v] ?? 0) + pts;
-          }
-          return next;
-        });
-      }
-
+      const nextResults = [...allResults, result];
+      setAllResults(nextResults);
       setPhase('feedback');
+      checkpoint(questIndex, 'feedback', nextResults);
     },
-    [questIndex, currentQuest],
+    [allResults, checkpoint, currentQuest, questIndex],
   );
+
+  const handleBeginChallenge = useCallback(() => {
+    setPhase('challenge');
+    checkpoint(questIndex, 'challenge', allResults);
+  }, [allResults, checkpoint, questIndex]);
 
   const handleNext = useCallback(() => {
     if (questIndex + 1 >= quests.length) {
       onComplete([...allResults]);
     } else {
-      setQuestIndex(i => i + 1);
+      const nextQuestIndex = questIndex + 1;
+      setQuestIndex(nextQuestIndex);
       setPhase('story');
-      setChallengeKey(k => k + 1);
+      checkpoint(nextQuestIndex, 'story', allResults);
     }
-  }, [questIndex, quests.length, allResults, onComplete]);
+  }, [allResults, checkpoint, onComplete, questIndex, quests.length]);
 
   return (
     <div className="min-h-screen bg-amber-50">
@@ -111,10 +138,18 @@ export default function QuestFlow({ saint, quests, onComplete, onBack }: Props) 
 
         {/* Progress bar */}
         <div className="max-w-2xl mx-auto mt-3">
-          <div className="h-1.5 bg-black/10 rounded-full overflow-hidden">
+          <div
+            className="h-1.5 bg-black/10 rounded-full overflow-hidden"
+            role="progressbar"
+            aria-label="Quest progress"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={progressPercent}
+            aria-valuetext={`Quest ${questIndex + 1} of ${quests.length}, ${phase}`}
+          >
             <div
               className="h-full rounded-full transition-all duration-500 ease-out"
-              style={{ backgroundColor: accent.border, width: `${progress * 100}%` }}
+              style={{ backgroundColor: accent.border, width: `${progressPercent}%` }}
             />
           </div>
         </div>
@@ -166,7 +201,7 @@ export default function QuestFlow({ saint, quests, onComplete, onBack }: Props) 
             {/* Phase rendering */}
             {phase === 'story' && (
               <button
-                onClick={() => setPhase('challenge')}
+                onClick={handleBeginChallenge}
                 className="w-full py-3.5 rounded-xl font-bold text-sm text-white transition-opacity hover:opacity-90 shadow-sm"
                 style={{ backgroundColor: accent.button }}
               >
@@ -175,7 +210,7 @@ export default function QuestFlow({ saint, quests, onComplete, onBack }: Props) 
             )}
 
             {phase === 'challenge' && (
-              <div key={challengeKey}>
+              <div key={`${initialSession.runId}:${questIndex}`}>
                 {currentQuest.challenge.type === 'dilemma' && (
                   <DilemmaChallenge challenge={currentQuest.challenge} onAnswer={handleAnswer} />
                 )}
@@ -200,8 +235,11 @@ export default function QuestFlow({ saint, quests, onComplete, onBack }: Props) 
                       ? 'border-emerald-200 bg-emerald-50'
                       : 'border-amber-200 bg-amber-50'
                   }`}
+                  role="status"
+                  aria-live="polite"
+                  aria-atomic="true"
                 >
-                  <span className="text-3xl shrink-0">
+                  <span className="text-3xl shrink-0" aria-hidden="true">
                     {lastCorrect ? '🌟' : '💛'}
                   </span>
                   <div>
