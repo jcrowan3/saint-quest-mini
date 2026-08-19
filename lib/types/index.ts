@@ -31,6 +31,8 @@ export interface DilemmaChallenge {
   prompt: string;
   options: string[];
   answer_index: number;
+  hint: string;
+  explanation: string;
 }
 
 export interface TriviaChallenge {
@@ -38,6 +40,8 @@ export interface TriviaChallenge {
   question: string;
   choices: string[];
   answer_index: number;
+  hint: string;
+  explanation: string;
 }
 
 export interface MatchingPair {
@@ -49,6 +53,8 @@ export interface MatchingChallenge {
   type: 'matching';
   prompt: string;
   pairs: MatchingPair[];
+  hint: string;
+  explanation: string;
 }
 
 export interface TimelineEvent {
@@ -60,6 +66,8 @@ export interface TimelineChallenge {
   type: 'timeline';
   prompt: string;
   events: TimelineEvent[];
+  hint: string;
+  explanation: string;
 }
 
 export type Challenge =
@@ -78,7 +86,9 @@ export interface Quest {
 
 export interface QuestResult {
   questIndex: number;
+  title?: string;
   correct: boolean;
+  usedRetry?: boolean;
   virtueGained: Record<string, number>;
 }
 

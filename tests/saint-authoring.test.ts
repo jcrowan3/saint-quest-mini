@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
+import questsRaw from '../data/quests.json';
 import {
   createDraft,
   previewSaintCard,
@@ -31,6 +32,8 @@ test('draft validation catches broken answer indexes', () => {
     question: 'Which answer should be selected?',
     choices: ['First', 'Second'],
     answer_index: 3,
+    hint: 'Stay with the story.',
+    explanation: 'The correct choice is the one the index can actually point at.',
   };
 
   const result = validateDraft(draft);
@@ -64,4 +67,42 @@ test('draft validation reports malformed timeline events without crashing', () =
 
   assert.match(result.errors.join('\n'), /event 1 must be an object with text and numeric year/);
   assert.match(result.errors.join('\n'), /event 2 is missing numeric year/);
+});
+
+test('draft validation requires a hint and explanation on every challenge', () => {
+  const draft = createDraft('ambrose', 'St. Ambrose');
+  const challenge = draft.quests[0].challenge;
+  challenge.hint = '';
+  challenge.explanation = '';
+
+  const result = validateDraft(draft);
+  const joined = result.errors.join('\n');
+
+  assert.match(joined, /missing hint/);
+  assert.match(joined, /missing explanation/);
+});
+
+test('catalog challenges teach with hints, explanations, and shuffled-ready answers', () => {
+  const result = validateSaintCatalog();
+  assert.deepEqual(result.errors, []);
+
+  const indexes: number[] = [];
+  for (const saintQuests of Object.values(questsRaw)) {
+    for (const quest of saintQuests) {
+      assert.ok(quest.challenge.hint.trim().length > 0);
+      assert.ok(quest.challenge.explanation.trim().length > 0);
+      if (
+        (quest.challenge.type === 'trivia' || quest.challenge.type === 'dilemma')
+        && typeof quest.challenge.answer_index === 'number'
+      ) {
+        indexes.push(quest.challenge.answer_index);
+      }
+    }
+  }
+
+  assert.ok(indexes.length >= 8);
+  assert.ok(
+    indexes.some(index => index !== 0),
+    'multiple-choice answers should not all sit at index 0',
+  );
 });

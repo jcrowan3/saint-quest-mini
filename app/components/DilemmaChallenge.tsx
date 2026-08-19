@@ -1,41 +1,58 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { DilemmaChallenge as DilemmaType } from '@/lib/types';
+import { shuffle } from '@/lib/shuffle';
 
 interface Props {
   challenge: DilemmaType;
-  onAnswer: (correct: boolean) => void;
+  onAnswer: (correct: boolean, usedRetry: boolean) => void;
 }
 
 const LABELS = ['A', 'B', 'C', 'D'];
 
+interface ShuffledChoice {
+  text: string;
+  originalIndex: number;
+}
+
 export default function DilemmaChallenge({ challenge, onAnswer }: Props) {
+  const options = useMemo<ShuffledChoice[]>(
+    () => shuffle(challenge.options.map((text, originalIndex) => ({ text, originalIndex }))),
+    [challenge],
+  );
   const [selected, setSelected] = useState<number | null>(null);
-  const announcement = selected === null
-    ? ''
-    : selected === challenge.answer_index
-      ? `Correct. ${challenge.options[selected]}`
-      : `Not quite. The correct answer is ${challenge.options[challenge.answer_index]}`;
+  const [locked, setLocked] = useState(false);
+  const [usedRetry, setUsedRetry] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+
+  const correctShuffled = options.findIndex(option => option.originalIndex === challenge.answer_index);
+  const announcement = locked && selected !== null
+    ? options[selected].originalIndex === challenge.answer_index
+      ? `Correct. ${options[selected].text}`
+      : `Not quite. The correct answer is ${options[correctShuffled]?.text ?? ''}`
+    : showHint
+      ? `Not yet. One more try. ${challenge.hint}`
+      : selected !== null
+        ? `${options[selected].text} selected.`
+        : '';
 
   const handleSelect = (index: number) => {
-    if (selected !== null) return;
+    if (locked) return;
     setSelected(index);
-    setTimeout(() => onAnswer(index === challenge.answer_index), 700);
   };
 
-  const getButtonStyle = (i: number): React.CSSProperties & { className: string } => {
-    const base = 'w-full text-left p-4 rounded-xl border-2 text-sm font-medium transition-all duration-200 cursor-pointer flex items-start gap-3';
-    if (selected === null) {
-      return { className: `${base} border-gray-200 bg-white text-gray-700 hover:border-amber-300 hover:bg-amber-50 hover:shadow-sm` };
+  const handleCommit = () => {
+    if (selected === null || locked) return;
+    const correct = options[selected].originalIndex === challenge.answer_index;
+    if (!correct && !usedRetry) {
+      setUsedRetry(true);
+      setShowHint(true);
+      setSelected(null);
+      return;
     }
-    if (i === challenge.answer_index) {
-      return { className: `${base} border-emerald-400 bg-emerald-50 text-emerald-800 shadow-sm` };
-    }
-    if (i === selected) {
-      return { className: `${base} border-red-400 bg-red-50 text-red-800` };
-    }
-    return { className: `${base} border-gray-100 bg-gray-50 text-gray-400 opacity-60` };
+    setLocked(true);
+    onAnswer(correct, usedRetry);
   };
 
   return (
@@ -44,30 +61,64 @@ export default function DilemmaChallenge({ challenge, onAnswer }: Props) {
         {challenge.prompt}
       </p>
       <div className="grid grid-cols-1 gap-3">
-        {challenge.options.map((option, i) => {
-          const { className } = getButtonStyle(i);
+        {options.map((option, i) => {
+          const base = 'w-full text-left p-4 rounded-xl border-2 text-sm font-medium transition-all duration-200 cursor-pointer flex items-start gap-3';
+          let className = base;
+          if (locked) {
+            if (i === correctShuffled) className += ' border-emerald-400 bg-emerald-50 text-emerald-800 shadow-sm';
+            else if (i === selected) className += ' border-red-400 bg-red-50 text-red-800';
+            else className += ' border-gray-100 bg-gray-50 text-gray-400 opacity-60';
+          } else if (i === selected) {
+            className += ' border-amber-400 bg-amber-50 text-amber-900 ring-2 ring-amber-200';
+          } else {
+            className += ' border-gray-200 bg-white text-gray-700 hover:border-amber-300 hover:bg-amber-50 hover:shadow-sm';
+          }
+
           return (
             <button
-              key={i}
+              key={`${option.originalIndex}-${option.text}`}
               className={className}
               onClick={() => handleSelect(i)}
-              disabled={selected !== null}
+              disabled={locked}
               aria-pressed={selected === i}
             >
               <span className="shrink-0 w-6 h-6 rounded-full bg-amber-100 text-amber-700 text-xs font-bold flex items-center justify-center mt-0.5">
                 {LABELS[i]}
               </span>
-              <span className="flex-1">{option}</span>
-              {selected !== null && i === challenge.answer_index && (
+              <span className="flex-1">{option.text}</span>
+              {locked && i === correctShuffled && (
                 <span className="shrink-0 text-emerald-500 text-lg" aria-hidden="true">✓</span>
               )}
-              {selected === i && i !== challenge.answer_index && (
+              {locked && i === selected && i !== correctShuffled && (
                 <span className="shrink-0 text-red-400 text-lg" aria-hidden="true">✗</span>
               )}
             </button>
           );
         })}
       </div>
+      {showHint && !locked && (
+        <p
+          className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900"
+          role="status"
+          aria-live="polite"
+        >
+          Not yet. One more try. {challenge.hint}
+        </p>
+      )}
+      {!locked && (
+        <button
+          onClick={handleCommit}
+          disabled={selected === null}
+          className="w-full py-3 rounded-xl font-semibold text-sm transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+          style={
+            selected === null
+              ? { backgroundColor: '#E5E7EB', color: '#9CA3AF' }
+              : { backgroundColor: '#F59E0B', color: '#fff' }
+          }
+        >
+          {usedRetry ? 'Try this answer' : 'Lock in answer'}
+        </button>
+      )}
       <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {announcement}
       </p>

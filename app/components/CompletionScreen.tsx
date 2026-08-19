@@ -90,7 +90,12 @@ export default function CompletionScreen({ saint, results, onPlayAgain }: Props)
               <div key={i} className="flex items-center gap-3 py-1">
                 <span className="text-xl shrink-0">{r.correct ? '✅' : '❌'}</span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-700">Quest {i + 1}</p>
+                  <p className="text-sm font-medium text-gray-700">
+                    {r.title ?? `Quest ${i + 1}`}
+                  </p>
+                  {r.usedRetry && (
+                    <p className="text-xs text-gray-400">Used a second try</p>
+                  )}
                 </div>
                 <div className="flex flex-wrap gap-1 justify-end">
                   {r.correct
