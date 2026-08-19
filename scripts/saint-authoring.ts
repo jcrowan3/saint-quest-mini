@@ -175,6 +175,9 @@ function validateChallenge(challenge: Challenge, owner: string): ValidationResul
     }
   }
 
+  if (asString(source.hint).length === 0) errors.push(`${owner} is missing hint`);
+  if (asString(source.explanation).length === 0) errors.push(`${owner} is missing explanation`);
+
   return { errors, warnings };
 }
 
@@ -291,6 +294,8 @@ export function createDraft(id: string, name = 'St. Example'): DraftFile {
           prompt: 'What choice best practices the featured virtue?',
           options: ['Choose the virtuous response', 'Choose a weaker response', 'Avoid the choice'],
           answer_index: 0,
+          hint: 'Look for the choice that costs something and still loves the other person.',
+          explanation: 'The saint’s first move is usually mercy with courage, not the easy escape.',
         },
         reward: { Faith: 2, Courage: 1 },
         funFact: 'Optional short fact for the completion screen.',
@@ -303,6 +308,8 @@ export function createDraft(id: string, name = 'St. Example'): DraftFile {
           question: 'What should children remember from this story?',
           choices: ['The correct answer', 'A distractor', 'Another distractor'],
           answer_index: 0,
+          hint: 'Stay with the concrete fact from the story, not a slogan.',
+          explanation: 'Good trivia teaches one true thing about the saint that a child can retell.',
         },
         reward: { Faith: 1 },
       },
@@ -316,6 +323,8 @@ export function createDraft(id: string, name = 'St. Example'): DraftFile {
             { left: name, right: 'Featured saint' },
             { left: 'Featured virtue', right: 'How children practice the story' },
           ],
+          hint: 'Pair the person with the work they are known for.',
+          explanation: 'Matching works when each pair names a real relationship, not a rhyme.',
         },
         reward: { Courage: 1 },
       },

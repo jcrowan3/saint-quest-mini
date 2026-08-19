@@ -43,11 +43,16 @@ function sanitizeResults(value: unknown): QuestResult[] {
     if (!isRecord(candidate) || typeof candidate.correct !== 'boolean') continue;
     const questIndex = nonNegativeInteger(candidate.questIndex, -1);
     if (questIndex < 0 || byIndex.has(questIndex)) continue;
-    byIndex.set(questIndex, {
+    const result: QuestResult = {
       questIndex,
       correct: candidate.correct,
       virtueGained: sanitizeVirtues(candidate.virtueGained),
-    });
+    };
+    if (typeof candidate.title === 'string' && candidate.title.trim().length > 0) {
+      result.title = candidate.title;
+    }
+    if (candidate.usedRetry === true) result.usedRetry = true;
+    byIndex.set(questIndex, result);
   }
 
   const contiguous: QuestResult[] = [];

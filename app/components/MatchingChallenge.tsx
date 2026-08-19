@@ -2,10 +2,11 @@
 
 import { useState, useMemo } from 'react';
 import type { MatchingChallenge as MatchingType } from '@/lib/types';
+import { shuffle } from '@/lib/shuffle';
 
 interface Props {
   challenge: MatchingType;
-  onAnswer: (correct: boolean) => void;
+  onAnswer: (correct: boolean, usedRetry: boolean) => void;
 }
 
 interface ShuffledItem {
@@ -13,54 +14,56 @@ interface ShuffledItem {
   originalIndex: number;
 }
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
 export default function MatchingChallenge({ challenge, onAnswer }: Props) {
   const pairs = challenge.pairs;
 
   const shuffledRight = useMemo<ShuffledItem[]>(
     () => shuffle(pairs.map((p, i) => ({ text: p.right, originalIndex: i }))),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [pairs],
   );
 
-  // maps leftIndex → shuffledRightIndex
   const [matches, setMatches] = useState<Record<number, number>>({});
   const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [correct, setCorrect] = useState(false);
+  const [usedRetry, setUsedRetry] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const [locked, setLocked] = useState(false);
+  const [wrongLeft, setWrongLeft] = useState<number[]>([]);
 
   const matchedLeftSet = new Set(Object.keys(matches).map(Number));
   const matchedRightSet = new Set(Object.values(matches));
   const matchedCount = Object.keys(matches).length;
-  const announcement = submitted
-    ? correct
+  const allMatched = pairs.every((_, i) => matches[i] !== undefined);
+
+  const missIndexes = () =>
+    pairs
+      .map((_, leftIdx) => leftIdx)
+      .filter(leftIdx => {
+        const ri = matches[leftIdx];
+        return ri === undefined || shuffledRight[ri].originalIndex !== leftIdx;
+      });
+
+  const announcement = locked
+    ? wrongLeft.length === 0
       ? 'All pairs are matched correctly.'
       : 'Some pairs are not matched correctly.'
-    : selectedLeft !== null
-      ? `${pairs[selectedLeft].left} selected. Choose its match from the right column.`
-      : matchedCount > 0
-        ? `${matchedCount} of ${pairs.length} pairs matched.`
-        : '';
+    : showHint
+      ? `Some pairs are still off. ${challenge.hint}`
+      : selectedLeft !== null
+        ? `${pairs[selectedLeft].left} selected. Choose its match from the right column.`
+        : matchedCount > 0
+          ? `${matchedCount} of ${pairs.length} pairs matched.`
+          : '';
 
   const handleLeftClick = (idx: number) => {
-    if (submitted) return;
+    if (locked) return;
     setSelectedLeft(prev => (prev === idx ? null : idx));
   };
 
   const handleRightClick = (shuffledIdx: number) => {
-    if (submitted || selectedLeft === null) return;
+    if (locked || selectedLeft === null) return;
 
     setMatches(prev => {
       const next = { ...prev };
-      // Un-match any left item previously pointing here
       const existingLeft = Object.entries(next).find(([, ri]) => ri === shuffledIdx);
       if (existingLeft) delete next[Number(existingLeft[0])];
       next[selectedLeft] = shuffledIdx;
@@ -69,16 +72,19 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
     setSelectedLeft(null);
   };
 
-  const allMatched = pairs.every((_, i) => matches[i] !== undefined);
-
   const handleSubmit = () => {
-    const isCorrect = pairs.every((_, leftIdx) => {
-      const ri = matches[leftIdx];
-      return ri !== undefined && shuffledRight[ri].originalIndex === leftIdx;
-    });
-    setCorrect(isCorrect);
-    setSubmitted(true);
-    setTimeout(() => onAnswer(isCorrect), 900);
+    if (!allMatched || locked) return;
+    const misses = missIndexes();
+    const isCorrect = misses.length === 0;
+    if (!isCorrect && !usedRetry) {
+      setWrongLeft(misses);
+      setUsedRetry(true);
+      setShowHint(true);
+      return;
+    }
+    setWrongLeft(isCorrect ? [] : misses);
+    setLocked(true);
+    onAnswer(isCorrect, usedRetry);
   };
 
   return (
@@ -86,7 +92,6 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
       <p className="text-sm font-medium text-gray-600 text-center">{challenge.prompt}</p>
 
       <div className="grid grid-cols-2 gap-3">
-        {/* Left column */}
         <div className="space-y-2" role="group" aria-label="Items to match">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Match…</p>
           {pairs.map((pair, leftIdx) => {
@@ -96,15 +101,18 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
             const matchedRight = matchedRightIndex === undefined
               ? null
               : shuffledRight[matchedRightIndex];
+            const isWrong = wrongLeft.includes(leftIdx);
 
             let className =
               'w-full p-3 rounded-xl text-xs text-left border-2 font-medium transition-all duration-150 cursor-pointer leading-snug ';
-            if (submitted) {
-              className += correct
-                ? 'border-emerald-400 bg-emerald-50 text-emerald-800'
-                : 'border-red-400 bg-red-50 text-red-800';
+            if (locked) {
+              className += isWrong
+                ? 'border-red-400 bg-red-50 text-red-800'
+                : 'border-emerald-400 bg-emerald-50 text-emerald-800';
             } else if (isSelected) {
               className += 'border-amber-400 bg-amber-50 text-amber-800 ring-2 ring-amber-200';
+            } else if (isWrong) {
+              className += 'border-amber-300 bg-amber-50 text-amber-800';
             } else if (isMatched) {
               className += 'border-blue-300 bg-blue-50 text-blue-700';
             } else {
@@ -118,7 +126,7 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
                 className={className}
                 onClick={() => handleLeftClick(leftIdx)}
                 aria-pressed={isSelected}
-                aria-disabled={submitted}
+                aria-disabled={locked}
                 aria-label={`${pair.left}. ${
                   isSelected
                     ? 'Selected; choose a match from the right column.'
@@ -133,12 +141,11 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
           })}
         </div>
 
-        {/* Right column */}
         <div className="space-y-2" role="group" aria-label="Possible matches">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider text-center">…to</p>
           {shuffledRight.map((item, shuffledIdx) => {
             const isMatched = matchedRightSet.has(shuffledIdx);
-            const canTarget = selectedLeft !== null && !submitted;
+            const canTarget = selectedLeft !== null && !locked;
             const matchedLeftEntry = Object.entries(matches).find(([, rightIdx]) => (
               rightIdx === shuffledIdx
             ));
@@ -148,10 +155,8 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
 
             let className =
               'w-full p-3 rounded-xl text-xs text-left border-2 font-medium transition-all duration-150 leading-snug ';
-            if (submitted) {
-              className += correct
-                ? 'border-emerald-400 bg-emerald-50 text-emerald-800'
-                : 'border-red-400 bg-red-50 text-red-800';
+            if (locked) {
+              className += 'border-gray-200 bg-gray-50 text-gray-600';
             } else if (isMatched) {
               className += 'border-blue-300 bg-blue-50 text-blue-700';
             } else if (canTarget) {
@@ -166,7 +171,7 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
                 key={shuffledIdx}
                 className={className}
                 onClick={() => handleRightClick(shuffledIdx)}
-                disabled={submitted}
+                disabled={locked}
                 aria-pressed={isMatched}
                 aria-label={`${item.text}. ${
                   matchedLeft
@@ -183,7 +188,16 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
         </div>
       </div>
 
-      {!submitted && (
+      {showHint && !locked && (
+        <p
+          className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900"
+          role="status"
+        >
+          Some pairs are still off. {challenge.hint}
+        </p>
+      )}
+
+      {!locked && (
         <button
           onClick={handleSubmit}
           disabled={!allMatched}
@@ -194,7 +208,11 @@ export default function MatchingChallenge({ challenge, onAnswer }: Props) {
               : { backgroundColor: '#E5E7EB', color: '#9CA3AF' }
           }
         >
-          {allMatched ? 'Check Matches →' : `Select all ${pairs.length} pairs to continue`}
+          {usedRetry
+            ? 'Check again'
+            : allMatched
+              ? 'Check Matches →'
+              : `Select all ${pairs.length} pairs to continue`}
         </button>
       )}
       <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">

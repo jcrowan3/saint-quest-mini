@@ -76,11 +76,17 @@ export default function QuestFlow({
   }, [initialSession.runId, onCheckpoint, saint.id]);
 
   const handleAnswer = useCallback(
-    (correct: boolean) => {
+    (correct: boolean, usedRetry = false) => {
       if (allResults.some(result => result.questIndex === questIndex)) return;
       const virtueGained: Record<string, number> = correct ? { ...currentQuest.reward } : {};
 
-      const result: QuestResult = { questIndex, correct, virtueGained };
+      const result: QuestResult = {
+        questIndex,
+        title: currentQuest.title,
+        correct,
+        usedRetry,
+        virtueGained,
+      };
       const nextResults = [...allResults, result];
       setAllResults(nextResults);
       setPhase('feedback');
@@ -272,6 +278,10 @@ export default function QuestFlow({
                     )}
                   </div>
                 </div>
+
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {currentQuest.challenge.explanation}
+                </p>
 
                 {/* Fun fact */}
                 {currentQuest.funFact && (

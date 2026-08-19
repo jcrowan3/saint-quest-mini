@@ -151,6 +151,28 @@ test('replaying a saint adds lifetime totals without duplicating its badge', () 
   assert.equal(secondRun.completedRuns, 2);
 });
 
+test('quest titles and retry flags survive sanitize and resume', () => {
+  const titled: QuestResult = {
+    questIndex: 0,
+    title: 'The Little Way',
+    correct: true,
+    usedRetry: true,
+    virtueGained: { Faith: 1 },
+  };
+  const started = startQuest(createDefaultProgress(), 'therese', 'run-title');
+  const checkpointed = checkpointQuest(started, {
+    runId: 'run-title',
+    saintId: 'therese',
+    questIndex: 0,
+    phase: 'feedback',
+    results: [titled],
+  });
+  const roundTripped = parsePlayerProgress(JSON.stringify(checkpointed));
+
+  assert.equal(roundTripped.activeSession?.results[0]?.title, 'The Little Way');
+  assert.equal(roundTripped.activeSession?.results[0]?.usedRetry, true);
+});
+
 test('abandoning clears only the active session', () => {
   const lifetime = {
     ...createDefaultProgress(),

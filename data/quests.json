@@ -2,447 +2,785 @@
   "francis": [
     {
       "title": "The Wolf of Gubbio",
-      "story": "A fierce wolf terrorizes a town. Francis chooses to meet it with mercy.",
+      "story": "A wolf has been attacking livestock around Gubbio. The town is armed and terrified. Francis does not join the hunt. He walks out beyond the walls to meet the animal himself, calling it “Brother Wolf,” and asks it to make peace with the people who will then feed it.",
       "challenge": {
         "type": "dilemma",
-        "prompt": "How do you respond to fear with mercy?",
+        "prompt": "What does this teaching story say Francis offered first?",
         "options": [
-          "Offer peace and listen to the wolf's pain",
-          "Drive the wolf away with force",
-          "Ignore it and move on",
-          "Blame the townspeople"
+          "Blessing the hunters from the walls so they could finish the job",
+          "Fasting until the wolf starved outside the town",
+          "Meeting the wolf in the open and speaking peace instead of force",
+          "Promising that God would strike the wolf if it returned"
         ],
-        "answer_index": 0
+        "answer_index": 2,
+        "hint": "Francis treats the wolf as a creature, not an enemy to erase.",
+        "explanation": "The Gubbio story is a beloved teaching tradition, not a courtroom history. It shows Francis meeting fear with mercy that also protected the town — peace that asked something of both sides."
       },
-      "reward": {"Mercy": 2, "Courage": 1}
+      "reward": {
+        "Mercy": 2,
+        "Courage": 1
+      },
+      "funFact": "Later tellings say the wolf lived among the people of Gubbio until it died of old age."
     },
     {
-      "title": "Sermon to the Birds",
-      "story": "Francis teaches that all creation is loved by God.",
+      "title": "Brother Sun, Sister Moon",
+      "story": "Near the end of his life Francis is almost blind, in pain, and staying in a hut near San Damiano. Instead of cursing the darkness, he composes the Canticle of the Creatures — praise of God through Brother Sun, Sister Moon, Brother Wind, and even Sister Death.",
       "challenge": {
         "type": "trivia",
-        "question": "Which virtue best fits caring for all of creation?",
-        "choices": ["Mercy", "Pride", "Greed", "Envy"],
-        "answer_index": 0
+        "question": "When did Francis compose the Canticle of the Creatures?",
+        "choices": [
+          "On the day he first stripped off his father’s cloth in the square",
+          "While nearly blind and ill, late in his life",
+          "During the Fourth Lateran Council, as a hymn for bishops",
+          "As a battle song for the crusade he hoped to join"
+        ],
+        "answer_index": 1,
+        "hint": "The song comes from weakness, not from a triumph parade.",
+        "explanation": "The Canticle is praise born in suffering. Francis thanks God through creation while he can barely see it — that is Franciscan joy, not a nature hobby."
       },
-      "reward": {"Mercy": 1, "Courage": 1}
+      "reward": {
+        "Mercy": 1,
+        "Courage": 2
+      }
     },
     {
       "title": "Rebuild My Church",
-      "story": "Francis hears Christ call him to rebuild the Church.",
+      "story": "Praying before the crucifix at the ruined chapel of San Damiano, Francis hears the words, “Francis, go and rebuild my church, which is falling into ruin.” He does not draft a speech for Rome. He sells cloth, carries stones, and starts repairing the little chapel with his own hands.",
       "challenge": {
         "type": "dilemma",
-        "prompt": "What is the best first step?",
+        "prompt": "What is the first thing Francis does with that call?",
         "options": [
-          "Start with small acts of love and service",
-          "Wait for others to do it",
-          "Seek fame for the effort",
-          "Ignore the call"
+          "Rides to the pope to demand a reform council",
+          "Writes a rule for knights before touching a stone",
+          "Waits until a bishop puts the order in writing",
+          "Begins the dirty work of repairing a falling chapel"
         ],
-        "answer_index": 0
+        "answer_index": 3,
+        "hint": "He takes the words literally before he understands them fully.",
+        "explanation": "Francis starts with the chapel in front of him. Only later does the Church read a deeper meaning: rebuild the Body of Christ through poverty, peace, and example. Holiness often begins with the next small repair."
       },
-      "reward": {"Courage": 2, "Mercy": 1}
+      "reward": {
+        "Courage": 2,
+        "Mercy": 1
+      }
     },
     {
-      "title": "Franciscan Virtues",
-      "story": "Francis inspired many followers who each carried forward a unique gift. Can you match these Franciscan saints to their contributions?",
+      "title": "Franciscan Gifts",
+      "story": "Francis did not walk alone. Clare, Anthony, and Bonaventure each carried a different gift inside the same poor, joyful family. Matching them is a way of seeing how one call branches.",
       "challenge": {
         "type": "matching",
-        "prompt": "Match each Franciscan saint to their contribution:",
+        "prompt": "Match each Franciscan saint to the gift most tied to their memory.",
         "pairs": [
-          {"left": "St. Francis of Assisi", "right": "Canticle of the Sun"},
-          {"left": "St. Clare of Assisi", "right": "Founded the Poor Clares"},
-          {"left": "St. Anthony of Padua", "right": "Patron of lost things"},
-          {"left": "St. Bonaventure", "right": "Doctor of the Church"}
-        ]
+          {
+            "left": "St. Francis of Assisi",
+            "right": "Canticle of the Creatures"
+          },
+          {
+            "left": "St. Clare of Assisi",
+            "right": "Founded the Poor Clares"
+          },
+          {
+            "left": "St. Anthony of Padua",
+            "right": "Preacher, patron of lost things"
+          },
+          {
+            "left": "St. Bonaventure",
+            "right": "Franciscan theologian and Doctor"
+          }
+        ],
+        "hint": "Think song, cloister, preaching, and teaching.",
+        "explanation": "One founder, many gifts. Francis sang praise, Clare built a hidden life of poverty, Anthony preached, and Bonaventure gave the family a mind as well as a heart."
       },
-      "reward": {"Wisdom": 2, "Faith": 1},
-      "funFact": "The Franciscan order today has over 100,000 members worldwide across its three main branches."
+      "reward": {
+        "Wisdom": 2,
+        "Faith": 1
+      },
+      "funFact": "The Franciscan family today includes hundreds of thousands of friars, sisters, and lay members across its branches."
     }
   ],
   "carlo": [
     {
-      "title": "The Digital Evangelist",
-      "story": "Carlo uses technology to share Eucharistic miracles.",
+      "title": "The Exhibition That Traveled",
+      "story": "As a teenager in Milan, Carlo spends hours building a website that gathers documented Eucharistic miracles from around the world. He wants classmates — and strangers on the far side of the planet — to know that the Host is not a symbol only.",
       "challenge": {
         "type": "trivia",
-        "question": "What does the Eucharist become at Mass?",
-        "choices": ["Body and Blood of Christ", "Bread and Wine", "Symbol only", "Nothing"],
-        "answer_index": 0
+        "question": "What did Carlo catalog on the website he built?",
+        "choices": [
+          "Rankings of Italy’s holiest parishes",
+          "Eucharistic miracles from many countries",
+          "Cheat codes for the video games he loved",
+          "His private diary of mystical visions"
+        ],
+        "answer_index": 1,
+        "hint": "The site was a classroom, not a fan page.",
+        "explanation": "Carlo used ordinary web skills to teach an extraordinary claim: Christ is truly present in the Eucharist. The exhibition drawn from his research has been shown on every continent."
       },
-      "reward": {"Faith": 2, "Wisdom": 1}
+      "reward": {
+        "Faith": 2,
+        "Wisdom": 1
+      }
     },
     {
-      "title": "Coding for the Kingdom",
-      "story": "Carlo builds a website to teach others about the faith.",
+      "title": "A Computer in the Kingdom",
+      "story": "Carlo liked soccer, video games, and coding. He also went to daily Mass and stood up for classmates who were bullied. He did not treat the internet as a toy to hide, or as a pulpit for fame. He treated it as a tool that could carry truth farther than he could walk.",
       "challenge": {
         "type": "dilemma",
-        "prompt": "How can you use your talents for God?",
+        "prompt": "How did Carlo treat the internet?",
         "options": [
-          "Teach others what you've learned",
-          "Keep it to yourself",
-          "Use it only for popularity",
-          "Give up on it"
+          "As something holy people should never touch",
+          "As a stage for becoming a famous Catholic influencer",
+          "As a tool for friendship and teaching the faith",
+          "As a place to argue until the other person quit"
         ],
-        "answer_index": 0
+        "answer_index": 2,
+        "hint": "He neither fled technology nor worshipped it.",
+        "explanation": "Carlo’s witness is not “computers are sacred.” It is that a teenager can use the same tools as everyone else — with charity, honesty, and a clear purpose."
       },
-      "reward": {"Wisdom": 2, "Faith": 1}
+      "reward": {
+        "Wisdom": 2,
+        "Faith": 1
+      }
     },
     {
-      "title": "Daily Mass",
-      "story": "Carlo loves daily Mass and adoration.",
+      "title": "A Short Life",
+      "story": "In 2006 Carlo is diagnosed with leukemia. He offers his suffering for the pope and for the Church. He dies in Monza at fifteen. Years later the Church raises him to the altars — not because his life was long, but because it was faithful.",
       "challenge": {
         "type": "trivia",
-        "question": "Which virtue is strengthened by regular prayer?",
-        "choices": ["Faith", "Jealousy", "Greed", "Anger"],
-        "answer_index": 0
+        "question": "How old was Carlo when he died?",
+        "choices": [
+          "12",
+          "21",
+          "33",
+          "15"
+        ],
+        "answer_index": 3,
+        "hint": "He never finished high school.",
+        "explanation": "Carlo died at fifteen in 2006. The Church honors the density of a life, not its length. His feast is kept on October 12."
       },
-      "reward": {"Faith": 2, "Wisdom": 1}
+      "reward": {
+        "Faith": 2,
+        "Hope": 1
+      }
     },
     {
-      "title": "A Short Life, A Lasting Legacy",
-      "story": "Carlo Acutis lived only 15 years, yet his impact on the Church continues to grow. Place the key moments of his life in order.",
+      "title": "A Lasting Legacy",
+      "story": "Fifteen years can still hold a clear path. Put Carlo’s life in order and you see an ordinary boy whose love of the Eucharist kept widening.",
       "challenge": {
         "type": "timeline",
-        "prompt": "Arrange these events from Carlo's life in chronological order:",
+        "prompt": "Arrange these moments from Carlo’s life in chronological order.",
         "events": [
-          {"text": "Carlo is born in London to Italian parents", "year": 1991},
-          {"text": "Receives First Holy Communion in Milan", "year": 1998},
-          {"text": "Begins building his Eucharistic Miracles website", "year": 2002},
-          {"text": "Carlo dies of leukemia at age 15", "year": 2006},
-          {"text": "Beatified by Pope Francis in Assisi", "year": 2020}
-        ]
+          {
+            "text": "Born in London to Italian parents",
+            "year": 1991
+          },
+          {
+            "text": "Receives First Holy Communion in Milan",
+            "year": 1998
+          },
+          {
+            "text": "Begins the Eucharistic miracles website",
+            "year": 2002
+          },
+          {
+            "text": "Dies of leukemia at age 15",
+            "year": 2006
+          },
+          {
+            "text": "Beatified by Pope Francis in Assisi",
+            "year": 2020
+          }
+        ],
+        "hint": "Birth, Communion, website, death, then the Church’s recognition.",
+        "explanation": "The dates are simple: 1991, 1998, 2002, 2006, 2020. What is not simple is a teenager who treated the Eucharist as the center of a short, bright life."
       },
-      "reward": {"Faith": 2, "Hope": 1},
-      "funFact": "Carlo's Eucharistic Miracles exhibition has been displayed in every continent and translated into dozens of languages."
+      "reward": {
+        "Faith": 2,
+        "Hope": 1
+      },
+      "funFact": "Carlo was canonized in 2025. His exhibition of Eucharistic miracles has been translated into dozens of languages."
     }
   ],
   "joseph": [
     {
-      "title": "The Dreamer",
-      "story": "Joseph receives a dream from God about taking Mary as his wife despite her pregnancy.",
-      "challenge": {
-        "type": "dilemma",
-        "prompt": "What does Joseph do when faced with uncertainty and social pressure?",
-        "options": [
-          "Trust God's message and take Mary as his wife",
-          "Quietly divorce her to avoid shame",
-          "Seek advice from others before deciding",
-          "Wait for another sign before acting"
-        ],
-        "answer_index": 0
-      },
-      "reward": {"Responsibility": 2, "Humility": 1}
-    },
-    {
-      "title": "Provider and Protector",
-      "story": "Joseph works hard to provide for Jesus and Mary, fleeing to Egypt to protect them from Herod.",
+      "title": "The Just Man",
+      "story": "Matthew says Joseph is a just man. When he learns Mary is with child, he does not expose her to public shame. He plans to divorce her quietly. Then an angel speaks in a dream: the child is from the Holy Spirit. Joseph wakes and takes Mary as his wife.",
       "challenge": {
         "type": "trivia",
-        "question": "Which virtue is most shown by Joseph's work as a carpenter to provide for his family?",
-        "choices": ["Responsibility", "Pride", "Greed", "Laziness"],
-        "answer_index": 0
+        "question": "Before the angel spoke, what did Joseph plan to do?",
+        "choices": [
+          "Bring her before the elders for judgment",
+          "Divorce Mary quietly, to spare her public shame",
+          "Leave Bethlehem that night without a word",
+          "Ask Herod to decide the matter"
+        ],
+        "answer_index": 1,
+        "hint": "Matthew calls him just — and his first instinct is mercy.",
+        "explanation": "Joseph’s first move is protection, not reputation. Then he trusts the dream and stays. Justice in this story is not cold; it is careful love that refuses to harm."
       },
-      "reward": {"Responsibility": 2, "Humility": 1}
+      "reward": {
+        "Responsibility": 2,
+        "Humility": 1
+      }
+    },
+    {
+      "title": "Up in the Night",
+      "story": "After the Magi leave, an angel warns Joseph in a dream: Herod wants the child dead. Joseph does not wait for morning meetings. He rises at night, takes the child and his mother, and goes to Egypt until it is safe to return.",
+      "challenge": {
+        "type": "trivia",
+        "question": "Why does Joseph take Mary and the child to Egypt?",
+        "choices": [
+          "Census rules requiring every carpenter to register in Alexandria",
+          "The Magi invite the family to travel east with them",
+          "The angel in a dream warns that Herod wants to kill the child",
+          "Mary asks to visit relatives along the Nile"
+        ],
+        "answer_index": 2,
+        "hint": "The Gospel of Matthew names a dream and a king’s violence.",
+        "explanation": "Joseph’s courage is quiet and fast. He believes the warning and moves his family. Responsibility here looks like a night journey, not a speech."
+      },
+      "reward": {
+        "Responsibility": 2,
+        "Courage": 1
+      }
     },
     {
       "title": "The Silent Saint",
-      "story": "Though Scripture records no words spoken by Joseph, his actions speak volumes about his character.",
+      "story": "The Gospels record no spoken sentence of Joseph. We see him decide, work, dream, and protect. His holiness is in what he does when no one is taking notes.",
       "challenge": {
         "type": "dilemma",
-        "prompt": "How can we show our virtues without needing to talk about them?",
+        "prompt": "What does Joseph’s silence invite us to practice?",
         "options": [
-          "Let our actions speak for themselves",
-          "Tell everyone about our good deeds",
-          "Wait for others to notice before acting",
-          "Only act when we know we'll be praised"
+          "Never speaking about God at all",
+          "Waiting for a public platform before serving anyone",
+          "Leaving hard decisions to louder people",
+          "Faithfulness that shows up in work and protection, not speeches"
         ],
-        "answer_index": 0
+        "answer_index": 3,
+        "hint": "Silence here is not emptiness. It is action without applause.",
+        "explanation": "Joseph’s virtue does not need a microphone. He stays, he works, he protects. A life can preach without a quotable line."
       },
-      "reward": {"Humility": 2, "Responsibility": 1}
+      "reward": {
+        "Humility": 2,
+        "Responsibility": 1
+      }
+    },
+    {
+      "title": "Two Feasts, One Man",
+      "story": "The Church keeps Joseph twice: March 19 as husband and guardian of the Holy Family, and May 1 as St. Joseph the Worker. The same man is remembered for the home he guarded and the trade he practiced.",
+      "challenge": {
+        "type": "matching",
+        "prompt": "Match each feast or title to what the Church is honoring.",
+        "pairs": [
+          {
+            "left": "March 19",
+            "right": "Husband and guardian of the Holy Family"
+          },
+          {
+            "left": "May 1",
+            "right": "Joseph the Worker, dignity of labor"
+          },
+          {
+            "left": "Carpenter",
+            "right": "The trade Matthew’s neighbors would have known"
+          },
+          {
+            "left": "Just man",
+            "right": "Matthew’s word for Joseph’s character"
+          }
+        ],
+        "hint": "One date is the household. One date is the workshop.",
+        "explanation": "Joseph is not only a statue in a side chapel. The Church honors both his hidden family duty and the ordinary work that fed that family."
+      },
+      "reward": {
+        "Responsibility": 2,
+        "Humility": 1
+      }
     }
   ],
   "therese": [
     {
       "title": "The Little Way",
-      "story": "Therese discovers that holiness is found in doing small things with great love.",
+      "story": "Thérèse enters Carmel at fifteen and dies at twenty-four. She never founds an order or crosses an ocean. She discovers that holiness is not a ladder of great deeds. It is doing the next small thing — a smile, a hidden chore, a patience — with great love.",
       "challenge": {
         "type": "dilemma",
-        "prompt": "How can we practice love in our daily lives?",
+        "prompt": "What is the heart of Thérèse’s “little way”?",
         "options": [
-          "Do small kindnesses with great love",
-          "Wait for big opportunities to show love",
-          "Only love those who love us back",
-          "Love others to be seen as holy"
+          "Only heroic public deeds count as real sanctity",
+          "Holiness grows through small acts done with great love",
+          "You must leave your family to be close to God",
+          "God’s love has to be earned by never failing"
         ],
-        "answer_index": 0
+        "answer_index": 1,
+        "hint": "She looked for the smallest stair, not the tallest monument.",
+        "explanation": "Thérèse taught spiritual childhood: trust, hidden love, and ordinary faithfulness. The little way is demanding because it leaves no hour off the hook."
       },
-      "reward": {"Simplicity": 2, "Love": 1}
+      "reward": {
+        "Simplicity": 2,
+        "Love": 1
+      }
     },
     {
-      "title": "Shower of Roses",
-      "story": "Therese promises to send roses from heaven as a sign of her intercession.",
+      "title": "Doctor at Twenty-Four",
+      "story": "Thérèse writes her story under obedience. After her death the pages travel farther than she ever did. In 1997 St. John Paul II names her a Doctor of the Church — one of the few women to hold that title, and the youngest.",
       "challenge": {
         "type": "trivia",
-        "question": "What does Therese's 'little way' teach us about spiritual growth?",
+        "question": "Why was Thérèse named a Doctor of the Church?",
         "choices": [
-          "Holiness comes from faithfulness in small things",
-          "We must perform great deeds to be holy",
-          "Spiritual growth requires isolation from others",
-          "We need to earn God's love through perfection"
+          "She governed a diocese from Lisieux",
+          "She wrote a complete systematic theology in Latin",
+          "Her teaching on ordinary love shaped the whole Church",
+          "She was the first woman to enter Carmel"
         ],
-        "answer_index": 0
+        "answer_index": 2,
+        "hint": "Doctor here means teacher of the Church, not a university chair.",
+        "explanation": "A Doctor is named for enduring teaching, not for academic rank. Thérèse’s little way changed how millions imagine holiness — including missionaries she never met."
       },
-      "reward": {"Love": 2, "Simplicity": 1}
+      "reward": {
+        "Love": 2,
+        "Wisdom": 1
+      }
     },
     {
-      "title": "Offering Up Suffering",
-      "story": "Therese offers her daily struggles and sufferings as gifts to God.",
+      "title": "Offering the Day",
+      "story": "In the convent Thérèse is often cold, tired, or misunderstood. She does not wait for a grand martyrdom. She offers the day’s pinpricks — a wet laundry, a sister’s noise, her own irritation — as small sacrifices of love.",
       "challenge": {
         "type": "dilemma",
-        "prompt": "How can we respond to daily frustrations and inconveniences?",
+        "prompt": "How does Thérèse treat daily frustrations?",
         "options": [
-          "Offer them as small sacrifices of love",
-          "Complain loudly about the inconvenience",
-          "Avoid situations that might be difficult",
-          "See suffering as punishment from God"
+          "As proof that God has forgotten her",
+          "As reasons to withdraw from community",
+          "As tests she must hide so she looks holy",
+          "As small offerings that can be given in love"
         ],
-        "answer_index": 0
+        "answer_index": 3,
+        "hint": "She does not need a crisis to practice sacrifice.",
+        "explanation": "The little way baptizes the ordinary. A hard hour can be given; it does not have to be dramatic to be real."
       },
-      "reward": {"Simplicity": 1, "Love": 2}
+      "reward": {
+        "Love": 2,
+        "Simplicity": 1
+      }
     },
     {
       "title": "Doctors of Love",
-      "story": "Therese was named a Doctor of the Church in 1997 — one of only four women to receive this honor. Can you match each female Doctor to her distinctive contribution?",
+      "story": "Four women Doctors of the Church — Thérèse, Teresa of Ávila, Catherine of Siena, and Hildegard — each taught the Church in a different key. Matching them is a way to hear the chord.",
       "challenge": {
         "type": "matching",
-        "prompt": "Match each female Doctor of the Church to her contribution:",
+        "prompt": "Match each woman Doctor to the teaching she is most known for.",
         "pairs": [
-          {"left": "St. Therese of Lisieux", "right": "The Little Way of spiritual childhood"},
-          {"left": "St. Teresa of Avila", "right": "Interior Castle of mystical prayer"},
-          {"left": "St. Catherine of Siena", "right": "Dialogue with Divine Providence"},
-          {"left": "St. Hildegard of Bingen", "right": "Visionary writings on nature and medicine"}
-        ]
+          {
+            "left": "St. Thérèse of Lisieux",
+            "right": "The little way of spiritual childhood"
+          },
+          {
+            "left": "St. Teresa of Ávila",
+            "right": "The Interior Castle of prayer"
+          },
+          {
+            "left": "St. Catherine of Siena",
+            "right": "The Dialogue and bold counsel to popes"
+          },
+          {
+            "left": "St. Hildegard of Bingen",
+            "right": "Visions, music, and writings on creation"
+          }
+        ],
+        "hint": "Childhood, castle, dialogue, creation.",
+        "explanation": "The Church does not have one woman’s voice. Thérèse’s hidden love sits beside Teresa’s map of prayer, Catherine’s public courage, and Hildegard’s wide seeing."
       },
-      "reward": {"Wisdom": 2, "Love": 1},
-      "funFact": "St. Therese was the youngest person ever named a Doctor of the Church, a title recognizing her profound theological influence despite dying at age 24."
+      "reward": {
+        "Wisdom": 2,
+        "Love": 1
+      },
+      "funFact": "Thérèse remains the youngest person ever named a Doctor of the Church."
     }
   ],
   "kolbe": [
     {
-      "title": "The Knight of the Immaculata",
-      "story": "Kolbe founds a movement to spread devotion to Mary and combat evil through good publications.",
-      "challenge": {
-        "type": "dilemma",
-        "prompt": "How should we respond to evil and hatred in the world?",
-        "options": [
-          "Fight evil with love and truth",
-          "Respond to hatred with more hatred",
-          "Withdraw from society to stay pure",
-          "Ignore evil and focus only on personal holiness"
-        ],
-        "answer_index": 0
-      },
-      "reward": {"Charity": 2, "Courage": 1}
-    },
-    {
-      "title": "Auschwitz Volunteer",
-      "story": "In Auschwitz, Kolbe volunteers to die in place of a stranger who has a family.",
+      "title": "Two Crowns",
+      "story": "As a boy, Raymund Kolbe later said, he saw Mary offer him two crowns — one white for purity, one red for martyrdom. He said he would accept both. The rest of his life reads like a long yes to that answer.",
       "challenge": {
         "type": "trivia",
-        "question": "What ultimate act of love did Kolbe perform in Auschwitz?",
+        "question": "What did young Kolbe say when offered the two crowns?",
         "choices": [
-          "He died so another man could live",
-          "He shared his food with everyone",
-          "He escaped and told the world about the camp",
-          "He became the camp leader to improve conditions"
+          "He asked to choose only the white crown",
+          "He would accept both",
+          "He refused, saying he was too young",
+          "He asked to trade them for a soldier’s sword"
         ],
-        "answer_index": 0
+        "answer_index": 1,
+        "hint": "The story is not about picking the easier gift.",
+        "explanation": "Whether one reads the vision as history or as a later spiritual memory, Kolbe’s life matched the answer: he lived consecrated, and he died in another man’s place."
       },
-      "reward": {"Charity": 2, "Courage": 1}
+      "reward": {
+        "Courage": 2,
+        "Faith": 1
+      }
     },
     {
-      "title": "The Power of the Press",
-      "story": "Kolbe uses printing presses to spread religious materials and combat secularism.",
+      "title": "In Another Man’s Place",
+      "story": "In Auschwitz, after a prisoner escapes, the camp chooses men to die. One of them, Franciszek Gajowniczek, cries out for his wife and children. Kolbe steps forward and asks to take his place. He is locked in a starvation bunker with the others.",
+      "challenge": {
+        "type": "trivia",
+        "question": "Why does Kolbe step forward in the camp?",
+        "choices": [
+          "To become a block leader and soften the rules",
+          "To bargain for extra bread for his barracks",
+          "To die in the place of a stranger who has a family",
+          "To escape with the man who had already fled"
+        ],
+        "answer_index": 2,
+        "hint": "He does not save himself. He offers a substitution.",
+        "explanation": "Kolbe’s last act is concrete: one man lives because another stood in his place. Teach this as sacrificial love. The camp’s cruelty does not need graphic detail."
+      },
+      "reward": {
+        "Charity": 2,
+        "Courage": 2
+      }
+    },
+    {
+      "title": "The City of the Immaculata",
+      "story": "Years before the war, Kolbe founds Niepokalanów in Poland — a “city” of friars with printing presses. They publish a daily paper and magazines that reach hundreds of thousands. He fights bad ideas with better ones, not with silence.",
       "challenge": {
         "type": "dilemma",
-        "prompt": "How can we use modern communication tools for good?",
+        "prompt": "How did Kolbe use the press before the war?",
         "options": [
-          "Share truth and beauty to uplift others",
-          "Spread content that gets the most views",
-          "Only communicate with people who agree with us",
-          "Use technology to put others down"
+          "To print only private prayers for the friars",
+          "To publish anonymous attacks on his enemies",
+          "To raise money for a political party he led",
+          "To spread Marian devotion and Catholic truth at huge scale"
         ],
-        "answer_index": 0
+        "answer_index": 3,
+        "hint": "Niepokalanów was famous for its newspapers, not its silence.",
+        "explanation": "Kolbe believed media could form a culture. He used ink the way some use a pulpit: to put Mary, the Gospel, and courage in ordinary hands."
       },
-      "reward": {"Courage": 2, "Charity": 1}
+      "reward": {
+        "Courage": 2,
+        "Charity": 1
+      }
     },
     {
-      "title": "The Journey of a Martyr",
-      "story": "Maximilian Kolbe's life was a journey from youthful vision to ultimate sacrifice. Arrange the key events of his life in order.",
+      "title": "From Vision to Gift",
+      "story": "Kolbe’s path runs from a boyhood offering, through a publishing city, to a bunker. The order of those years is part of the witness.",
       "challenge": {
         "type": "timeline",
-        "prompt": "Place these events from Kolbe's life in chronological order:",
+        "prompt": "Place these events from Kolbe’s life in order.",
         "events": [
-          {"text": "Young Raymund has a vision of the Virgin Mary offering two crowns", "year": 1906},
-          {"text": "Founds the Militia Immaculata in Rome", "year": 1917},
-          {"text": "Ordained a Franciscan priest", "year": 1918},
-          {"text": "Establishes Niepokalanow, the 'City of the Immaculata' in Poland", "year": 1927},
-          {"text": "Volunteers to die in place of a stranger at Auschwitz", "year": 1941}
-        ]
+          {
+            "text": "As a boy he later recalls Mary offering two crowns",
+            "year": 1906
+          },
+          {
+            "text": "Founds the Militia Immaculatae in Rome",
+            "year": 1917
+          },
+          {
+            "text": "Ordained a Franciscan priest",
+            "year": 1918
+          },
+          {
+            "text": "Establishes Niepokalanów in Poland",
+            "year": 1927
+          },
+          {
+            "text": "Volunteers to die in another prisoner’s place",
+            "year": 1941
+          }
+        ],
+        "hint": "Crowns, militia, priesthood, the city, then the camp.",
+        "explanation": "The dates climb toward 1941. What they show is a long preparation: a man who had already given himself away before the last hour asked for everything."
       },
-      "reward": {"Courage": 2, "Faith": 1},
-      "funFact": "At its peak, Niepokalanow housed nearly 800 Franciscan friars and published a daily newspaper with a circulation of 230,000."
+      "reward": {
+        "Courage": 2,
+        "Faith": 1
+      },
+      "funFact": "Franciszek Gajowniczek survived the war and attended Kolbe’s canonization in 1982."
     }
   ],
   "bernadette": [
     {
-      "title": "The Vision at the Grotto",
-      "story": "Bernadette sees a beautiful lady who identifies herself as the Immaculate Conception.",
+      "title": "The Lady at the Grotto",
+      "story": "In 1858 a poor, asthmatic girl named Bernadette sees a lady in the grotto at Massabielle. Local officials press her. Parish priests doubt her. She does not decorate the story. She repeats what she saw, even when she does not understand it.",
       "challenge": {
         "type": "dilemma",
-        "prompt": "How should we respond when others doubt our experiences?",
+        "prompt": "When adults doubted Bernadette, what did she do?",
         "options": [
-          "Stay faithful to what we know is true",
-          "Change our story to please others",
-          "Doubt ourselves when others disagree",
-          "Stop sharing our experience entirely"
+          "Changed details until the mayor was satisfied",
+          "Kept telling the same simple account without adding drama",
+          "Refused to speak to anyone, including her parish priest",
+          "Claimed she had always known the lady’s name"
         ],
-        "answer_index": 0
+        "answer_index": 1,
+        "hint": "Her holiness here is honesty under pressure.",
+        "explanation": "Bernadette’s first virtue at Lourdes is not eloquence. It is fidelity to what she was given, without improving it for an audience."
       },
-      "reward": {"Humility": 2, "Faith": 1}
+      "reward": {
+        "Humility": 2,
+        "Faith": 1
+      }
     },
     {
-      "title": "The Spring of Lourdes",
-      "story": "The lady directs Bernadette to dig in the ground, where a spring of healing water appears.",
+      "title": "A Name She Did Not Know",
+      "story": "Bernadette asks the lady her name. The answer is, “I am the Immaculate Conception.” Bernadette is not a theologian. She has to repeat the strange phrase carefully so she will not forget it. The title was defined by the Church only four years earlier.",
       "challenge": {
         "type": "trivia",
-        "question": "What does Bernadette's humble obedience teach us?",
+        "question": "Why is the lady’s name a problem for Bernadette?",
         "choices": [
-          "God often works through the simple and humble",
-          "Only special people receive visions from God",
-          "We must earn miracles through perfection",
-          "Miracles only happen in holy places"
+          "She had already published a book on the dogma",
+          "She thought the lady was asking to be baptized",
+          "She did not understand the title and had to memorize the words",
+          "She refused to say any name but her own"
         ],
-        "answer_index": 0
+        "answer_index": 2,
+        "hint": "The words were bigger than the girl’s schooling.",
+        "explanation": "The scene matters because Bernadette is not performing theology. A poor child carries a title she cannot explain — which is one reason the parish took it seriously."
       },
-      "reward": {"Faith": 2, "Humility": 1}
+      "reward": {
+        "Faith": 2,
+        "Humility": 1
+      }
     },
     {
-      "title": "Suffering with Joy",
-      "story": "Despite her illnesses and hardships, Bernadette maintains a joyful spirit.",
+      "title": "Mud, Then Water",
+      "story": "The lady tells Bernadette to drink from the spring and wash. Bernadette scrapes the dry ground. At first there is only mud on her face, and the crowd laughs. Then water comes. Lourdes will become a place of pilgrimage and healing — but the first act looks foolish.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What happens when Bernadette obeys the command to drink?",
+        "choices": [
+          "The river instantly splits the rock with no digging",
+          "She refuses, afraid of looking foolish",
+          "The mayor’s men dig the spring for her that night",
+          "She digs in dry ground, is mocked, and a spring appears"
+        ],
+        "answer_index": 3,
+        "hint": "Obedience looks embarrassing before it looks miraculous.",
+        "explanation": "The spring is born in a moment of public awkwardness. Bernadette’s yes is not glamorous. That is often how God begins a mercy people can later touch."
+      },
+      "reward": {
+        "Faith": 2,
+        "Humility": 1
+      }
+    },
+    {
+      "title": "Leaving the Spotlight",
+      "story": "After the apparitions, Bernadette does not become a celebrity guide at the grotto. She enters the Sisters of Charity at Nevers, lives with illness, and asks to be forgotten. The shrine grows. The visionary hides.",
       "challenge": {
         "type": "dilemma",
-        "prompt": "How can we maintain joy even when facing difficulties?",
+        "prompt": "What does Bernadette do after Lourdes becomes famous?",
         "options": [
-          "Find joy in loving God and others despite circumstances",
-          "Pretend everything is fine when it's not",
-          "Wait for circumstances to change before being joyful",
-          "See joy as a reward for avoiding suffering"
+          "Stays at the grotto as the official interpreter of every miracle",
+          "Enters religious life and lives quietly, away from the crowds",
+          "Tours Europe giving paid lectures on the lady",
+          "Returns to the cave each year to demand new messages"
         ],
-        "answer_index": 0
+        "answer_index": 1,
+        "hint": "She did not build a platform on the apparitions.",
+        "explanation": "Bernadette’s later life is the other half of the story: the girl who saw Mary chose hiddenness. Fame was never the point."
       },
-      "reward": {"Humility": 1, "Faith": 2}
+      "reward": {
+        "Humility": 2,
+        "Faith": 1
+      },
+      "funFact": "Bernadette’s feast is April 16, the day of her death in 1879. Our Lady of Lourdes is kept on February 11."
     }
   ],
   "padrepio": [
     {
-      "title": "The Saint with the Wounds",
-      "story": "Padre Pio bears the wounds of Christ (stigmata) and offers suffering for the salvation of souls.",
-      "challenge": {
-        "type": "dilemma",
-        "prompt": "How can we view our own sufferings in light of Christ's love?",
-        "options": [
-          "Offer our sufferings in union with Christ for others",
-          "See suffering as meaningless punishment",
-          "Avoid all suffering at any cost",
-          "Only accept suffering that makes us look holy"
-        ],
-        "answer_index": 0
-      },
-      "reward": {"Piety": 2, "Suffering": 1}
-    },
-    {
-      "title": "The Confessor Who Knew Souls",
-      "story": "Padre Pio spends hours in the confessional, often knowing penitents' sins before they speak.",
+      "title": "The Long Line",
+      "story": "At San Giovanni Rotondo, people wait hours — sometimes days — to confess to Padre Pio. He is known for being blunt, for seeing through excuses, and for staying in the confessional long after a reasonable man would have stood up.",
       "challenge": {
         "type": "trivia",
-        "question": "What virtue is most important when seeking forgiveness and healing?",
+        "question": "What was Padre Pio most famous for in his daily ministry?",
         "choices": [
-          "Humility and honesty in confession",
-          "Trying to appear better than we are",
-          "Confessing only minor sins",
-          "Avoiding confession altogether"
+          "Writing a newspaper that attacked his critics",
+          "Spending long hours hearing confessions",
+          "Refusing to see anyone who was not a priest",
+          "Traveling the world as a concert preacher"
         ],
-        "answer_index": 0
+        "answer_index": 1,
+        "hint": "The line outside the box is the clue.",
+        "explanation": "Whatever else is told about Padre Pio, the ordinary miracle of his life is mercy spoken one soul at a time. Confession was the work, not a side chapel."
       },
-      "reward": {"Piety": 2, "Suffering": 1}
+      "reward": {
+        "Piety": 2,
+        "Mercy": 1
+      }
     },
     {
-      "title": "Prayer and Suffering",
-      "story": "Padre Pio says, 'Prayer is the best weapon we have; it is the key to God's heart.'",
+      "title": "The Best Weapon",
+      "story": "Padre Pio said, “Prayer is the best weapon we have; it is the key to God’s heart.” He did not mean a last resort when every other plan failed. He meant the first move when anxiety, work, or pain arrived.",
+      "challenge": {
+        "type": "trivia",
+        "question": "What did Padre Pio call prayer?",
+        "choices": [
+          "Duty reserved only for people who cannot work",
+          "Something that replaces going to confession",
+          "The best weapon we have, and the key to God’s heart",
+          "Something useful only after you have tried everything else"
+        ],
+        "answer_index": 2,
+        "hint": "He used the language of a key and a weapon — not a hobby.",
+        "explanation": "For Padre Pio, prayer is how a person enters the fight and how a person rests. Worry is not solved by more worry; it is carried to God."
+      },
+      "reward": {
+        "Piety": 2,
+        "Perseverance": 1
+      }
+    },
+    {
+      "title": "A Hidden Sharing",
+      "story": "In 1918, while praying, Padre Pio received the stigmata — wounds like Christ’s — which he bore for fifty years. He did not advertise them. Church authorities investigated him, restricted him, then later cleared him. He asked people to look at Jesus, not at him.",
       "challenge": {
         "type": "dilemma",
-        "prompt": "How should we respond to anxiety and worry?",
+        "prompt": "How did Padre Pio want people to treat the stigmata?",
         "options": [
-          "Bring our worries to God in prayer",
-          "Worry more to show we care",
-          "Distract ourselves with entertainment",
-          "See prayer as useless when we're anxious"
+          "As proof that they should never go to a doctor",
+          "As a stage trick to grow his following",
+          "As a reason to skip Mass if they had seen him once",
+          "As a hidden sharing in Christ’s suffering, not a spectacle"
         ],
-        "answer_index": 0
+        "answer_index": 3,
+        "hint": "He pointed away from himself.",
+        "explanation": "The Church does not require anyone to be fascinated by the stigmata. Padre Pio’s own counsel is safer: pray, confess, endure, and look at Christ."
       },
-      "reward": {"Suffering": 2, "Piety": 1}
+      "reward": {
+        "Perseverance": 2,
+        "Piety": 1
+      }
+    },
+    {
+      "title": "A Capuchin’s Tools",
+      "story": "Rosary, confessional, Mass, obedience — these were the tools of Padre Pio’s day. Matching them keeps the legend attached to the work.",
+      "challenge": {
+        "type": "matching",
+        "prompt": "Match each part of Padre Pio’s life to what it meant.",
+        "pairs": [
+          {
+            "left": "Confessional",
+            "right": "Hours of mercy, one person at a time"
+          },
+          {
+            "left": "Rosary",
+            "right": "The prayer he called a weapon"
+          },
+          {
+            "left": "San Giovanni Rotondo",
+            "right": "The town where he lived and served"
+          },
+          {
+            "left": "Capuchin habit",
+            "right": "The Franciscan life he professed"
+          }
+        ],
+        "hint": "Place, habit, prayer, and the box.",
+        "explanation": "Padre Pio’s story is not a catalog of marvels. It is a Franciscan priest who stayed put, prayed, and heard the truth people were afraid to say."
+      },
+      "reward": {
+        "Piety": 2,
+        "Perseverance": 1
+      }
     }
   ],
   "johnpaulii": [
     {
-      "title": "The Pope Who Forgave His Assassin",
-      "story": "After being shot and seriously wounded, John Paul II visits his attacker in prison to offer forgiveness.",
+      "title": "The Prison Visit",
+      "story": "On 13 May 1981, Mehmet Ali Ağca shoots John Paul II in St. Peter’s Square. The pope nearly dies. In 1983 he goes to Rebibbia prison, sits with his attacker, and speaks with him privately. He later says he has forgiven him.",
       "challenge": {
-        "type": "dilemma",
-        "prompt": "How can we respond when someone deeply hurts us?",
-        "options": [
-          "Offer forgiveness while seeking justice",
-          "Seek revenge to make them pay",
-          "Hold a grudge forever",
-          "Pretend it didn't hurt us at all"
+        "type": "trivia",
+        "question": "What does John Paul II do after surviving the attack?",
+        "choices": [
+          "Refuses ever to speak Ağca’s name again",
+          "Visits his attacker in prison and offers forgiveness",
+          "Asks the court to add years to the sentence as a lesson",
+          "Leaves Rome permanently for safety in Poland"
         ],
-        "answer_index": 0
+        "answer_index": 1,
+        "hint": "Mercy here has an address: a prison cell.",
+        "explanation": "Forgiveness did not erase justice — Ağca remained in prison. It did refuse the last word to hatred. That is the Gospel John Paul II had been preaching made visible."
       },
-      "reward": {"Mercy": 2, "Hope": 1}
+      "reward": {
+        "Mercy": 2,
+        "Hope": 1
+      }
     },
     {
       "title": "Be Not Afraid",
-      "story": "John Paul II's famous call to overcome fear with faith and trust in God.",
-      "challenge": {
-        "type": "trivia",
-        "question": "What does John Paul II teach us about fear and faith?",
-        "choices": [
-          "Trust in God's love helps us overcome fear",
-          "We should never feel afraid of anything",
-          "Fear shows we lack faith completely",
-          "We must earn courage through good deeds"
-        ],
-        "answer_index": 0
-      },
-      "reward": {"Hope": 2, "Mercy": 1}
-    },
-    {
-      "title": "The Pilgrim Pope",
-      "story": "John Paul II travels more than any pope before him, bringing the gospel to the ends of the earth.",
+      "story": "At his inauguration in 1978, the new pope looks out over the square and says, “Be not afraid. Open wide the doors to Christ.” It becomes the sentence of his pontificate — spoken to a century that had many reasons to be afraid.",
       "challenge": {
         "type": "dilemma",
-        "prompt": "How can we share our faith with others respectfully?",
+        "prompt": "What did John Paul II ask the Church to do with its fear?",
         "options": [
-          "Share our faith while respecting others' dignity",
-          "Only share with people who already believe like us",
-          "Force others to accept our beliefs",
-          "Keep our faith completely private"
+          "Never feel afraid, because fear is always a sin",
+          "Leave public life so the Church would be safer",
+          "Open the doors to Christ instead of closing them in fear",
+          "Trust only in political power to protect the faith"
         ],
-        "answer_index": 0
+        "answer_index": 2,
+        "hint": "The famous line is paired with opening doors, not with denial.",
+        "explanation": "“Be not afraid” is not a scolding. It is an invitation: let Christ in, then walk into the century with hope. Courage, for him, is a form of trust."
       },
-      "reward": {"Mercy": 1, "Hope": 2}
+      "reward": {
+        "Hope": 2,
+        "Mercy": 1
+      }
+    },
+    {
+      "title": "The Young Church",
+      "story": "John Paul II invents World Youth Day and spends himself on young people — not as a mascot, but as a pastor who believed they could carry a demanding faith. He told them they were not an accident of the times.",
+      "challenge": {
+        "type": "dilemma",
+        "prompt": "What was new about John Paul II’s care for the young?",
+        "options": [
+          "He lowered every teaching so it would be easier to like",
+          "He asked the young to wait until middle age to live the Gospel",
+          "He replaced parishes with stadium events and nothing else",
+          "He created World Youth Day and preached a demanding hope to them"
+        ],
+        "answer_index": 3,
+        "hint": "He gathered them — and he did not shrink the faith to keep them.",
+        "explanation": "World Youth Day is a gathering, not a gimmick. John Paul II trusted young people with the whole Gospel: mercy, purity, courage, and mission."
+      },
+      "reward": {
+        "Hope": 2,
+        "Mercy": 1
+      }
+    },
+    {
+      "title": "A Long Pilgrimage",
+      "story": "Karol Wojtyła’s life runs from occupied Poland to the chair of Peter to a funeral the world watched. The years themselves preach.",
+      "challenge": {
+        "type": "timeline",
+        "prompt": "Arrange these events from John Paul II’s life in order.",
+        "events": [
+          {
+            "text": "Born in Wadowice, Poland",
+            "year": 1920
+          },
+          {
+            "text": "Elected pope and takes the name John Paul II",
+            "year": 1978
+          },
+          {
+            "text": "Shot in St. Peter’s Square",
+            "year": 1981
+          },
+          {
+            "text": "Dies in the Vatican after a long public illness",
+            "year": 2005
+          },
+          {
+            "text": "Canonized by Pope Francis",
+            "year": 2014
+          }
+        ],
+        "hint": "Birth, election, the attack, death, then the altar.",
+        "explanation": "1920, 1978, 1981, 2005, 2014. A boy from Wadowice became a pilgrim pope whose last lesson was how to suffer in public without losing hope."
+      },
+      "reward": {
+        "Hope": 2,
+        "Mercy": 1
+      },
+      "funFact": "John Paul II was the first non-Italian pope in 455 years and one of the most traveled popes in history."
     }
   ]
 }
